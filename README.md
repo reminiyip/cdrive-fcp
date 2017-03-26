@@ -1,3 +1,7 @@
+#### References
+
+- [Coding Standards](https://github.com/pyliaorachel/cdrive-fcp/blob/master/CODING_STANDARDS.md)
+
 #### Structure
 
 ```
