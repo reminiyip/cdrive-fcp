@@ -18,7 +18,7 @@
                               /new
                               /edit
                               /remove
-                    /tag/new                      <- members purchased the game
+                    /tag/add                      <- members purchased the game
 /tag/:name
 /purchase_history
 
