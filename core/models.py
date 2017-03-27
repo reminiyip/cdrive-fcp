@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User as UserModel
 
-class User(models.User):
+class User(UserModel):
     ACCOUNT_SOURCE_CHOICES = (
         ('O', 'Origin'),
         ('FB', 'FaceBook'),
@@ -11,15 +12,10 @@ class User(models.User):
     on_screen_name = models.CharField(max_length=200)
     avatar_image = models.ImageField()
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2)
-    carts = models.ManyToManyField(Cart)
-    rewards = models.ManyToManyField(Rewards)
+    carts = models.ManyToManyField('Cart')
+    rewards = models.ManyToManyField('Rewards')
     account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default='O')
     token = models.CharField(max_length=200)
-
-class Rewards(models.Model):
-    value = models.PositiveIntegerField()
-    issue_date = models.DateField()
-    expiration_date = models.DateField()
 
 class CardPayment(models.Model):
     card_number = models.CharField(max_length=20)
@@ -35,12 +31,17 @@ class Cart(models.Model):
         ('P', 'Paid'),
     )
     status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default='N')
-    games = models.ManyToManyField(Game)
+    games = models.ManyToManyField('game.Game')
     payment = models.OneToOneField(
-        CardPayment, 
+        'CardPayment', 
         on_delete=models.CASCADE,
         primary_key=True,
     )
         
     def get_total(self):
- 
+        return
+
+class Rewards(models.Model):
+    value = models.PositiveIntegerField()
+    issue_date = models.DateField()
+    expiration_date = models.DateField()
