@@ -1,11 +1,16 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from django.views.generic.edit import CreateView
+from django.contrib.auth.forms import UserCreationForm
 
 from . import views
 
 account_urls = [
-    url(r'^register/$', views.view_register, name='register'),
-    url(r'^login/$', views.view_login, name='login_page'),
-    url(r'^recover/$', views.view_recover, name='recover'),
+    url(r'^', include('django.contrib.auth.urls')),
+    url(r'^register/', CreateView.as_view(
+        template_name='registration/register.html',
+        form_class=UserCreationForm,
+        success_url='/'
+    )),
 ]
 
 profile_urls = [

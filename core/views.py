@@ -11,14 +11,7 @@ def index(request):
 #                                      account                               #
 ##############################################################################
 
-def view_register(request):
-    return render(request, 'core/index.html', {'data': {'action': 'view_register'}})
 
-def view_login(request):
-    return render(request, 'core/index.html', {'data': {'action': 'view_login'}})
-
-def view_recover(request):
-    return render(request, 'core/index.html', {'data': {'action': 'view_recover'}})
 
 ##############################################################################
 #                                     profile                                #

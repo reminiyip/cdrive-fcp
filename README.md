@@ -27,7 +27,9 @@
           
 /register
 /login
-/recover
+/logout
+/password_reset
+          /done
 
 /profile
           /edit
