@@ -44,11 +44,9 @@ cdrive-fcp/
        manage urls & settings
        
    # apps
-   account/
+   core/
        login, registration, password recovering, etc.
-   profile/
        browse/edit profile, browse rewards, purchase history, etc.
-   cart/
        browse cart content, payment page, etc.
    game/
        browse homepage, genre, games, tagged games, etc.
