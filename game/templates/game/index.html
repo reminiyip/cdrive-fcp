@@ -1,0 +1,11 @@
+{% extends 'game/base.html' %}
+
+{% block content %}
+
+<p>Hello World!</p>
+
+{% for key, item in data.items %}
+	<p>{{ key }}: {{ item }}</p>
+{% endfor %}
+
+{% endblock %}
