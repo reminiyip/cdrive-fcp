@@ -2,55 +2,40 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-Class Game
-
-    game_id = models.PositiveIntegerField()
+class Game(models.Model):
     image = models.ImageField()
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=50)
     full_description = models.TextField()
-    one_line_description = models.CharField(max_length=200)
+    one_line_description = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     platform = models.ManyToManyField(Platform)
     genre_id = models.ForeignKey(Genre, on_delete=models.CASCADE)
     is_featured = models.BooleanField()
+        
+    def get_sorted_tags(self):
     
-    def make_new_tag(self,Tag):
-        
-    def delete_tag(self,Tag):
-        
-    def make_new_review(self,User, Review):
-        
-    def delete_review(self,User, Review):
-        
-    def edit_review(self,User, Review):
-        
-    def get_sorted_tags(self)
-    
-    def add_to_genre(self,Genre)
+    def add_to_genre(self, genre_id):
 
 
-Class Review
-
-    review_id = models.PositiveIntegerField()
+class Review(models.Model):
     review_header = models.CharField(max_length=50)
     review_content = models.TextField()
     review_issue_date = models.DateField()
     user_name = models.CharField()
     game_id = models.ForeignKey(Game, on_delete=models.CASCADE)
-    
 
-Class Platform
+class Platform(models.Model):
+    PLATFORM_CHOICES = (
+        ('W', 'Windows'),
+        ('M', 'MacOS'),
+        ('L', 'Linux'),
+    )
+    platform_name = models.CharField(max_length=2, choices=PLATFORM_CHOICES, default='W')
 
-    platform_id = models.PositiveIntegerField()
-    platform_name = models.CharField(max_length=20)
-    
-
-Class Genre
-    genre_id = models.PositiveIntegerField()
+class Genre(models.Model):
     genre_name = models.CharField(max_length=30)
 
-Class Tag
-    tag_id = models.PositiveIntegerField()
+class Tag(models.Model):
     tag_name = models.CharField(max_length=30)
     popularity = models.PositiveIntegerField()
     game_id = models.ForeignKey(Game, on_delete=models.CASCADE)

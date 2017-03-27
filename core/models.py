@@ -15,25 +15,20 @@ class User(models.User):
     rewards = models.ManyToManyField(Rewards)
     account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default='O')
     token = models.CharField(max_length=200)
-    
-    def make_new_cart(self):
-        
-    def make_new_rewards(self):
-
 
 class Rewards(models.Model):
     value = models.PositiveIntegerField()
     issue_date = models.DateField()
     expiration_date = models.DateField()
 
-class CardPayment
+class CardPayment(models.Model):
     card_number = models.CharField(max_length=20)
     expiration_date = models.DateField()
     security_code = models.PositiveSmallIntegerField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     paid_date = models.DateField()
 
-class Cart
+class Cart(models.Model):
     CART_STATUS_CHOICES = (
         ('N', 'NotPaid'),
         ('PR', 'Processing/Pending'),
@@ -47,7 +42,7 @@ class Cart
         primary_key=True,
     )
     
-    def add_game(self,game):
+    def add_game(self, game):
         
     def make_payment(self):
         
