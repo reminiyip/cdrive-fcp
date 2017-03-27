@@ -41,10 +41,6 @@ class Cart(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    
-    def add_game(self, game):
-        
-    def make_payment(self):
         
     def get_total(self):
  
