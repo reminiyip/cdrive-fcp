@@ -19,7 +19,7 @@
                            /:id
                               /edit
                               /remove
-                    /tag/add                      <- members purchased the game
+                    /tag/:id/add                   <- members purchased the game
 /tag/:name
 /purchase_history
 
