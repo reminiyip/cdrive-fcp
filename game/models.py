@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from decimal import Decimal
+
 class Genre(models.Model):
     genre_name = models.CharField(max_length=30)
 
@@ -10,7 +12,7 @@ class Game(models.Model):
     title = models.CharField(max_length=50)
     full_description = models.TextField()
     one_line_description = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0.00))
     platform = models.ManyToManyField('Platform')
     genre_id = models.ForeignKey('Genre', on_delete=models.CASCADE)
     is_featured = models.BooleanField()
