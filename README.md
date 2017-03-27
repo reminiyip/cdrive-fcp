@@ -22,7 +22,7 @@
 /tag/:name
 /purchase_history
 
-/cart
+/cart/:id
           /payment
           
 /register
