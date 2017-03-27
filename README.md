@@ -1,6 +1,6 @@
 #### References
 
-- [Our Coding Standards](https://github.com/pyliaorachel/cdrive-fcp/blob/master/CODING_STANDARDS.md)
+- [Our Coding Standards](https://github.com/pyliaorachel/cdrive-fcp/blob/master/dev_docs/CODING_STANDARDS.md)
 - [Sample Projects](https://github.com/django/djangoproject.com)
 - [Django Reusable Apps](http://django-reusable-app-docs.readthedocs.io/en/latest/)
 - [Django Girls Tutorial](https://tutorial.djangogirls.org/en/)
