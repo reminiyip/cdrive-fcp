@@ -46,5 +46,5 @@ def remove_review(request, genre_id, game_id, review_id):
 #                                   game tag actions                         #
 ##############################################################################
 
-def add_tag(request, genre_id, game_id, tag_id):
-    return render(request, 'core/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'tag_id': tag_id, 'action': 'add_tag'}})
+def add_tag(request, genre_id, game_id, tag_name):
+    return render(request, 'core/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'tag_name': tag_name, 'action': 'add_tag'}})
