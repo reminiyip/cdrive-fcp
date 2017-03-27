@@ -19,7 +19,7 @@
                            /:id
                               /edit
                               /remove
-                    /tag/:id/add                   <- members purchased the game
+                    /tag/:name/add                <- members purchased the game
 /tag/:name
 
 /cart/:id
