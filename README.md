@@ -14,8 +14,9 @@
 /genre/:id
           /game/:id
                     /reviews
-                    /review/:id                   <- members purchased the game
-                              /new
+                    /review                       <- members purchased the game
+                           /new
+                           /:id
                               /edit
                               /remove
                     /tag/add                      <- members purchased the game
