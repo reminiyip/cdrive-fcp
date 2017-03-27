@@ -21,7 +21,6 @@
                               /remove
                     /tag/:id/add                   <- members purchased the game
 /tag/:name
-/purchase_history
 
 /cart/:id
           /payment
@@ -32,7 +31,8 @@
 
 /profile
           /edit
-          
+/purchase_history
+
 /admin
 ```
 
