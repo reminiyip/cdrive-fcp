@@ -2,43 +2,50 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-# Create your models here.
-
-Class User():
-    user_name
-    password
-    email_address
-    on_screen_name
-    avatar_image
-    accumulated_spending
-    carts
-    rewards
-    account_source
-    token
+class User(models.User):
+    ACCOUNT_SOURCE_CHOICES = (
+        ('O', 'Origin'),
+        ('FB', 'FaceBook'),
+        ('GH', 'GitHub'),
+    )
+    on_screen_name = models.CharField(max_length=200)
+    avatar_image = models.ImageField()
+    accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2)
+    carts = models.ManyToManyField(Cart)
+    rewards = models.ManyToManyField(Rewards)
+    account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default='O')
+    token = models.CharField(max_length=200)
     
     def make_new_cart(self):
         
     def make_new_rewards(self):
-    
 
-Class Rewards(models.Model):
-    reward_id = models.PositiveIntegerField()
+
+class Rewards(models.Model):
     value = models.PositiveIntegerField()
     issue_date = models.DateField()
     expiration_date = models.DateField()
 
-Class CardPayment
-    card_number = models.PositiveIntegerField()
+class CardPayment
+    card_number = models.CharField(max_length=20)
     expiration_date = models.DateField()
     security_code = models.PositiveSmallIntegerField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     paid_date = models.DateField()
 
-Class Cart
-    cart_id = models.IntegerField()
-    status = models.CharField(max_length=15)
+class Cart
+    CART_STATUS_CHOICES = (
+        ('N', 'NotPaid'),
+        ('PR', 'Processing/Pending'),
+        ('P', 'Paid'),
+    )
+    status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default='N')
     games = models.ManyToManyField(Game)
-    payment = models.ForeignKey(CardPayment, on_delete=models.CASCADE)
+    payment = models.OneToOneField(
+        CardPayment, 
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
     
     def add_game(self,game):
         

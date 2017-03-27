@@ -1,1 +1,2 @@
 - [Django-Registration](https://django-registration.readthedocs.io/en/2.2/index.html)
+- [Model Fields](https://docs.djangoproject.com/en/1.10/ref/models/fields/)
