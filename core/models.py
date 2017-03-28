@@ -38,7 +38,7 @@ class Cart(models.Model):
     def get_total(self):
         return
 
-class RewardBatch(models.Model):
+class RewardsBatch(models.Model):
     value = models.PositiveIntegerField()
     issue_date = models.DateField()
     expiration_date = models.DateField()
