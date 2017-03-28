@@ -14,8 +14,6 @@ class User(UserModel):
     on_screen_name = models.CharField(max_length=200)
     avatar_image = models.ImageField()
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
-    carts = models.ManyToManyField('Cart')
-    rewards = models.ManyToManyField('Rewards')
     account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default='O')
     token = models.CharField(max_length=200)
 
@@ -33,12 +31,9 @@ class Cart(models.Model):
         ('P', 'Paid'),
     )
     status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default='N')
-    games = models.ManyToManyField('game.Game')
-    payment = models.OneToOneField(
-        'CardPayment', 
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
+    game = models.ManyToManyField('game.Game')
+    payment = models.OneToOneField('CardPayment', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
         
     def get_total(self):
         return
@@ -47,3 +42,4 @@ class Rewards(models.Model):
     value = models.PositiveIntegerField()
     issue_date = models.DateField()
     expiration_date = models.DateField()
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
