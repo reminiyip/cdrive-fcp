@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.views.generic.detail import DetailView
+from django.utils import timezone
+
+from .models import Game
 
 ##############################################################################
 #                                       test                                 #
@@ -22,6 +26,14 @@ def view_tagged_games(request, tag_name):
 
 def view_game(request, genre_id, game_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'action': 'view_game'}})
+
+class GameDetailView(DetailView):
+    model = Game
+
+    def get_context_data(self, **kwargs):
+        context = super(GameDetailView, self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
 
 ##############################################################################
 #                                 game review actions                        #

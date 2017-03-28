@@ -1,11 +1,12 @@
 from django.conf.urls import url, include
 
 from . import views
+from views import GameDetailView
 
 browse_game_urls = [
     url(r'^homepage/', views.view_homepage, name='homepage'),
     url(r'^genre/(?P<genre_id>\d+)/$', views.view_genre, name='genre'),
-    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/$', views.view_game, name='game'), 
+    url(r'^genre/(?P<genre_id>\d+)/game/(?P<pk>\d+)/$', GameDetailView.as_view(), name='game'), 
     url(r'^tag/(?P<tag_name>.+)', views.view_tagged_games, name='tagged_games'), 
 ]
 
