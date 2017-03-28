@@ -3,6 +3,7 @@ from django.views.generic.detail import DetailView
 from django.utils import timezone
 
 from .models import Game
+from core.models import User
 
 ##############################################################################
 #                                       test                                 #
@@ -34,6 +35,9 @@ class GameDetailView(DetailView):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
         return context
+
+    def get_queryset(self):
+        return User.objects.filter(username=self.request.user.username)
 
 ##############################################################################
 #                                 game review actions                        #
