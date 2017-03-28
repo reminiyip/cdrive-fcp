@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
 from . import views
-from views import GameDetailView
+from .views import GameDetailView
 
 browse_game_urls = [
     url(r'^homepage/', views.view_homepage, name='homepage'),
