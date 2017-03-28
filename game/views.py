@@ -64,6 +64,8 @@ def remove_review(request, genre_id, game_id, review_id):
 ##############################################################################
 
 def add_tag(request, genre_id, game_id, tag_name):
+    # TODO add tag to db
+    # TODO redirect to game page
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'tag_name': tag_name, 'action': 'add_tag'}})
 
 ##############################################################################
