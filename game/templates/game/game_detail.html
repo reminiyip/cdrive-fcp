@@ -3,5 +3,12 @@
 {% block content %}
 
 <p>{{ object.title }}</p>
+<p>{{ object.genre_id }}</p>
+<p>{{ object.id }}</p>
+<p>{{ user.username }}</p>
+
+<div id="purchase-game">
+	<a href="{% url 'add_to_cart' object.genre_id object.id %}">Add to Cart</a>
+</div>
 
 {% endblock %}

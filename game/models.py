@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User
 
 from decimal import Decimal
 
@@ -27,7 +28,7 @@ class Review(models.Model):
     review_header = models.CharField(max_length=50)
     review_content = models.TextField()
     review_issue_date = models.DateField()
-    user = models.ForeignKey('core.User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
 
 class Tag(models.Model):

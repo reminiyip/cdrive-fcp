@@ -19,7 +19,8 @@
                            /:id
                               /edit
                               /remove
-                    /tag/:name/add                <- members purchased the game
+                    /tag/:name/add                <- members purchased the game; redirect
+                    /add_to_cart/                 <- redirect
 /tag/:name
 
 /cart/:id

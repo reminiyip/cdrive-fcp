@@ -1,11 +1,12 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.contrib.auth.models import User as UserModel
+from django.contrib.auth.models import User
 
 from decimal import Decimal
 
-class User(UserModel):
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
     ACCOUNT_SOURCE_CHOICES = (
         ('O', 'Origin'),
         ('FB', 'FaceBook'),
@@ -16,6 +17,9 @@ class User(UserModel):
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
     account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default='O')
     token = models.CharField(max_length=200)
+ 
+    def __unicode__(self):
+        return self.user
 
 class CardPayment(models.Model):
     card_number = models.CharField(max_length=20)
@@ -33,7 +37,7 @@ class Cart(models.Model):
     status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default='N')
     game = models.ManyToManyField('game.Game')
     payment = models.OneToOneField('CardPayment', on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
         
     def get_total(self):
         return
@@ -42,4 +46,4 @@ class RewardsBatch(models.Model):
     value = models.PositiveIntegerField()
     issue_date = models.DateField()
     expiration_date = models.DateField()
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

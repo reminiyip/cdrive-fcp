@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 
 from .models import Game
-from core.models import User
+from django.contrib.auth.models import User
 
 ##############################################################################
 #                                       test                                 #
@@ -23,7 +23,7 @@ def view_genre(request, genre_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'action': 'view_genre'}})
 
 def view_tagged_games(request, tag_name):
-    return render(request, 'core/index.html', {'data': {'tag_name': tag_name, 'action': 'view_tagged_games'}})
+    return render(request, 'game/index.html', {'data': {'tag_name': tag_name, 'action': 'view_tagged_games'}})
 
 def view_game(request, genre_id, game_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'action': 'view_game'}})
@@ -34,10 +34,11 @@ class GameDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
-        return context
 
-    def get_queryset(self):
-        return User.objects.filter(username=self.request.user.username)
+        # get user active cart
+
+
+        return context
 
 ##############################################################################
 #                                 game review actions                        #
@@ -63,4 +64,11 @@ def remove_review(request, genre_id, game_id, review_id):
 ##############################################################################
 
 def add_tag(request, genre_id, game_id, tag_name):
-    return render(request, 'core/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'tag_name': tag_name, 'action': 'add_tag'}})
+    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'tag_name': tag_name, 'action': 'add_tag'}})
+
+##############################################################################
+#                                 game purchase actions                      #
+##############################################################################
+
+def add_to_cart(request, genre_id, game_id):
+    return redirect('game', genre_id=genre_id, pk=game_id)
