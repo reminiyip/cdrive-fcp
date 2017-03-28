@@ -9,7 +9,7 @@ class Genre(models.Model):
     genre_name = models.CharField(max_length=30)
 
 class Game(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(upload_to='games')
     title = models.CharField(max_length=50)
     full_description = models.TextField()
     one_line_description = models.CharField(max_length=100)

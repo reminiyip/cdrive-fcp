@@ -13,13 +13,13 @@ class UserProfile(models.Model):
         ('GH', 'GitHub'),
     )
     on_screen_name = models.CharField(max_length=200)
-    avatar_image = models.ImageField()
+    avatar_image = models.ImageField(upload_to='avatars')
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
     account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default='O')
     token = models.CharField(max_length=200)
  
     def __unicode__(self):
-        return self.user
+        return self.user.username
 
 class CardPayment(models.Model):
     card_number = models.CharField(max_length=20)
