@@ -66,3 +66,13 @@ cdrive-fcp/
    docs/
        documentation
 ```
+
+#### Admin
+
+###### Account
+
+```
+Username: cdriveadmin
+Password: cdriveadmin
+Email: admin@example.com
+```

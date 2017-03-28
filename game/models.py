@@ -13,9 +13,14 @@ class Game(models.Model):
     full_description = models.TextField()
     one_line_description = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0.00))
-    platform = models.ManyToManyField('Platform')
     genre = models.ForeignKey('Genre', on_delete=models.CASCADE)
     is_featured = models.BooleanField()
+    PLATFORM_CHOICES = (
+        ('W', 'Windows'),
+        ('M', 'MacOS'),
+        ('L', 'Linux'),
+    )
+    platform = models.CharField(max_length=2, choices=PLATFORM_CHOICES, default='W')
         
     def get_sorted_tags(self):
         return
@@ -38,11 +43,3 @@ class Tag(models.Model):
     def increment_popularity(self):
         self.popularity += 1
         self.save()
-
-class Platform(models.Model):
-    PLATFORM_CHOICES = (
-        ('W', 'Windows'),
-        ('M', 'MacOS'),
-        ('L', 'Linux'),
-    )
-    platform_name = models.CharField(max_length=2, choices=PLATFORM_CHOICES, default='W')
