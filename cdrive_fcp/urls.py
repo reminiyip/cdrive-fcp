@@ -16,7 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from core import views as core_view
+
 urlpatterns = [
+    url(r'^$', core_view.goto_homepage, name='goto_homepage'),
     url(r'^', include('core.urls')),
     url(r'^', include('game.urls')),
     url(r'^admin/', admin.site.urls),

@@ -6,10 +6,6 @@ from registration.backends.default.views import RegistrationView
 
 from . import views
 
-main_urls = [
-    url(r'^$', views.goto_homepage, name='goto_homepage'),
-]
-
 account_urls = [
     # url(r'^register/', RegistrationView.as_view(form_class=RegistrationFormTermsOfService)),
     url(r'^', include('registration.backends.simple.urls')),
@@ -30,4 +26,4 @@ other_urls = [
     url(r'^purchase_history/', views.view_purchase_history, name='purchase_history'), 
 ]
 
-urlpatterns = main_urls + account_urls + profile_urls + cart_urls + other_urls
+urlpatterns = account_urls + profile_urls + cart_urls + other_urls
