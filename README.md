@@ -5,6 +5,11 @@
 - [Django Reusable Apps](http://django-reusable-app-docs.readthedocs.io/en/latest/)
 - [Django Girls Tutorial](https://tutorial.djangogirls.org/en/)
 
+#### Usage
+
+`pip install django-registration`  
+`python manage.py runserver`
+
 #### Structure
 
 ###### URL
