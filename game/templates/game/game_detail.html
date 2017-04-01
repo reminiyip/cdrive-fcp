@@ -1,19 +1,42 @@
-{% extends 'game/base.html' %} {% block content %}
+{% extends 'game/base.html' %}
 
-<p>{{ object.title }}</p>
-<p>{{ object.genre_id }}</p>
-<p>{{ object.id }}</p>
-<p>{{ user.username }}</p>
+{% block title %}Game - {{ game.title }}{% endblock %}
 
-<div id="purchase-game">
-	<a href="{% url 'add_to_cart' object.genre_id object.id %}">Add to Cart</a>
+{% block content %}
+
+<div id="game-page" class="container-fluid">
+	
+	<div id="user-info">
+		<p>{{ user.username }}</p>
+		<h1>Cart {{ cart.game.all.count }}</h1>
+		<ul>
+		{% for game in cart.game.all %}
+			<li>{{ game.title }}</li>
+		{% endfor %}
+		</ul>
+	</div>
+
+	<div id="game-info">	
+		<h1>{{ genre_name }} >> {{ game.title }}</h1>
+	</div>
+
+	<div id="purchase-game">
+		{% if game in cart.game.all %}
+			<a class="btn btn-primary btn-lg disabled" role="button" href="{% url 'add_to_cart' game.genre_id game.id %}">
+		{% else %}
+			<a class="btn btn-primary btn-lg" role="button" href="{% url 'add_to_cart' game.genre_id game.id %}">
+		{% endif %}
+			Add to Cart
+		</a>
+	</div>
+
+	<form action="/tag/add/" method="post">
+	    {% csrf_token %} New Tag Name:
+	    <input type="text" name="tag name" value="">
+
+	    <input type="submit" value="Submit Tag" />
+	</form>
+
 </div>
-
-<form action="/tag/add/" method="post">
-    {% csrf_token %} New Tag Name:
-    <input type="text" name="tag name" value="">
-
-    <input type="submit" value="Submit Tag" />
-</form>
 
 {% endblock %}

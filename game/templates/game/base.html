@@ -1,12 +1,4 @@
+{% extends 'base.html' %}
 {% load staticfiles %}
 
-<html>
-	<head>
-		<title>FCP</title>
-		<link rel="stylesheet" href="{% static 'css/game.css' %}">
-	</head>
-	<body>
-		{% block content %}
-		{% endblock %}
-	</body>
-</html>
+{% block css %}<link rel="stylesheet" href="{% static 'css/game.css' %}">{% endblock %}

@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 
-from .models import Game
+from .models import Game, Genre
+from core.models import Cart
 from django.contrib.auth.models import User
 
 ##############################################################################
@@ -35,8 +36,13 @@ class GameDetailView(DetailView):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
 
-        # get user active cart
+        # get genre name
+        genre = Genre.objects.get(id=context['game'].genre_id)
+        context['genre_name'] = genre.genre_name
 
+        # get user active cart
+        cart = Cart.objects.get(user_id=self.request.user.id)
+        context['cart'] = cart
 
         return context
 
@@ -73,4 +79,18 @@ def add_tag(request, genre_id, game_id, tag_name):
 ##############################################################################
 
 def add_to_cart(request, genre_id, game_id):
+    game = Game.objects.get(id=game_id)
+    cart = Cart.objects.get(user_id=request.user.id)
+    cart.game.add(game)
+    cart.save()
+
     return redirect('game', genre_id=genre_id, pk=game_id)
+
+
+
+
+
+
+
+
+

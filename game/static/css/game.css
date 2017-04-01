@@ -1,3 +1,7 @@
 p {
 	color: red;
 }
+
+.action-button:hover {
+	text-decoration: none;
+}
