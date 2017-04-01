@@ -36,10 +36,6 @@ class GameDetailView(DetailView):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
 
-        # get genre name
-        genre = Genre.objects.get(id=context['game'].genre_id)
-        context['genre_name'] = genre.genre_name
-
         # get user active cart
         cart = Cart.objects.get(user_id=self.request.user.id)
         context['cart'] = cart
