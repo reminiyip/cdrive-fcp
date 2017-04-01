@@ -1,15 +1,13 @@
 from django.conf.urls import url, include
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
-from registration.forms import RegistrationFormTermsOfService
-from registration.backends.default.views import RegistrationView
 
 from . import views
 
 account_urls = [
     # url(r'^register/', RegistrationView.as_view(form_class=RegistrationFormTermsOfService)),
+    url(r'^', include('django.contrib.auth.urls')),
     url(r'^', include('registration.backends.simple.urls')),
-    # url(r'^', include('django.contrib.auth.urls')),
 ]
 
 profile_urls = [
