@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     ACCOUNT_SOURCE_CHOICES = (
         ('O', 'Origin'),
         ('FB', 'FaceBook'),
@@ -35,8 +35,8 @@ class Cart(models.Model):
         ('P', 'Paid'),
     )
     status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default='N')
-    game = models.ManyToManyField('game.Game')
-    payment = models.OneToOneField('CardPayment', on_delete=models.CASCADE, null=True)
+    game = models.ManyToManyField('game.Game', blank=True)
+    payment = models.OneToOneField('CardPayment', on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
         
     def get_total(self):
