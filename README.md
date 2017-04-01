@@ -4,6 +4,7 @@
 - [Sample Projects](https://github.com/django/djangoproject.com)
 - [Django Reusable Apps](http://django-reusable-app-docs.readthedocs.io/en/latest/)
 - [Django Girls Tutorial](https://tutorial.djangogirls.org/en/)
+- [Login Tutorial](https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html)
 
 #### Usage
 
