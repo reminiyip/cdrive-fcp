@@ -74,12 +74,24 @@ cdrive-fcp/
        documentation
 ```
 
-#### Admin
+#### Account
 
-###### Account
+###### Admin
 
 ```
+Use 'createsuperuser' for one, or use:
+
 Username: cdriveadmin
 Password: cdriveadmin
 Email: admin@example.com
+```
+
+###### User
+
+```
+Go to /register for one, or use:
+
+Username: sampleuser
+Password: thisisapassword
+Email: sample@example.com
 ```
