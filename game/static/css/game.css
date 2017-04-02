@@ -1,7 +1,14 @@
 p {
-	color: red;
+    color: red;
 }
 
 .action-button:hover {
-	text-decoration: none;
+    text-decoration: none;
+}
+
+#submit-tag-btn {
+    color: #fcfbe1;
+    background-color: #85dec0;
+    border-radius: 10px;
+    font-size: 30px;
 }

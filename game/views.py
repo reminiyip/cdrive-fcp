@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 
-from .models import Game, Genre
+from .models import Game, Genre, Tag
 from core.models import Cart
 from django.contrib.auth.models import User
 
@@ -43,6 +43,10 @@ class GameDetailView(DetailView):
         # get user active cart
         cart = Cart.objects.get(user_id=self.request.user.id)
         context['cart'] = cart
+        
+        # get game tags
+        tags = Tag.objects.filter(game_id=context['game'].id)
+        context['tags'] = tags
 
         return context
 
@@ -69,10 +73,22 @@ def remove_review(request, genre_id, game_id, review_id):
 #                                   game tag actions                         #
 ##############################################################################
 
-def add_tag(request, genre_id, game_id, tag_name):
-    # TODO add tag to db
-    # TODO redirect to game page
-    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'tag_name': tag_name, 'action': 'add_tag'}})
+def add_tag(request, genre_id, game_id):
+    if request.method == 'POST':
+        req_tag_name = request.POST.get('tag_name', None)
+        # add new tag to db
+        if not Tag.objects.filter(tag_name=req_tag_name).exists():
+            tag_game = Game.objects.get(id=game_id)
+            tag = Tag(tag_name=req_tag_name, popularity=1, game=tag_game)
+            tag.save()
+        # increment popularity
+        else:
+            tag = Tag.objects.get(tag_name=req_tag_name)
+            tag.increment_popularity()
+    
+    # redirect to game page
+    return redirect('game', genre_id=genre_id, pk=game_id)
+
 
 ##############################################################################
 #                                 game purchase actions                      #
