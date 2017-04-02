@@ -4,8 +4,10 @@ from django.views.generic.detail import DetailView
 from django.utils import timezone
 from datetime import timedelta
 from django.urls import reverse
+from django.http import HttpResponse
 
-from .models import UserProfile, Cart, RewardsBatch
+from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
+from .forms import PaymentForm
 
 EXPIRE_THRESHOLD = 120
 MAX_REWARD = 10
@@ -68,8 +70,23 @@ class CartDetailView(DetailView):
 
         return context
 
-def view_cart_payment(request, cart_id):
-    return render(request, 'core/index.html', {'data': {'cart_id': cart_id, 'action': 'view_cart_payment'}})
+def payment(request, cart_id):
+    cart = Cart.objects.get(pk=cart_id)
+
+    if request.method == "POST":
+        form = PaymentForm(request.POST)
+
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment.amount = cart.get_total()
+            payment.paid_date = timezone.now()
+            payment.save()
+
+        return HttpResponse('OK')
+
+    else:
+        form = PaymentForm()
+        return render(request, 'core/payment.html', {'form': form, 'cart': cart})
 
 ##############################################################################
 #                                     others                                 #
@@ -77,3 +94,19 @@ def view_cart_payment(request, cart_id):
 
 def view_purchase_history(request):
     return render(request, 'core/index.html', {'data': {'action': 'view_purchase_history'}})
+
+##############################################################################
+#                                     actions                                #
+##############################################################################
+
+def assign_rewards(request, cart_id, game_id, reward_value):
+    print(reward_value, game_id, cart_id)
+    cg = CartGamePurchase.objects.get(game_id=game_id, cart_id=cart_id)
+    cg.rewards = reward_value
+    cg.save()
+
+    return HttpResponse(reward_value)
+
+
+
+

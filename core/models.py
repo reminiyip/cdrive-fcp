@@ -40,6 +40,7 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
         
     def get_total(self):
+        # TODO: count rewards
         return sum([game.price for game in self.game.all()])
 
 class RewardsBatch(models.Model):

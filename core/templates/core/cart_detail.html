@@ -31,11 +31,11 @@
 					<div class="game-info">
 						<h5 class="text-left">{{ game.one_line_description }}</h5>
 						<h3>Price: <span class="label label-default price">HK$ {{ game.price }}</span></h3>
-						<h3>Discount: <span class="label label-default price" id="discount-value-{{ forloop.counter }}">HK$ {{ game.price }}</span></h3>
+						<h3>Discount: <span class="label label-default price" id="discount-value-{{ game.id }}">HK$ {{ game.price }}</span></h3>
 						<div class="divider"></div>
 						<div class="subtotal-row">
 							<h3>Rewards:</h3>
-							<select class="select-reward form-control" id="num-of-rewards-{{ forloop.counter }}" onchange="selectRewards(this.value, {{ game.price }}, {{ forloop.counter }});">
+							<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});">
 								<option>0</option>
 								{% with ""|center:rewards as range %}
 									{% for _ in range %}
@@ -43,7 +43,7 @@
 									{% endfor %}
 								{% endwith %}
 							</select>
-							<h3>Subtotal: <span class="label label-info price" id="subtotal-value-{{ forloop.counter }}">HK$ {{ game.price }}</span></h3>
+							<h3>Subtotal: <span class="label label-info price" id="subtotal-value-{{ game.id }}">HK$ {{ game.price }}</span></h3>
 						</div>
 					</div>
 				</div>
@@ -53,7 +53,7 @@
 
 	<div id="total-price">
 		<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total }}</span></h3>
-		<a class="btn btn-default btn-md" role="button" href="{% url 'cart_payment' cart.id %}">Proceed to Pay</a>
+		<a class="btn btn-default btn-md" role="button" href="{% url 'payment' cart.id %}">Proceed to Pay</a>
 	</div>
 
 </div>

@@ -73,7 +73,7 @@ def remove_review(request, genre_id, game_id, review_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'review_id': review_id, 'action': 'remove_review'}})
 
 ##############################################################################
-#                                   game tag actions                         #
+#                                      actions                               #
 ##############################################################################
 
 def add_tag(request, genre_id, game_id):
@@ -91,11 +91,6 @@ def add_tag(request, genre_id, game_id):
     
     # redirect to game page
     return redirect('game', genre_id=genre_id, pk=game_id)
-
-
-##############################################################################
-#                                 game purchase actions                      #
-##############################################################################
 
 def add_to_cart(request, genre_id, game_id):
     # game = Game.objects.get(id=game_id)

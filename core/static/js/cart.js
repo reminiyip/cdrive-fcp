@@ -2,7 +2,7 @@ function parsePrice(priceStr) {
 	return parseFloat(priceStr.split(" ")[1]);
 }
 
-function selectRewards(value, gamePrice, id) {
+function selectRewards(value, gamePrice, id, cart_id) {
 
 	var prevSubtotal = parsePrice($("#subtotal-value-" + id).html());
 
@@ -15,4 +15,12 @@ function selectRewards(value, gamePrice, id) {
 	var total = parseFloat(parseFloat(prevTotal) - parseFloat(prevSubtotal) + parseFloat(subtotal)).toFixed(2);
 
 	$("#total-value").html("HK$ " + total);
+
+	// save to db
+	$.get({
+		url : '/cart/' + cart_id + '/assign_rewards/' + id + '/' + value + '/',
+		success: function(value) {
+			
+		}
+	});
 };
