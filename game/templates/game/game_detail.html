@@ -39,12 +39,16 @@
 
 		<div class="col-md-6">
 			<div id="tags">
-				<form action="/tag/add/" method="post">
-				    {% csrf_token %} New Tag Name:
-				    <input type="text" name="tag name" value="">
-
-				    <input type="submit" value="Submit Tag" />
+				<form method="POST" action="tag/add/">{% csrf_token %} 
+					New Tag Name:
+					<input id="" type="text" name="tag_name" value="">
+					<input id="submit-tag-btn" type="submit" value="Submit Tag" />
 				</form>
+				<ul id="tag-list">
+					{% for tag in tags %}
+						<li>{{ tag.tag_name }} {{ tag.popularity }}</li>
+					{% endfor %}
+				</ul>
 			</div>
 		</div>
 

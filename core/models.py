@@ -35,7 +35,7 @@ class Cart(models.Model):
         ('P', 'Paid'),
     )
     status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default='N')
-    game = models.ManyToManyField('game.Game', blank=True)
+    game = models.ManyToManyField('game.Game', blank=True, through='CartGamePurchase')
     payment = models.OneToOneField('CardPayment', on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
         
@@ -47,3 +47,9 @@ class RewardsBatch(models.Model):
     issue_date = models.DateField()
     expiration_date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class CartGamePurchase(models.Model):
+    cart = models.ForeignKey('Cart')
+    game = models.ForeignKey('game.Game')
+    rewards = models.PositiveSmallIntegerField(default=0)
+

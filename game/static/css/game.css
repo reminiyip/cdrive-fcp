@@ -27,3 +27,10 @@
 #add-to-cart h3 {
 	margin: 0;
 }
+
+#submit-tag-btn {
+    color: #fcfbe1;
+    background-color: #85dec0;
+    border-radius: 10px;
+    font-size: 30px;
+}

@@ -20,7 +20,8 @@ review_urls = [
 ]
 
 tag_urls = [
-    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/tag/(?P<tag_name>.+)/add/', views.add_tag, name='add_tag'),  
+    #url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/tag/(?P<tag_name>.+)/add/', views.add_tag, name='add_tag'), 
+    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/tag/add/', views.add_tag, name='add_tag'),
 ]
 
 urlpatterns = browse_game_urls + review_urls + tag_urls
