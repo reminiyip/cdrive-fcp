@@ -1,12 +1,3 @@
-img {
-	max-width: 600px;
-	max-height: 400px
-}
-
-/*#game-info-header .page-header h3, #add-to-cart-btn {
-	display: inline-block;
-}*/
-
 #game-info-header .page-header {
 	display: flex;
 	flex-direction: row;
@@ -18,7 +9,7 @@ img {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	align-items: baseline;
+	align-items: center;
 }
 
 #add-to-cart .btn {
@@ -31,4 +22,8 @@ img {
 
 #add-to-cart span.game-name {
 	color: #FF9800;
+}
+
+#add-to-cart h3 {
+	margin: 0;
 }

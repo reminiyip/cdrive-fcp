@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 
 from . import views
+from .views import CartDetailView
 
 account_urls = [
     # url(r'^register/', RegistrationView.as_view(form_class=RegistrationFormTermsOfService)),
@@ -16,7 +17,7 @@ profile_urls = [
 ]
 
 cart_urls = [
-    url(r'^cart/(?P<cart_id>\d+)/$', views.view_cart, name='cart'),
+    url(r'^cart/(?P<pk>\d+)/$', CartDetailView.as_view(), name='cart'),
     url(r'^cart/(?P<cart_id>\d+)/payment/', views.view_cart_payment, name='cart_payment'),
 ]
 

@@ -1,0 +1,19 @@
+a.no-cursor-link {
+	cursor: default;
+}
+
+img.game-image {
+	max-width: 600px;
+	max-height: 400px
+}
+
+.divider {
+	margin: 5px;
+	height: 1px;
+	width: 100%;
+	border-bottom: 1px solid #c0c0c0;
+}
+
+.navbar-default {
+	background-color: white;
+}

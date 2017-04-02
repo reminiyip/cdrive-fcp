@@ -1,27 +1,26 @@
 {% extends 'game/base.html' %}
+{% load staticfiles %}
 
 {% block title %}Game - {{ game.title }}{% endblock %}
+{% block children_css %}<link rel="stylesheet" href="{% static 'css/game.css' %}">{% endblock %}
 
 {% block content %}
 
 <div id="game-page" class="container-fluid">
 	
 	<div id="game-info-header">	
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">{{ game.genre.genre_name }}</a></li>
-			<li class="active">{{ game.title }}</li>
-		</ol>
+
+		{% include "includes/breadcrumb.html" with layers=layers %}
 
 		<div class="page-header">
 			<h3>{{ game.title }}</h3>
 			<div id="add-to-cart" >
 				<h3><small>Buy <span class="game-name">{{ game.title }}</span> at <span class="label label-info price">HK$ {{ game.price }}</span></small></h3>
-			{% if game in cart.game.all %}
-				<a class="btn btn-default btn-md disabled" role="button" href="{% url 'add_to_cart' game.genre_id game.id %}">
-			{% else %}
-				<a class="btn btn-default btn-md" role="button" href="{% url 'add_to_cart' game.genre_id game.id %}">
-			{% endif %}
+				{% if game in cart.game.all %}
+					<a class="btn btn-default btn-md disabled" role="button" href="{% url 'add_to_cart' game.genre_id game.id %}">
+				{% else %}
+					<a class="btn btn-default btn-md" role="button" href="{% url 'add_to_cart' game.genre_id game.id %}">
+				{% endif %}
 				Add to Cart
 				</a>
 			</div>

@@ -1,4 +1,20 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block css %}<link rel="stylesheet" href="{% static 'css/game.css' %}">{% endblock %}
+{% block css %}
+
+	<link rel="stylesheet" href="{% static 'css/game_common.css' %}">
+
+	{% block children_css %}
+	{% endblock %}
+
+	{% endblock %}
+
+{% block js %}
+
+	<script src="{% static 'js/game_common.js' %}"></script>
+
+	{% block children_js %}
+	{% endblock %}
+
+{% endblock %}

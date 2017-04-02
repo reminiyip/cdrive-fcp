@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.utils import timezone
+from django.urls import reverse
 
 from .models import Game, Genre
 from core.models import Cart
@@ -39,6 +40,12 @@ class GameDetailView(DetailView):
         # get user active cart
         cart = Cart.objects.get(user_id=self.request.user.id)
         context['cart'] = cart
+
+        # form page_header dict
+        layers = {'Home': reverse('homepage')}
+        layers[context['game'].genre.genre_name] = reverse('genre', args=[context['game'].genre.id])
+        layers[context['game'].title] = '#'
+        context['layers'] = layers
 
         return context
 

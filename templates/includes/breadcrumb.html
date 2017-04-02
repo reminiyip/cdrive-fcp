@@ -1,0 +1,9 @@
+<ol class="breadcrumb">
+	{% for layer_title, layer_url in layers.iteritems %}
+		{% if not forloop.last %}
+			<li><a href="{{ layer_url }}">{{ layer_title }}</a></li>
+		{% else %}
+			<li class="active">{{ layer_title }}</li>
+		{% endif %}
+	{% endfor %}
+</ol>
