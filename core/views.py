@@ -10,9 +10,7 @@ import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from .forms import PaymentForm
-
-EXPIRE_THRESHOLD = 120
-MAX_REWARD = 10
+from .utils.const import RewardsConst
 
 ##############################################################################
 #                                       test                                 #
@@ -31,6 +29,14 @@ def goto_homepage(request):
 def user_registered_callback(sender, user, request, **kwargs):
     profile = UserProfile(user=user)
     profile.save()
+
+    # create new cart
+    cart = Cart(user=user)
+    cart.save()
+
+    # create rewards
+    rewards_batch = RewardsBatch(user=user, value=RewardsConst.INITIAL_REWARDS)
+    rewards_batch.issue()
  
 user_registered.connect(user_registered_callback)
 
@@ -65,9 +71,9 @@ class CartDetailView(DetailView):
         context['layers'] = layers
 
         # get rewards
-        reward_batches = RewardsBatch.objects.filter(user_id=self.request.user.id).filter(issue_date__gte=(context['now']-timedelta(days=EXPIRE_THRESHOLD)))
+        reward_batches = RewardsBatch.objects.filter(user_id=self.request.user.id).filter(issue_date__gte=(context['now']-timedelta(days=RewardsConst.EXPIRE_THRESHOLD)))
         rewards = [reward_batch.value for reward_batch in reward_batches]
-        context['rewards'] = min(sum(rewards), MAX_REWARD)
+        context['rewards'] = min(sum(rewards), RewardsConst.MAX_REWARDS)
 
         return context
 
@@ -107,8 +113,7 @@ def view_purchase_history(request):
 #                                     actions                                #
 ##############################################################################
 
-def assign_rewards(request, cart_id, game_id, reward_value):
-    print(reward_value, game_id, cart_id)
+def assign_rewards_to_game(request, cart_id, game_id, reward_value):
     cg = CartGamePurchase.objects.get(game_id=game_id, cart_id=cart_id)
     cg.rewards = reward_value
     cg.save()

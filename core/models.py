@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
+from decimal import Decimal
+from django.utils import timezone
+from datetime import timedelta
 
 from django.db import models
 from django.contrib.auth.models import User
-
-from decimal import Decimal
+from .utils.const import RewardsConst
 
 class UserProfile(models.Model):
     ORIGIN = 'O'
@@ -57,6 +59,11 @@ class RewardsBatch(models.Model):
     issue_date = models.DateField()
     expiration_date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def issue(self):
+        self.issue_date = timezone.now()
+        self.expiration_date = self.issue_date + timedelta(days=RewardsConst.EXPIRE_THRESHOLD)
+        self.save()
 
 class CartGamePurchase(models.Model):
     cart = models.ForeignKey('Cart')

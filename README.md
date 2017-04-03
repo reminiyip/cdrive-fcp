@@ -8,7 +8,18 @@
 
 #### Usage
 
+###### Python 3.x (Recommended)
+
+`pip3 install django`  
+
+`pip3 install django-registration`  
+`pip3 install Pillow`  
+`python3 manage.py runserver`
+
+###### Python 2.x (Deprecated)
+
 `pip install django-registration`  
+`pip install Pillow`  
 `python manage.py runserver`
 
 #### Structure
