@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from registration.signals import user_registered
 from django.views.generic.detail import DetailView
 from django.utils import timezone
-from datetime import timedelta
 from django.urls import reverse
 from django.http import HttpResponse
+from collections import OrderedDict
+from datetime import timedelta
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from .forms import PaymentForm
@@ -57,10 +58,9 @@ class CartDetailView(DetailView):
         context['now'] = timezone.now()
 
         # form page_header dict
-        layers = {
-        	'Home': reverse('homepage'),
-        	'My Shopping Cart': '#',
-        }
+        layers = OrderedDict()
+        layers['Home'] = reverse('homepage')
+        layers['My Shopping Cart'] = '#'
         context['layers'] = layers
 
         # get rewards

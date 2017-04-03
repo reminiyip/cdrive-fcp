@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.urls import reverse
+from collections import OrderedDict
 
 from .models import Game, Genre, Tag
 from core.models import Cart, CartGamePurchase
@@ -20,7 +21,7 @@ def index(request):
 
 def homepage(request):
     genres = Genre.objects.all()
-    genre_groups = [genres[i:i+2] for i in xrange(0, len(genres), 2)]
+    genre_groups = [genres[i:i+2] for i in range(0, len(genres), 2)]
     layers = {'Home': '#'}
 
     return render(request, 'game/homepage.html', {'genres': genre_groups, 'layers': layers})
@@ -37,10 +38,11 @@ class GenreDetailView(DetailView):
 
         # # get games, group by 2
         games = Game.objects.filter(genre_id=context['genre'].id)
-        context['games'] = [games[i:i+2] for i in xrange(0, len(games), 2)]
+        context['games'] = [games[i:i+2] for i in range(0, len(games), 2)]
 
         # form page_header dict
-        layers = {'Home': reverse('homepage')}
+        layers = OrderedDict()
+        layers['Home'] = reverse('homepage')
         layers[context['genre'].genre_name] = '#'
         context['layers'] = layers
 
@@ -68,7 +70,8 @@ class GameDetailView(DetailView):
         context['tags'] = tags
 
         # form page_header dict
-        layers = {'Home': reverse('homepage')}
+        layers = OrderedDict()
+        layers['Home'] = reverse('homepage')
         layers[context['game'].genre.genre_name] = reverse('genre', args=[context['game'].genre.id])
         layers[context['game'].title] = '#'
         context['layers'] = layers
