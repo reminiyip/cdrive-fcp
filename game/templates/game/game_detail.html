@@ -43,20 +43,21 @@
 					<p>{{ game.full_description }}</p>
 				</div>
 				<div id="tags">
-					<form method="POST" action="tag/add/" class="form-inline">{% csrf_token %} 
-						<div class="form-group">
-							<label for="tag-input">Tags</label>
-							<input type="text" class="form-control" id="tag-input" placeholder="New tag" name="tag_name" />
-						</div>
-						<button type="submit" class="btn btn-default">Submit</button>					
-					</form>
-					<ul id="tag-list">
+					<div id="tag-list">
 						{% for tag in tags %}
 							<button class="btn btn-warning" type="button">
 								{{ tag.tag_name }} <span class="badge">{{ tag.popularity }}</span>
 							</button>
 						{% endfor %}
-					</ul>
+					</div>
+					<div>
+						<form method="POST" action="tag/add/" class="form-inline">{% csrf_token %} 
+							<div class="form-group">
+								<input type="text" class="form-control" id="tag-input" placeholder="New tag" name="tag_name" />
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>					
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
