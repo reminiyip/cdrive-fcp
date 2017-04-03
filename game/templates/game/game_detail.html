@@ -1,19 +1,69 @@
-{% extends 'game/base.html' %} {% block content %}
+{% extends 'game/base.html' %}
+{% load staticfiles %}
 
-<p>{{ object.title }}</p>
-<p>{{ object.genre_id }}</p>
-<p>{{ object.id }}</p>
-<p>{{ user.username }}</p>
+{% block title %}Game - {{ game.title }}{% endblock %}
+{% block children_css %}<link rel="stylesheet" href="{% static 'css/game.css' %}">{% endblock %}
 
-<div id="purchase-game">
-	<a href="{% url 'add_to_cart' object.genre_id object.id %}">Add to Cart</a>
+{% block content %}
+
+<div id="game-page" class="container-fluid">
+	
+	<div id="game-info-header">	
+
+		{% include "includes/breadcrumb.html" with layers=layers %}
+
+		<div class="page-header">
+			<h3>{{ game.title }}</h3>
+			<div id="add-to-cart" >
+				<h3><small>Buy <span class="game-name">{{ game.title }}</span> at <span class="label label-info price">HK$ {{ game.price }}</span></small></h3>
+				{% if game in cart.game.all %}
+					<a class="btn btn-default btn-md disabled" role="button" href="{% url 'add_to_cart' game.genre_id game.id %}">
+				{% else %}
+					<a class="btn btn-default btn-md" role="button" href="{% url 'add_to_cart' game.genre_id game.id %}">
+				{% endif %}
+				Add to Cart
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<div class="col-md-6">
+			<div id="game-info-left">	
+				<div id="game-image">
+					<img src="{{ game.image.url }}" class="img-thumbnail img-responsive center-block game-image" />
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div id="game-info-right">
+				<div class="well">
+					<p>{{ game.full_description }}</p>
+				</div>
+				<div id="tags">
+					<div id="tag-list">
+						{% for tag in tags %}
+							<button class="btn btn-warning" type="button">
+								{{ tag.tag_name }} <span class="badge">{{ tag.popularity }}</span>
+							</button>
+						{% endfor %}
+					</div>
+					<div>
+						<form method="POST" action="tag/add/" class="form-inline">{% csrf_token %} 
+							<div class="form-group">
+								<input type="text" class="form-control" id="tag-input" placeholder="New tag" name="tag_name" />
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>					
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
 </div>
-
-<form action="/tag/add/" method="post">
-    {% csrf_token %} New Tag Name:
-    <input type="text" name="tag name" value="">
-
-    <input type="submit" value="Submit Tag" />
-</form>
 
 {% endblock %}

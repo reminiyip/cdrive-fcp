@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Payment{% endblock %}
+{% block children_css %}<link rel="stylesheet" href="{% static 'css/payment.css' %}">{% endblock %}
+{% block children_js %}<script src="{% static 'js/payment.js' %}"></script>{% endblock %}
+
+{% block content %}
+
+<div id="payment-page" class="container-fluid">
+	
+	<form method="post" action="{% url 'payment' cart.id %}" success-url="{% url 'homepage' %}" error-url="{% url 'cart' cart.id %}">{% csrf_token %}
+
+		{{ form.as_p }}
+
+	    <div>
+	        <input type="submit" value="pay" />
+	    </div>
+
+	</form>
+
+	<div id="payment-success">
+		<p>Thank you for your payment!</p>
+	</div>
+
+	<div id="payment-error">
+		<p class="message"></p>
+	</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+/* header */
+
+#cart-info-header .page-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* cart-info */
+
+#cart-info img {
+	max-width: 400px;
+	max-height: 200px
+}
+
+#cart-info .panel-body {
+	display: flex;
+	flex-direction: row;
+	padding: 20px 30px;
+}
+
+#cart-info .game-info {
+	width: 100%;
+	text-align: right;
+	align-self: flex-end;
+	padding: 0 20px;
+}
+
+#cart-info .select-reward {
+	width: auto;
+	margin: 15px 0 10px;
+}
+
+#cart-info .subtotal-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+#cart-info span.price {
+}
+
+#cart-info h3 {
+	margin: 20px 10px 10px;
+}
+
+/* total-price */
+
+#total-price {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	padding: 50px;
+}
+
+#total-price .btn {
+	margin: 10px 0;
+}
+
+#total-price span.price {
+	font-size: 1.1em;
+}
+
+#total-price h3 {
+	margin: 10px 0;
+}

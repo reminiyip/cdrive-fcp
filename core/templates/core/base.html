@@ -1,12 +1,20 @@
+{% extends 'base.html' %}
 {% load staticfiles %}
 
-<html>
-	<head>
-		<title>FCP</title>
-		<link rel="stylesheet" href="{% static 'css/core.css' %}">
-	</head>
-	<body>
-		{% block content %}
-		{% endblock %}
-	</body>
-</html>
+{% block css %}
+
+	<link rel="stylesheet" href="{% static 'css/core_common.css' %}">
+
+	{% block children_css %}
+	{% endblock %}
+
+	{% endblock %}
+
+{% block js %}
+
+	<script src="{% static 'js/core_common.js' %}"></script>
+
+	{% block children_js %}
+	{% endblock %}
+
+{% endblock %}

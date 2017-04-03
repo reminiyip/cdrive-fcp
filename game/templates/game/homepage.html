@@ -1,0 +1,45 @@
+{% extends 'game/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Homepage{% endblock %}
+{% block children_css %}<link rel="stylesheet" href="{% static 'css/homepage.css' %}">{% endblock %}
+
+{% block content %}
+
+<div id="homepage" class="container-fluid">
+	
+	<div id="genre-info-header">	
+
+		{% include "includes/breadcrumb.html" with layers=layers %}
+
+		<div class="page-header">
+			<h3>Homepage</h3>
+		</div>
+	</div>
+
+	{% for genre_group in genres %}
+		<div class="row">
+
+			{% for genre in genre_group %}
+
+				<div class="col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<h3 class="panel-title"><a href="{% url 'genre' genre.id %}">{{ genre.genre_name }}</a></h3>
+						</div>
+<!-- 						<div class="panel-body">
+							<div id="genre-image">
+								<img src="{{ genre.image.url }}" class="img-thumbnail img-responsive center-block genre-image" />
+							</div>
+						</div> -->
+					</div>
+				</div>
+
+			{% endfor %}
+
+		</div>
+	{% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Cart{% endblock %}
+{% block children_css %}<link rel="stylesheet" href="{% static 'css/cart.css' %}">{% endblock %}
+{% block children_js %}<script src="{% static 'js/cart.js' %}"></script>{% endblock %}
+
+{% block content %}
+
+<div id="cart-page" class="container-fluid">
+	
+	<div id="cart-info-header">	
+
+		{% include "includes/breadcrumb.html" with layers=layers %}
+
+		<div class="page-header">
+			<h3>My Shopping Cart</h3>
+		</div>
+	</div>
+
+	<div id="cart-info">	
+		{% for game in cart.game.all %}
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title"><a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a></h3>
+				</div>
+				<div class="panel-body">
+					<div class="game-image">
+						<img src="{{ game.image.url }}" class="img-thumbnail img-responsive game-image" />
+					</div>
+					<div class="game-info">
+						<h5 class="text-left">{{ game.one_line_description }}</h5>
+						<h3>Price: <span class="label label-default price">HK$ {{ game.price }}</span></h3>
+						<h3>Discount: <span class="label label-default price" id="discount-value-{{ game.id }}">HK$ {{ game.price }}</span></h3>
+						<div class="divider"></div>
+						<div class="subtotal-row">
+							<h3>Rewards:</h3>
+							<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});">
+								<option>0</option>
+								{% with ""|center:rewards as range %}
+									{% for _ in range %}
+										<option>{{ forloop.counter }}</option>
+									{% endfor %}
+								{% endwith %}
+							</select>
+							<h3>Subtotal: <span class="label label-info price" id="subtotal-value-{{ game.id }}">HK$ {{ game.price }}</span></h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
+	<div id="total-price">
+		<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total }}</span></h3>
+		<a class="btn btn-default btn-md" role="button" href="{% url 'payment' cart.id %}">Proceed to Pay</a>
+	</div>
+
+</div>
+
+{% endblock %}

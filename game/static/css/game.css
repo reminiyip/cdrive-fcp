@@ -1,3 +1,47 @@
-p {
-	color: red;
+#game-info-header .page-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#game-info-right {
+
+}
+
+
+#add-to-cart {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#add-to-cart .btn {
+	margin: 0 10px;
+}
+
+#add-to-cart span.price {
+	font-size: 1.1em;
+}
+
+#add-to-cart span.game-name {
+	color: #FF9800;
+}
+
+#add-to-cart h3 {
+	margin: 0;
+}
+
+#tags {
+
+}
+
+#tags div {
+	display: inline-block;
+	margin: 3px 0;
+}
+
+#tags div button {
+	margin: 3px 0;
 }
