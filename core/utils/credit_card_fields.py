@@ -61,8 +61,8 @@ class ExpiryDateField(forms.MultiValueField):
         if 'initial' not in kwargs:
             # Set default expiry date based on current month and year
             kwargs['initial'] = today
-        months = [(x, '%02d (%s)' % (x, date(2000, x, 1).strftime(MONTH_FORMAT))) for x in xrange(1, 13)]
-        years = [(x, x) for x in xrange(today.year, today.year + 15)]
+        months = [(x, '%02d (%s)' % (x, date(2000, x, 1).strftime(MONTH_FORMAT))) for x in range(1, 13)]
+        years = [(x, x) for x in range(today.year, today.year + 15)]
         fields = (
             forms.ChoiceField(choices=months, error_messages={'invalid': error_messages['invalid_month']}),
             forms.ChoiceField(choices=years, error_messages={'invalid': error_messages['invalid_year']}),
