@@ -24,6 +24,24 @@ def view_homepage(request):
 def view_genre(request, genre_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'action': 'view_genre'}})
 
+class GenreDetailView(DetailView):
+    model = Genre
+
+    def get_context_data(self, **kwargs):
+        context = super(GenreDetailView, self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+
+        # # get games, group by 2
+        games = Game.objects.filter(genre_id=context['genre'].id)
+        context['games'] = [games[i:i+2] for i in xrange(0, len(games), 2)]
+
+        # form page_header dict
+        layers = {'Home': reverse('homepage')}
+        layers[context['genre'].genre_name] = '#'
+        context['layers'] = layers
+
+        return context
+
 def view_tagged_games(request, tag_name):
     return render(request, 'game/index.html', {'data': {'tag_name': tag_name, 'action': 'view_tagged_games'}})
 
