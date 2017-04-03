@@ -17,7 +17,7 @@ class UserProfile(models.Model):
         (GITHUB, 'GitHub'),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     on_screen_name = models.CharField(max_length=200)
     avatar_image = models.ImageField(upload_to='avatars')
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
