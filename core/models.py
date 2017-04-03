@@ -26,6 +26,9 @@ class UserProfile(models.Model):
  
     def __unicode__(self):
         return self.user.username
+    
+    def spending_required(self):
+        return 100 - self.accumulated_spending
 
 class CardPayment(models.Model):
     card_number = models.CharField(max_length=20)
