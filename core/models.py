@@ -6,16 +6,20 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    ORIGIN = 'O'
+    FB = 'FB'
+    GITHUB = 'GH'
     ACCOUNT_SOURCE_CHOICES = (
-        ('O', 'Origin'),
-        ('FB', 'FaceBook'),
-        ('GH', 'GitHub'),
+        (ORIGIN, 'Origin'),
+        (FB, 'FaceBook'),
+        (GITHUB, 'GitHub'),
     )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     on_screen_name = models.CharField(max_length=200)
     avatar_image = models.ImageField(upload_to='avatars')
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
-    account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default='O')
+    account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default=ORIGIN)
     token = models.CharField(max_length=200)
  
     def __unicode__(self):
@@ -23,18 +27,23 @@ class UserProfile(models.Model):
 
 class CardPayment(models.Model):
     card_number = models.CharField(max_length=20)
+    name_on_card = models.CharField(max_length=50)
     expiration_date = models.DateField()
     security_code = models.PositiveSmallIntegerField()
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0.00))
     paid_date = models.DateField()
 
 class Cart(models.Model):
+    NOT_PAID = 'N'
+    PROCESSING = 'PR'
+    PAID = 'P'
     CART_STATUS_CHOICES = (
-        ('N', 'NotPaid'),
-        ('PR', 'Processing/Pending'),
-        ('P', 'Paid'),
+        (NOT_PAID, 'NotPaid'),
+        (PROCESSING, 'Processing/Pending'),
+        (PAID, 'Paid'),
     )
-    status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default='N')
+
+    status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default=NOT_PAID)
     game = models.ManyToManyField('game.Game', blank=True, through='CartGamePurchase')
     payment = models.OneToOneField('CardPayment', on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

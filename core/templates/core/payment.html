@@ -9,7 +9,7 @@
 
 <div id="payment-page" class="container-fluid">
 	
-	<form method="post" action="{% url 'payment' cart.id %}">{% csrf_token %}
+	<form method="post" action="{% url 'payment' cart.id %}" success-url="{% url 'homepage' %}" error-url="{% url 'cart' cart.id %}">{% csrf_token %}
 
 		{{ form.as_p }}
 
@@ -21,6 +21,10 @@
 
 	<div id="payment-success">
 		<p>Thank you for your payment!</p>
+	</div>
+
+	<div id="payment-error">
+		<p class="message"></p>
 	</div>
 
 </div>

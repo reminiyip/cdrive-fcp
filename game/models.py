@@ -24,6 +24,9 @@ class Game(models.Model):
     def add_to_genre(self, genre_id):
         return
 
+    def is_purchased(self):
+        return
+
 class Review(models.Model):
     review_header = models.CharField(max_length=50)
     review_content = models.TextField()
@@ -41,9 +44,12 @@ class Tag(models.Model):
         self.save()
 
 class Platform(models.Model):
+    WINDOWS = 'W'
+    MAC = 'M'
+    LINUX = 'L'
     PLATFORM_CHOICES = (
-        ('W', 'Windows'),
-        ('M', 'MacOS'),
-        ('L', 'Linux'),
+        (WINDOWS, 'Windows'),
+        (MAC, 'MacOS'),
+        (LINUX, 'Linux'),
     )
-    platform_name = models.CharField(max_length=2, choices=PLATFORM_CHOICES, primary_key=True, default='W') 
+    platform_name = models.CharField(max_length=2, choices=PLATFORM_CHOICES, primary_key=True, default=WINDOWS) 

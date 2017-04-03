@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.http import HttpResponse
 from collections import OrderedDict
 from datetime import timedelta
+import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from .forms import PaymentForm
@@ -82,7 +83,14 @@ def payment(request, cart_id):
             payment.paid_date = timezone.now()
             payment.save()
 
-        return HttpResponse('OK')
+            cart.card_payment = payment
+            cart.status = Cart.PAID
+            cart.save()
+
+            return HttpResponse('OK')
+
+        else:
+            return HttpResponse(json.dumps(form.errors))
 
     else:
         form = PaymentForm()
