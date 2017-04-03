@@ -30,7 +30,7 @@
 	<div class="row">
 
 		<div class="col-md-6">
-			<div id="game-info">	
+			<div id="game-info-left">	
 				<div id="game-image">
 					<img src="{{ game.image.url }}" class="img-thumbnail img-responsive center-block" />
 				</div>
@@ -38,21 +38,29 @@
 		</div>
 
 		<div class="col-md-6">
-			<div id="tags">
-				<form method="POST" action="tag/add/">{% csrf_token %} 
-					New Tag Name:
-					<input id="" type="text" name="tag_name" value="">
-					<input id="submit-tag-btn" type="submit" value="Submit Tag" />
-				</form>
-				<ul id="tag-list">
-					{% for tag in tags %}
-						<li>{{ tag.tag_name }} {{ tag.popularity }}</li>
-					{% endfor %}
-				</ul>
+			<div id="game-info-right">
+				<div class="well">
+					<p>{{ game.full_description }}</p>
+				</div>
+				<div id="tags">
+					<form method="POST" action="tag/add/" class="form-inline">{% csrf_token %} 
+						<div class="form-group">
+							<label for="tag-input">Tags</label>
+							<input type="text" class="form-control" id="tag-input" placeholder="Tag name" name="tag_name" />
+						</div>
+						<button type="submit" class="btn btn-default">Submit</button>					
+					</form>
+					<ul id="tag-list">
+						{% for tag in tags %}
+							<li>{{ tag.tag_name }} {{ tag.popularity }}</li>
+						{% endfor %}
+					</ul>
+				</div>
 			</div>
 		</div>
 
 	</div>
+	
 </div>
 
 {% endblock %}
