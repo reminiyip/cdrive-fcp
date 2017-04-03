@@ -10,7 +10,7 @@ import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from .forms import PaymentForm
-from .utils.const import RewardsConst
+from .utils.const import RewardsConst, UserConst
 
 ##############################################################################
 #                                       test                                 #
