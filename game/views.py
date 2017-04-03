@@ -18,8 +18,12 @@ def index(request):
 #                                    browse games                            #
 ##############################################################################
 
-def view_homepage(request):
-    return render(request, 'game/index.html', {'data': {'action': 'view_homepage'}})
+def homepage(request):
+    genres = Genre.objects.all()
+    genre_groups = [genres[i:i+2] for i in xrange(0, len(genres), 2)]
+    layers = {'Home': '#'}
+
+    return render(request, 'game/homepage.html', {'genres': genre_groups, 'layers': layers})
 
 def view_genre(request, genre_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'action': 'view_genre'}})

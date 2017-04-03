@@ -4,7 +4,7 @@ from . import views
 from .views import GameDetailView, GenreDetailView
 
 browse_game_urls = [
-    url(r'^homepage/', views.view_homepage, name='homepage'),
+    url(r'^homepage/', views.homepage, name='homepage'),
     url(r'^genre/(?P<pk>\d+)/$', GenreDetailView.as_view(), name='genre'),
     url(r'^genre/(?P<genre_id>\d+)/game/(?P<pk>\d+)/$', GameDetailView.as_view(), name='game'),
     url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/add_to_cart/$', views.add_to_cart, name='add_to_cart'), 
