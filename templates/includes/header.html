@@ -19,6 +19,10 @@
 			</form>
 			{% if user.is_authenticated %}
 				{% include "includes/header_profile.html" %}
+			{% else %}
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="{% url 'login' %}">Log In</a></li>
+				</ul>
 			{% endif %}
 		</div>
 	</div>
