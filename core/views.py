@@ -9,9 +9,10 @@ from datetime import timedelta
 import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
-from .forms import PaymentForm
+from .forms import PaymentForm, UserProfileForm
 from .utils.const import RewardsConst, UserConst
 
+from django.contrib import messages
 ##############################################################################
 #                                       test                                 #
 ##############################################################################
@@ -42,10 +43,23 @@ user_registered.connect(user_registered_callback)
 ##############################################################################
 
 def view_profile(request):
-    return render(request, 'core/index.html', {'data': {'action': 'view_profile'}})
+    return render(request, 'core/profile.html', {'data': {'action': 'view_profile'}})
 
 def edit_profile(request):
-    return render(request, 'core/index.html', {'data': {'action': 'edit_profile'}})
+    if request.method == 'POST':
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the error below.')
+
+    else:
+        profile_form = UserProfileForm(instance=request.user.profile)
+    return render(request, 'core/edit_profile.html', {
+        'profile_form': profile_form
+    })
 
 ##############################################################################
 #                                       cart                                 #
@@ -116,7 +130,3 @@ def assign_rewards_to_game(request, cart_id, game_id, reward_value):
     cg.save()
 
     return HttpResponse(reward_value)
-
-
-
-
