@@ -1,0 +1,17 @@
+<form method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+
+	<p>
+		<td>{{ profile_form.on_screen_name.label_tag }}</td>
+		<td>{{ profile_form.on_screen_name }}</td>
+	</p>
+	<p>
+		<td><img src="{{ request.user.profile.avatar_image.url }}" height="200" width="200"/></td>
+	</p>
+	<p>
+		<td>{{ profile_form.avatar_image.label_tag }}</td>
+		<td>{{ profile_form.avatar_image }}</td>
+	</p>
+
+	<button type="submit">Save changes</button>
+</form>
