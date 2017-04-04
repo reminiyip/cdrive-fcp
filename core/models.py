@@ -18,13 +18,13 @@ class UserProfile(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    on_screen_name = models.CharField(max_length=200)
-    avatar_image = models.ImageField(upload_to='avatars')
+    on_screen_name = models.CharField(max_length=200, default="anon")
+    avatar_image = models.ImageField(upload_to='avatars', default='avatars/default-img.jpg')
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
     account_source = models.CharField(max_length=2, choices=ACCOUNT_SOURCE_CHOICES, default=ORIGIN)
     token = models.CharField(max_length=200)
- 
-    def __unicode__(self):
+    
+    def __str__(self):
         return self.user.username
     
     def spending_required(self):
@@ -72,4 +72,3 @@ class CartGamePurchase(models.Model):
     cart = models.ForeignKey('Cart')
     game = models.ForeignKey('game.Game')
     rewards = models.PositiveSmallIntegerField(default=0)
-
