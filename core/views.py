@@ -9,7 +9,7 @@ from datetime import timedelta
 import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
-from .forms import PaymentForm, UserProfileForm
+from .forms import PaymentForm, UserProfileForm, UserEmailForm
 from .utils.const import RewardsConst, UserConst
 
 from django.contrib import messages
@@ -47,8 +47,10 @@ def view_profile(request):
 
 def edit_profile(request):
     if request.method == 'POST':
+        user_email_form = UserEmailForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if profile_form.is_valid():
+        if user_email_form.is_valid() and profile_form.is_valid():
+            user_email_form.save()
             profile_form.save()
             messages.success(request, 'Your profile was successfully updated!')
             return redirect('profile')
@@ -56,8 +58,10 @@ def edit_profile(request):
             messages.error(request, 'Please correct the error below.')
 
     else:
+        user_email_form = UserEmailForm(instance=request.user)
         profile_form = UserProfileForm(instance=request.user.profile)
     return render(request, 'core/edit_profile.html', {
+        'user_email_form': user_email_form,
         'profile_form': profile_form
     })
 
