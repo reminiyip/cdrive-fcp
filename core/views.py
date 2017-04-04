@@ -9,9 +9,10 @@ from datetime import timedelta
 import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
-from .forms import PaymentForm
-from .utils.const import RewardsConst
+from .forms import PaymentForm, UserProfileForm, UserEmailForm
+from .utils.const import RewardsConst, UserConst
 
+from django.contrib import messages
 ##############################################################################
 #                                       test                                 #
 ##############################################################################
@@ -27,16 +28,13 @@ def goto_homepage(request):
 ##############################################################################
  
 def user_registered_callback(sender, user, request, **kwargs):
-    profile = UserProfile(user=user)
+    profile = UserProfile(user=user, accumulated_spending=UserConst.INITIAL_ACC_SPENDING)
     profile.save()
 
     # create new cart
     cart = Cart(user=user)
     cart.save()
 
-    # create rewards
-    rewards_batch = RewardsBatch(user=user, value=RewardsConst.INITIAL_REWARDS)
-    rewards_batch.issue()
  
 user_registered.connect(user_registered_callback)
 
@@ -45,10 +43,27 @@ user_registered.connect(user_registered_callback)
 ##############################################################################
 
 def view_profile(request):
-    return render(request, 'core/index.html', {'data': {'action': 'view_profile'}})
+    return render(request, 'core/profile.html', {'data': {'action': 'view_profile'}})
 
 def edit_profile(request):
-    return render(request, 'core/index.html', {'data': {'action': 'edit_profile'}})
+    if request.method == 'POST':
+        user_email_form = UserEmailForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_email_form.is_valid() and profile_form.is_valid():
+            user_email_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the error below.')
+
+    else:
+        user_email_form = UserEmailForm(instance=request.user)
+        profile_form = UserProfileForm(instance=request.user.profile)
+    return render(request, 'core/edit_profile.html', {
+        'user_email_form': user_email_form,
+        'profile_form': profile_form
+    })
 
 ##############################################################################
 #                                       cart                                 #
@@ -119,7 +134,3 @@ def assign_rewards_to_game(request, cart_id, game_id, reward_value):
     cg.save()
 
     return HttpResponse(reward_value)
-
-
-
-

@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{ user_email_form.as_p }}
+	<p>
+		<td>{{ profile_form.on_screen_name.label_tag }}</td>
+		<td>{{ profile_form.on_screen_name }}</td>
+	</p>
+	<p>
+		<td><img src="{{ request.user.profile.avatar_image.url }}" height="200" width="200"/></td>
+	</p>
+	<p>
+		<td>{{ profile_form.avatar_image.label_tag }}</td>
+		<td>{{ profile_form.avatar_image }}</td>
+	</p>
+
+	<button type="submit">Save changes</button>
+</form>
+<p><a href="{% url 'profile' %}">Back</a></p>
+
+{% endblock %}
