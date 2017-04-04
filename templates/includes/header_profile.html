@@ -1,5 +1,15 @@
 <ul class="nav navbar-nav navbar-right">
-	<li><a href="{% url 'profile' %}">{{ user.username }}</a></li>
+	<li>
+		<a href="{% url 'profile' %}">
+			Til Next Reward: $
+			{% if request.user.profile.accumulated_spending %}
+				{{ request.user.profile.spending_required }} 
+			{% else %}
+				--- 
+			{% endif %}
+			| {{ user.username }}
+		</a>
+	</li>
 	{% if cart %}
 		<li class="dropdown">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cart: {{ cart.game.all.count }}<span class="caret"></span></a>

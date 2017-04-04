@@ -10,7 +10,7 @@ import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from .forms import PaymentForm
-from .utils.const import RewardsConst
+from .utils.const import RewardsConst, UserConst
 
 ##############################################################################
 #                                       test                                 #
@@ -27,16 +27,13 @@ def goto_homepage(request):
 ##############################################################################
  
 def user_registered_callback(sender, user, request, **kwargs):
-    profile = UserProfile(user=user)
+    profile = UserProfile(user=user, accumulated_spending=UserConst.INITIAL_ACC_SPENDING)
     profile.save()
 
     # create new cart
     cart = Cart(user=user)
     cart.save()
 
-    # create rewards
-    rewards_batch = RewardsBatch(user=user, value=RewardsConst.INITIAL_REWARDS)
-    rewards_batch.issue()
  
 user_registered.connect(user_registered_callback)
 
