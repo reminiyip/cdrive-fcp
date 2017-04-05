@@ -1,4 +1,0 @@
-Activation key: {{ activation_key }}
-Expiration days: {{ expiration_days }}
-User: {{ user }}
-Url: http://{{ site }}{% url 'registration_activate' activation_key %} 

@@ -15,5 +15,15 @@ img.game-image {
 }
 
 .navbar-default {
-	background-color: white;
+	background-color: rgb(0,169,230);
+	height: 80px;
+	
 }
+
+/*For Firefox*/
+.navbar-default:after {
+	background-color: rgb(0,169,230);
+	height: 80px;
+	
+}
+
