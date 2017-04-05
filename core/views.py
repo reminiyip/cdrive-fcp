@@ -11,7 +11,7 @@ import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from .forms import PaymentForm, RegisterForm, UserProfileForm, UserEmailForm
-from .utils.const import UserConst
+from .utils.const import RewardsConst, UserConst
 
 from django.contrib import messages
 ##############################################################################
