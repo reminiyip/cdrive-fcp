@@ -7,8 +7,9 @@ from . import views
 from .views import CartDetailView
 
 account_urls = [
+	url(r'^register/$', views.register, name='register'),
     url(r'^', include('django.contrib.auth.urls')),
-    url(r'^', include('registration.backends.simple.urls')),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
 ]
 
 profile_urls = [
