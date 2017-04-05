@@ -20,3 +20,10 @@ img.game-image {
 	
 }
 
+/*For Firefox*/
+.navbar-default:after {
+	background-color: rgb(0,169,230);
+	height: 80px;
+	
+}
+
