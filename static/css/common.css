@@ -14,16 +14,52 @@ img.game-image {
 	border-bottom: 1px solid #c0c0c0;
 }
 
+/* Header */ 
 .navbar-default {
+	background-color: rgb(0,169,230);
+	height: 75px;
+	
+}
+
+.navbar-default:after { /* For Firefox */
 	background-color: rgb(0,169,230);
 	height: 80px;
 	
 }
 
-/*For Firefox*/
-.navbar-default:after {
-	background-color: rgb(0,169,230);
-	height: 80px;
-	
+/* Search Bar */
+.navbar-form.navbar-left{
+	margin-right: 200px;
+	margin-top:30px;
+
 }
+
+.form-control{	/*input field*/
+  height: 30px;
+  font-size: 11px;
+  /*rounded corners*/
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+}
+
+.btn-default{	/*submit button*/
+	height: 30px;
+	font-size: 11px;
+
+	-webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+}
+
+/*right navbar*/ 
+.nav.navbar-nav.navbar-right{
+	margin-top: -6px;
+}
+.nav.navbar-nav.navbar-right li a{
+	 color: white;
+}
+
+
+
 
