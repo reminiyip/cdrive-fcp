@@ -51,7 +51,7 @@
 						{% endfor %}
 					</div>
 					<div>
-						<form method="POST" action="tag/add/" class="form-inline">{% csrf_token %} 
+						<form method="POST" action="{% url 'add_tag' game.genre.id game.id %}" class="form-inline">{% csrf_token %} 
 							<div class="form-group">
 								<input type="text" class="form-control" id="tag-input" placeholder="New tag" name="tag_name" />
 							</div>
