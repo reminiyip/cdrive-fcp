@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import CardPayment, UserProfile, User
 from .utils.credit_card_fields import CreditCardField, ExpiryDateField, VerificationValueField
@@ -12,6 +13,11 @@ class PaymentForm(forms.ModelForm):
 	class Meta:
 		model = CardPayment
 		fields = ('name_on_card', 'card_number', 'expiration_date', 'security_code', )
+
+class RegisterForm(UserCreationForm):
+	class Meta:
+		model = User
+		fields = ('username', 'email', 'password1', 'password2',)
 
 class UserEmailForm(forms.ModelForm):
 	class Meta:

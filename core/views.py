@@ -1,5 +1,6 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from registration.signals import user_registered
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.urls import reverse
@@ -9,8 +10,8 @@ from datetime import timedelta
 import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
-from .forms import PaymentForm, UserProfileForm, UserEmailForm
-from .utils.const import RewardsConst, UserConst
+from .forms import PaymentForm, RegisterForm, UserProfileForm, UserEmailForm
+from .utils.const import UserConst
 
 from django.contrib import messages
 ##############################################################################
@@ -26,17 +27,24 @@ def goto_homepage(request):
 ##############################################################################
 #                                      account                               #
 ##############################################################################
- 
-def user_registered_callback(sender, user, request, **kwargs):
-    profile = UserProfile(user=user, accumulated_spending=UserConst.INITIAL_ACC_SPENDING)
-    profile.save()
 
-    # create new cart
-    cart = Cart(user=user)
-    cart.save()
+def register(request):
+    if request.user.is_authenticated():
+        return redirect('homepage')
 
- 
-user_registered.connect(user_registered_callback)
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('homepage')
+    else:
+        form = RegisterForm()
+    return render(request, 'registration/register.html', {'form': form})
+
 
 ##############################################################################
 #                                     profile                                #

@@ -6,6 +6,7 @@
 - [Django Girls Tutorial](https://tutorial.djangogirls.org/en/)
 - [Login Tutorial](https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html)
 - [Password Reset](https://simpleisbetterthancomplex.com/tutorial/2016/09/19/how-to-create-password-reset-view.html)
+- [Social Authentication](https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html)
 
 #### Usage
 
@@ -13,14 +14,14 @@
 
 `pip3 install django`  
 
-`pip3 install django-registration`  
 `pip3 install Pillow`  
+`pip3 install social-auth-app-django`
 `python3 manage.py runserver`
 
 ###### Python 2.x (Deprecated)
 
-`pip install django-registration`  
 `pip install Pillow`  
+`pip install social-auth-app-django`
 `python manage.py runserver`
 
 #### Structure
