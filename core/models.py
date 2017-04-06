@@ -24,7 +24,7 @@ class UserProfile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile_and_cart(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance, accumulated_spending=UserConst.INITIAL_ACC_SPENDING)
+        UserProfile.objects.create(user=instance, accumulated_spending=UserConst.INITIAL_ACC_SPENDING, on_screen_name=instance.username)
         Cart.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
