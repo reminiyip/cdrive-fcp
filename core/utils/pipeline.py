@@ -7,8 +7,6 @@ def get_avatar(backend, user, response, *args, **kwargs):
         url = "http://graph.facebook.com/%s/picture?type=large"%response['id']
     elif backend.name == 'github':
         url = response['avatar_url']
-    else:
-        return
 
     if url:
         temp = ContentFile(requests.get(url).content)
