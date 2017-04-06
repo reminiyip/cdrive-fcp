@@ -1,18 +1,19 @@
 from __future__ import unicode_literals
-from decimal import Decimal
 from django.utils import timezone
-from datetime import timedelta
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from decimal import Decimal
+from datetime import timedelta
+
 from .utils.const import UserConst
+from .utils import utils
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     on_screen_name = models.CharField(max_length=200, default='anon')
-    avatar_image = models.ImageField(upload_to='avatars', default='avatars/default-img.jpg')
+    avatar_image = models.ImageField(upload_to=utils.get_avatar_image_path, default='avatars/default-img.jpg')
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
     
     def __str__(self):
@@ -24,7 +25,7 @@ class UserProfile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile_and_cart(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance, accumulated_spending=UserConst.INITIAL_ACC_SPENDING)
+        UserProfile.objects.create(user=instance, accumulated_spending=UserConst.INITIAL_ACC_SPENDING, on_screen_name=instance.username)
         Cart.objects.create(user=instance)
 
 @receiver(post_save, sender=User)

@@ -9,7 +9,7 @@ from .views import CartDetailView
 
 account_urls = [
 	url(r'^register/$', views.register, name='register'),
-	url(r'^login/$', auth_views.login, {'redirect_authenticated_user':True,}, name='login'),
+	url(r'^login/$', auth_views.login, {'redirect_authenticated_user': True,}, name='login'),
 	url(r'^logout/$', auth_views.logout, {'next_page': 'login'}, name='logout'),
 	url(r'^password_change/$', auth_views.password_change, name='password_change'),
 	url(r'^password_change/done/$', auth_views.password_change_done, name='password_change_done'),
