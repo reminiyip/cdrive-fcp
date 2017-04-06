@@ -5,7 +5,6 @@ from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.urls import reverse
 from django.http import HttpResponse
-from django.contrib import messages
 from collections import OrderedDict
 from datetime import timedelta
 import json
@@ -14,6 +13,7 @@ from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from .forms import PaymentForm, RegisterForm, UserProfileForm, UserEmailForm
 from .utils.const import RewardsConst, UserConst
 
+from django.contrib import messages
 ##############################################################################
 #                                       test                                 #
 ##############################################################################
@@ -68,7 +68,6 @@ def edit_profile(request):
     else:
         user_email_form = UserEmailForm(instance=request.user)
         profile_form = UserProfileForm(instance=request.user.profile)
-
     return render(request, 'core/edit_profile.html', {
         'user_email_form': user_email_form,
         'profile_form': profile_form
