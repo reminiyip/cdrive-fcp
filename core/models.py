@@ -32,8 +32,12 @@ class UserProfile(models.Model):
         games = Game.objects.filter(pk__in=set(games_id))
         return games
 
-    def get_purchase_history(self):
-        history = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID)
+    def get_purchase_history(self, ordered=True):
+        if ordered:
+            history = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID).order_by('-cart__payment__paid_date')
+        else:
+            history = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID)
+
         return history
 
 @receiver(post_save, sender=User)
@@ -88,3 +92,14 @@ class CartGamePurchase(models.Model):
     cart = models.ForeignKey('Cart')
     game = models.ForeignKey('game.Game')
     rewards = models.PositiveSmallIntegerField(default=0)
+
+    def __str__(self):
+        if self.cart.status == Cart.PAID:
+            return "{} purchased on {}".format(self.game.title, self.cart.payment.paid_date)
+        else:
+            return "{} in cart".format(self.game.title)
+
+
+
+
+

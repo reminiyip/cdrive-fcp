@@ -114,7 +114,7 @@ def payment(request, cart_id):
             payment.save()
 
             # cart paid
-            cart.card_payment = payment
+            cart.payment = payment
             cart.status = Cart.PAID
             cart.save()
 
@@ -136,13 +136,12 @@ def payment(request, cart_id):
 
 def purchase_history(request):
     records = request.user.profile.get_purchase_history()
-    record_groups = [records[i:i+2] for i in range(0, len(records), 2)]
     
     layers = OrderedDict()
     layers['Home'] = reverse('homepage')
     layers['Purchase History'] = '#'
 
-    return render(request, 'core/purchase_history.html', {'records': record_groups, 'layers': layers})
+    return render(request, 'core/purchase_history.html', {'records': records, 'layers': layers})
 
 
 ##############################################################################

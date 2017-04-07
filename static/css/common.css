@@ -53,3 +53,48 @@ img.game-image {
 	margin-left: 5px;
 }
 
+/* Cart game panel */
+
+.cart-game-panel .game-image img {
+	max-width: 400px;
+	max-height: 200px
+}
+
+.cart-game-panel .panel-heading {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.cart-game-panel .panel-body {
+	display: flex;
+	flex-direction: row;
+	padding: 20px 30px;
+}
+
+.cart-game-panel .game-info {
+	width: 100%;
+	text-align: right;
+	align-self: flex-end;
+	padding: 0 20px;
+}
+
+.cart-game-panel .select-reward {
+	width: auto;
+	margin: 15px 0 10px;
+}
+
+.cart-game-panel .subtotal-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.cart-game-panel span.price {
+}
+
+.cart-game-panel .panel-body h3 {
+	margin: 20px 10px 10px;
+}

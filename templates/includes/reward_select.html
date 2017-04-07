@@ -1,0 +1,9 @@
+<h3>Rewards:</h3>
+<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});" value="{{ rewards }}">
+	<option>0</option>
+	{% with ""|center:rewards as range %}
+		{% for _ in range %}
+			<option>{{ forloop.counter }}</option>
+		{% endfor %}
+	{% endwith %}
+</select>
