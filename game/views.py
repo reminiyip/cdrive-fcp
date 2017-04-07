@@ -61,10 +61,6 @@ class GameDetailView(DetailView):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
 
-        # get user active cart
-        cart = self.request.user.profile.get_active_cart()
-        context['cart'] = cart
-        
         # get game tags
         tags = context['game'].get_sorted_tags()
         context['tags'] = tags
