@@ -1,25 +1,6 @@
-<ul class="nav navbar-nav navbar-right">
+<ul class="nav navbar-nav navbar-right" id="info-bar">
 
-	<li class="dropdown">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-			Til Next Reward: $
-			{% if request.user.profile.accumulated_spending %}
-				{{ request.user.profile.spending_required }} 
-			{% else %}
-				100 
-			{% endif %}
-			| <img src="{{ request.user.profile.avatar_image.url }}" height="25" width="25"/><span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li><a href="#" class="no-cursor-link">Signed in as <b>{{ user.username }}</b></a></li>
-			<li><a href="#" class="no-cursor-link">On screen name is <b>{{ request.user.profile.on_screen_name }}</b></a></li>
-			<li role="separator" class="divider"></li>
-			<li><a href="{% url 'profile' %}">View Profile</a></li>
-			<li><a href="{% url 'logout' %}">Log Out</a></li>
-		</ul>
-	</li>
-
-	{% if cart %}
+	{% with cart=user.profile.get_active_cart %}
 		<li class="dropdown">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cart: {{ cart.game.all.count }}<span class="caret"></span></a>
 			<ul class="dropdown-menu">
@@ -32,5 +13,24 @@
 				<li><a href="{% url 'cart' cart.id %}">Pay $$</a></li>
 			</ul>
 		</li>
-	{% endif %}
+	{% endwith %}
+
+	<li class="dropdown">
+		<a id="account" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			Til Next Reward: $
+			{% if request.user.profile.accumulated_spending %}
+				{{ request.user.profile.spending_required }} 
+			{% else %}
+				100 
+			{% endif %}
+			<img src="{{ request.user.profile.avatar_image.url }}" /><span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a href="#" class="no-cursor-link">Signed in as <b>{{ user.username }}</b></a></li>
+			<li><a href="#" class="no-cursor-link">On screen name is <b>{{ request.user.profile.on_screen_name }}</b></a></li>
+			<li role="separator" class="divider"></li>
+			<li><a href="{% url 'profile' %}">View Profile</a></li>
+			<li><a href="{% url 'logout' %}">Log Out</a></li>
+		</ul>
+	</li>
 </ul>

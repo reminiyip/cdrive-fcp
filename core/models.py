@@ -22,6 +22,10 @@ class UserProfile(models.Model):
     def spending_required(self):
         return 100 - self.accumulated_spending
 
+    def get_active_cart(self):
+        cart = Cart.objects.get(user_id=self.user.id, status=Cart.NOT_PAID)
+        return cart
+
 @receiver(post_save, sender=User)
 def create_user_profile_and_cart(sender, instance, created, **kwargs):
     if created:

@@ -62,11 +62,11 @@ class GameDetailView(DetailView):
         context['now'] = timezone.now()
 
         # get user active cart
-        cart = Cart.objects.get(user_id=self.request.user.id)
+        cart = self.request.user.profile.get_active_cart()
         context['cart'] = cart
         
         # get game tags
-        tags = Tag.objects.filter(game_id=context['game'].id)
+        tags = context['game'].get_sorted_tags()
         context['tags'] = tags
 
         # form page_header dict
@@ -115,18 +115,15 @@ def add_tag(request, genre_id, game_id):
 
             # increment popularity
             else:
-                tag = Tag.objects.get(tag_name=req_tag_name)
+                tag = Tag.objects.get(tag_name=req_tag_name, game=tag_game)
                 tag.increment_popularity()
     
     # redirect to game page
     return redirect('game', genre_id=genre_id, pk=game_id)
 
 def add_to_cart(request, genre_id, game_id):
-    # game = Game.objects.get(id=game_id)
-    cart = Cart.objects.get(user_id=request.user.id)
+    cart = request.user.profile.get_active_cart()
     cg = CartGamePurchase(game_id=game_id, cart_id=cart.id)
-    # cart.game.add(game)
-    # cart.save()
     cg.save()
 
     return redirect('game', genre_id=genre_id, pk=game_id)

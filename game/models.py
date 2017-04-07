@@ -19,7 +19,8 @@ class Game(models.Model):
     platform = models.ManyToManyField('Platform')
         
     def get_sorted_tags(self):
-        return
+        tags = Tag.objects.filter(game_id=self.id).order_by('-popularity')
+        return tags
     
     def add_to_genre(self, genre_id):
         return

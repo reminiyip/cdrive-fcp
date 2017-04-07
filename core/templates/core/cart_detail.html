@@ -35,7 +35,7 @@
 						<div class="divider"></div>
 						<div class="subtotal-row">
 							<h3>Rewards:</h3>
-							<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});">
+							<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});" value="{{ rewards }}">
 								<option>0</option>
 								{% with ""|center:rewards as range %}
 									{% for _ in range %}
