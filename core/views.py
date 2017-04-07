@@ -113,9 +113,13 @@ def payment(request, cart_id):
             payment.paid_date = timezone.now()
             payment.save()
 
+            # cart paid
             cart.card_payment = payment
             cart.status = Cart.PAID
             cart.save()
+
+            # assign new empty cart to user
+            Cart.objects.create(user=request.user)
 
             return HttpResponse('OK')
 
@@ -131,6 +135,7 @@ def payment(request, cart_id):
 ##############################################################################
 
 def view_purchase_history(request):
+    purchased_games = request.user.profile.get_purchased_games()
     return render(request, 'core/index.html', {'data': {'action': 'view_purchase_history'}})
 
 ##############################################################################

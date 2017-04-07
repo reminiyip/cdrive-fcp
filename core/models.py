@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .utils.const import UserConst
 from .utils.utils import PathUtils
+from game.models import Game
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -25,6 +26,11 @@ class UserProfile(models.Model):
     def get_active_cart(self):
         cart = Cart.objects.get(user_id=self.user.id, status=Cart.NOT_PAID)
         return cart
+
+    def get_purchased_games(self):
+        games_id = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID).values_list('game', flat=True)
+        games = Game.objects.filter(pk__in=set(games_id))
+        return games
 
 @receiver(post_save, sender=User)
 def create_user_profile_and_cart(sender, instance, created, **kwargs):

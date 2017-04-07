@@ -22,6 +22,7 @@ def index(request):
 def homepage(request):
     genres = Genre.objects.all()
     genre_groups = [genres[i:i+2] for i in range(0, len(genres), 2)]
+    
     layers = {'Home': '#'}
 
     return render(request, 'game/homepage.html', {'genres': genre_groups, 'layers': layers})
@@ -60,10 +61,6 @@ class GameDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
-
-        # get game tags
-        tags = context['game'].get_sorted_tags()
-        context['tags'] = tags
 
         # form page_header dict
         layers = OrderedDict()
