@@ -4,9 +4,11 @@ If you're not using any branching (i.e. you only work on master branch), you can
 
 ###### Step 0: install git
 
-`brew install git`  
-`git config --global user.name <your-name>`  
-`git config --global user.email <your-email>`  
+```
+brew install git  
+git config --global user.name <your-name> 
+git config --global user.email <your-email>
+```  
 
 ###### Step 1: clone a project from GitHub
 
@@ -72,12 +74,16 @@ Open that file, you'll see:
 
 Decide what to keep and remove all other stuffs. Then commit again.  
 
-`git add -A`  
-`git commit -m <message>`  
+```
+git add -A 
+git commit -m <message>
+```
 
 ###### Step 5: push commits to remote
 
-`git push origin master                    # push to the master branch`
+```
+git push origin master                     # push to the master branch
+```
 
 ###### Step 6: make a pull request
 
