@@ -18,29 +18,35 @@ If you're not using any branching (i.e. you only work on master branch), you can
 
 ###### Step 3: saving changes
 
-`git status`                                # show which files are modified  
+```
+git status                                 # show which files are modified`  
 
-`git add <file/dir>`                        # tells Git you wanna include updates to a particular file in the next commit  
-                                            # (i.e. put them in staging area)  
-OR `git add -A`                             # you wanna include ALL updates in the next commit  
+git add <file/dir>                         # tells Git you wanna include updates to a particular file in the next commit  
+                                           # (i.e. put them in staging area)
+OR `git add -A                             # you wanna include ALL updates in the next commit
 
-`git commit -m <message>`                   # actually commits what you added to the staging area
-                                            # please include a concise commit message
+git commit -m <message>`                   # actually commits what you added to the staging area
+                                           # please include a concise commit message
+```
 
 ###### Step 4: get updates from remote
 
-`git pull origin master`                    # before you push it to the remote repo, pull down the latest version first.
-                                            # Git will try to merge them, but you need to resolve any conflicts introduced manually  
+```
+git pull origin master                     # before you push it to the remote repo, pull down the latest version first.
+                                           # Git will try to merge them, but you need to resolve any conflicts introduced manually  
+```
 
 ###### Step 4b: get updates from other repo (i.e. repos other than your own forked one)
 
-`git remote -v`                             # show what remote names you have, usually you'll have an 'origin' remote repo  
-                                            # that's where you cloned your repo from in Step 1  
+```
+git remote -v                              # show what remote names you have, usually you'll have an 'origin' remote repo  
+                                           # that's where you cloned your repo from in Step 1  
 
-`git remote add <remote-name> <repo-url>`   # add a remote repo, usually from the repo you forked from
-                                            # usually name it 'upstream'  
+git remote add <remote-name> <repo-url>    # add a remote repo, usually from the repo you forked from
+                                           # usually name it 'upstream'  
 
-`git pull <remote-name> master`  
+git pull <remote-name> master
+```
 
 ###### Step 4c: resolve conflicts (if any)
 
@@ -71,11 +77,11 @@ Decide what to keep and remove all other stuffs. Then commit again.
 
 ###### Step 5: push commits to remote
 
-`git push origin master`                    # push to the master branch
+`git push origin master                    # push to the master branch`
 
 ###### Step 6: make a pull request
 
-If you're remote repo is a forked one, and you would like to request the original repo to merge your changes, goto GitHub and press the button "New Pull Request". This will send the pull request to the original repo, and the authorized users can decide whether to merge your changes, or abort.
+If you're remote repo is a forked one, and you would like to request the original repo to merge your changes, goto GitHub and press the button __New Pull Request__. This will send the pull request to the original repo, and the authorized users can decide whether to merge your changes, or abort.
 
 #### References
 
