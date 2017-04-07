@@ -3,6 +3,7 @@ import os
 from django.core.files.base import ContentFile
 
 def get_avatar(backend, user, response, *args, **kwargs):
+	print("response", response)
     if backend.name == 'facebook':
         url = "http://graph.facebook.com/%s/picture?type=large"%response['id']
     elif backend.name == 'github':
