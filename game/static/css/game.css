@@ -5,17 +5,14 @@
 	align-items: center;
 }
 
+#game-info-header .page-header h3 {
+	margin: 0;
+}
+
 #game-info-right {
 
 }
 
-
-#add-to-cart {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
 
 #add-to-cart .btn {
 	margin: 0 10px;

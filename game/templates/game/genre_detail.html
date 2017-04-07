@@ -25,7 +25,10 @@
 				<div class="col-md-6">
 					<div class="panel panel-info">
 						<div class="panel-heading">
-							<h3 class="panel-title"><a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a></h3>
+							<div class="row-center">
+								<h3 class="panel-title"><a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a></h3>
+								{% include 'includes/platform_icons.html' %}
+							</div>
 						</div>
 						<div class="panel-body">
 							<div id="game-image">

@@ -14,6 +14,30 @@ img.game-image {
 	border-bottom: 1px solid #c0c0c0;
 }
 
+.platform-logo-md {
+	width: 60px;
+	height: 60px;
+	padding: 10px;
+	background-color: #01579B;
+	border-radius: 30px;
+	margin-left: 10px;
+}
+
+.platform-logo-sm {
+	width: 36px;
+	height: 36px;
+	padding: 3px;
+	background-color: #2196F3;
+	border-radius: 18px;
+	margin-left: 10px;
+}
+
+.row-center {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
 /* Header */ 
 .navbar {
 	border: 0px;
@@ -38,7 +62,7 @@ img.game-image {
 }
 
 #info-bar>.open>a {
-	background-color: rgba(13, 71, 161, 0.4);
+	background-color: rgb(73, 151, 208);
 }
 
 #account {
@@ -67,6 +91,10 @@ img.game-image {
 	justify-content: space-between;
 }
 
+.cart-game-panel .panel-heading h5 {
+	margin: 0;
+}
+
 .cart-game-panel .panel-body {
 	display: flex;
 	flex-direction: row;
@@ -85,16 +113,20 @@ img.game-image {
 	margin: 15px 0 10px;
 }
 
-.cart-game-panel .subtotal-row {
+.cart-game-panel .subtotal-row, .cart-game-panel .rewards-wrapper {
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
 	align-items: center;
 }
 
+.cart-game-panel .rewards-wrapper {
+	margin-right: 10px;
+}
+
 .cart-game-panel span.price {
 }
 
 .cart-game-panel .panel-body h3 {
-	margin: 20px 10px 10px;
+	margin: 24px 0;
 }

@@ -58,6 +58,9 @@ class CardPayment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0.00))
     paid_date = models.DateField()
 
+    def __str__(self):
+        return "{} on {}".format(self.cart.user.username, self.paid_date)
+
 class Cart(models.Model):
     NOT_PAID = 'N'
     PROCESSING = 'PR'
@@ -73,6 +76,12 @@ class Cart(models.Model):
     payment = models.OneToOneField('CardPayment', on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
         
+    def __str__(self):
+        if self.status == PAID:
+            return "{} purchased on {}".format(self.game.title, self.payment.paid_date)
+        else:
+            return "{} in cart".format(self.game.title)
+
     def get_total(self):
         # TODO: count rewards
         return sum([game.price for game in self.game.all()])
@@ -82,6 +91,9 @@ class RewardsBatch(models.Model):
     issue_date = models.DateField()
     expiration_date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{}: {} issued on {}".format(self.user.username, self.value, self.issue_date)
 
     def issue(self):
         self.issue_date = timezone.now()
