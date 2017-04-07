@@ -16,12 +16,14 @@
 
 `pip3 install Pillow`  
 `pip3 install social-auth-app-django`
+`pip3 install python-social-auth # if errors when running`
 `python3 manage.py runserver`
 
 ###### Python 2.x (Deprecated)
 
 `pip install Pillow`  
 `pip install social-auth-app-django`
+`pip install python-social-auth # if errors when running`
 `python manage.py runserver`
 
 #### Structure

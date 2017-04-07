@@ -4,3 +4,9 @@ class RewardsConst():
 
 class UserConst():
 	INITIAL_ACC_SPENDING = 11
+	DEFAULT_ON_SCREEN_NAME = 'anonymous'
+	AVATAR_IMAGE_PATH = 'avatars'
+	DEFAULT_AVATAR_IMAGE_PATH = 'avatars/default-img.jpg'
+
+class OAuthConst():
+	FB_API_BASE_URL = 'http://graph.facebook.com'

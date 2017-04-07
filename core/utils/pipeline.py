@@ -2,10 +2,11 @@ import requests
 import os
 from django.core.files.base import ContentFile
 
+from .utils import PathUtils
+
 def get_avatar(backend, user, response, *args, **kwargs):
-	print("response", response)
     if backend.name == 'facebook':
-        url = "http://graph.facebook.com/%s/picture?type=large"%response['id']
+        url = PathUtils.get_oauth_avatar_url(response['id'], provider='facebook')
     elif backend.name == 'github':
         url = response['avatar_url']
 

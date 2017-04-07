@@ -8,11 +8,12 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .utils.const import UserConst
+from .utils.utils import PathUtils
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    on_screen_name = models.CharField(max_length=200, default='anon')
-    avatar_image = models.ImageField(upload_to='avatars', default='avatars/default-img.jpg')
+    on_screen_name = models.CharField(max_length=200, default=UserConst.DEFAULT_ON_SCREEN_NAME)
+    avatar_image = models.ImageField(upload_to=PathUtils.get_avatar_file_name, default=UserConst.DEFAULT_AVATAR_IMAGE_PATH)
     accumulated_spending = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal(0.00))
     
     def __str__(self):

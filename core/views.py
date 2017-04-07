@@ -14,6 +14,7 @@ from .forms import PaymentForm, RegisterForm, UserProfileForm, UserEmailForm
 from .utils.const import RewardsConst, UserConst
 
 from django.contrib import messages
+
 ##############################################################################
 #                                       test                                 #
 ##############################################################################
