@@ -1,3 +1,6 @@
+from django.urls import reverse
+from collections import OrderedDict
+
 from .const import OAuthConst, UserConst
 
 class PathUtils():
@@ -9,3 +12,13 @@ class PathUtils():
     def get_oauth_avatar_url(user_id, provider, image_type='large'):
         if provider == 'facebook':
             return '{}/{}/picture?type={}'.format(OAuthConst.FB_API_BASE_URL, user_id, image_type)
+
+class HelperUtils():
+	"""Other commonly used help functions"""
+
+	def get_column_groups(items, num_of_col=2):
+		return [items[i:i+2] for i in range(0, len(items), num_of_col)]
+
+
+
+

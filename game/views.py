@@ -7,6 +7,7 @@ from collections import OrderedDict
 from .models import Game, Genre, Tag
 from core.models import Cart, CartGamePurchase
 from django.contrib.auth.models import User
+from cdrive_fcp.utils.utils import HelperUtils
 
 ##############################################################################
 #                                       test                                 #
@@ -21,8 +22,8 @@ def index(request):
 
 def homepage(request):
     genres = Genre.objects.all()
-    genre_groups = [genres[i:i+2] for i in range(0, len(genres), 2)]
-    
+    genre_groups = HelperUtils.get_column_groups(genres)
+
     layers = {'Home': '#'}
 
     return render(request, 'game/homepage.html', {'genres': genre_groups, 'layers': layers})
@@ -39,7 +40,7 @@ class GenreDetailView(DetailView):
 
         # # get games, group by 2
         games = Game.objects.filter(genre_id=context['genre'].id)
-        context['games'] = [games[i:i+2] for i in range(0, len(games), 2)]
+        context['games'] = HelperUtils.get_column_groups(games)
 
         # form page_header dict
         layers = OrderedDict()

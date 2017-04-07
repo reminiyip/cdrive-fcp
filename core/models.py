@@ -7,8 +7,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .utils.const import UserConst
-from .utils.utils import PathUtils
+from cdrive_fcp.utils.const import UserConst
+from cdrive_fcp.utils.utils import PathUtils
 from game.models import Game
 
 class UserProfile(models.Model):
