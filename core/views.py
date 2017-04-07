@@ -134,9 +134,16 @@ def payment(request, cart_id):
 #                                     others                                 #
 ##############################################################################
 
-def view_purchase_history(request):
-    purchased_games = request.user.profile.get_purchased_games()
-    return render(request, 'core/index.html', {'data': {'action': 'view_purchase_history'}})
+def purchase_history(request):
+    records = request.user.profile.get_purchase_history()
+    record_groups = [records[i:i+2] for i in range(0, len(records), 2)]
+    
+    layers = OrderedDict()
+    layers['Home'] = reverse('homepage')
+    layers['Purchase History'] = '#'
+
+    return render(request, 'core/purchase_history.html', {'records': record_groups, 'layers': layers})
+
 
 ##############################################################################
 #                                     actions                                #

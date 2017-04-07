@@ -32,7 +32,7 @@ cart_urls = [
 ]
 
 other_urls = [
-    url(r'^purchase_history/', views.view_purchase_history, name='purchase_history'), 
+    url(r'^purchase_history/', views.purchase_history, name='purchase_history'), 
     url(r'^cart/(?P<cart_id>\d+)/assign_rewards/(?P<game_id>\d+)/(?P<reward_value>\d+)/$', views.assign_rewards_to_game, name='assign_rewards_to_game'),
 ]
 

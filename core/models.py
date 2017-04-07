@@ -32,6 +32,10 @@ class UserProfile(models.Model):
         games = Game.objects.filter(pk__in=set(games_id))
         return games
 
+    def get_purchase_history(self):
+        history = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID)
+        return history
+
 @receiver(post_save, sender=User)
 def create_user_profile_and_cart(sender, instance, created, **kwargs):
     if created:
