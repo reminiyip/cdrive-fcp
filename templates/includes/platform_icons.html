@@ -1,5 +1,5 @@
 <div class="logo-wrapper">
-	{% for platform in game.platform.all %}
+	{% for platform in game.platforms.all %}
 		<img class="platform-logo-sm" src="{{ platform.get_logo_path }}" />
 	{% endfor %}
 </div>

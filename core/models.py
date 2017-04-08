@@ -75,19 +75,19 @@ class Cart(models.Model):
     )
 
     status = models.CharField(max_length=2, choices=CART_STATUS_CHOICES, default=NOT_PAID)
-    game = models.ManyToManyField('game.Game', blank=True, through='CartGamePurchase')
+    games = models.ManyToManyField('game.Game', blank=True, through='CartGamePurchase')
     payment = models.OneToOneField('CardPayment', on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
         
     def __str__(self):
         if self.status == Cart.PAID:
-            return "{}/ {} games purchased/ {}".format(self.user.username, self.game.count(), self.payment.paid_date)
+            return "{}/ {} games purchased/ {}".format(self.user.username, self.games.count(), self.payment.paid_date)
         else:
-            return "{}/ {} games in cart".format(self.user.username, self.game.count())
+            return "{}/ {} games in cart".format(self.user.username, self.games.count())
 
     def get_total(self):
         # TODO: count rewards
-        return sum([game.price for game in self.game.all()])
+        return sum([game.price for game in self.games.all()])
 
 class RewardsBatch(models.Model):
     value = models.PositiveIntegerField()

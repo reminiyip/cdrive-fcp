@@ -107,13 +107,13 @@ def add_tag(request, genre_id, game_id):
             # add new tag to db
             if not Tag.objects.filter(tag_name=tag_name, game=tag_game).exists():
                 tag = Tag(tag_name=tag_name, popularity=1, game=tag_game)
-                tag.users.add(req_user)
                 tag.save()
+                tag.users.add(req_user)
 
             # increment popularity
             else:
                 tag = Tag.objects.get(tag_name=tag_name, game=tag_game)
-                if req_user not in tag.users:
+                if req_user not in tag.users.all():
                     tag.users.add(req_user)
                     tag.increment_popularity()
     
