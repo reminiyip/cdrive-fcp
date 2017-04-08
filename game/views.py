@@ -37,11 +37,16 @@ def homepage(request):
         targets.append(purchases[i].game)
     for target in targets:
         sim_games = target.get_similar_games()
-        while(len(sim_games)>0 and sim_list[0] not in purchased_games):
-            sim_games.pop(0)
+        if(len(sim_games)>0):
+            while(len(sim_games)>0 and sim_games[0] not in purchased_games):
+                sim_games.pop(0)
         if(len(sim_games)>0):     
             sim_list.append(sim_games)
-    recommended_games = list(set(sim_list))
+    recommended_games = []
+    for i in sim_list:
+        if i not in recommended_games:
+            recommended_games.append(i)
+    #recommended_games = list(set(sim_list))
         
     
     # layers

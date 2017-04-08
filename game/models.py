@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 
+from operator import itemgetter, attrgetter
+
 from decimal import Decimal
 
 class Genre(models.Model):
@@ -34,7 +36,7 @@ class Game(models.Model):
         tag_names = []
         for tag in tags:
             tag_names.append(tag.tag_name)
-        games = Game.objects.filter(id!=self.id).order_by('-release_date')
+        games = Game.objects.all().order_by('-release_date')
         similar_games = []
         similarity = []
         for game in games:
@@ -44,7 +46,7 @@ class Game(models.Model):
                 compare_names.append(tag.tag_name)
             sim = len(set(tag_names).intersection(compare_names))
             similarity.append((game,sim))
-        sorted_similarity = sorted(similarity.items(), key=operator.itemgetter(1), reverse=True)
+        sorted_similarity = sorted(similarity, key=itemgetter(1), reverse=True)
         for tup in sorted_similarity:
             similar_games.append(tup[0])
         return similar_games
