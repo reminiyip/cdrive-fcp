@@ -98,6 +98,7 @@ def remove_review(request, genre_id, game_id, review_id):
 def add_tag(request, genre_id, game_id):
     if request.method == 'POST':
         req_tag_name = request.POST.get('tag_name', None)
+        req_user = request.user
         
         if not req_tag_name == "":
             tag_name = text.slugify(req_tag_name)
@@ -106,12 +107,15 @@ def add_tag(request, genre_id, game_id):
             # add new tag to db
             if not Tag.objects.filter(tag_name=tag_name, game=tag_game).exists():
                 tag = Tag(tag_name=tag_name, popularity=1, game=tag_game)
+                tag.users.add(req_user)
                 tag.save()
 
             # increment popularity
             else:
                 tag = Tag.objects.get(tag_name=tag_name, game=tag_game)
-                tag.increment_popularity()
+                if req_user not in tag.users:
+                    tag.users.add(req_user)
+                    tag.increment_popularity()
     
     # redirect to game page
     return redirect('game', genre_id=genre_id, pk=game_id)
