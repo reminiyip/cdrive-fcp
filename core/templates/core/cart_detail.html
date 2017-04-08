@@ -20,7 +20,7 @@
 
 	<div id="cart-info">	
 		{% for game in cart.games.all %}
-			{% include 'includes/game_panel.html' with show_reward_select=True show_price=True show_genre=True %}
+			{% include 'includes/game_panel/game_panel.html' with show_reward_select=True show_price=True show_genre=True %}
 		{% endfor %}
 	</div>
 

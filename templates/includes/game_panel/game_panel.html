@@ -1,25 +1,7 @@
 <div class="game-panel">
 	<div class="panel panel-info">
 
-		<div class="panel-heading">
-
-			<div class="row-center">
-
-				<h3 class="panel-title">
-					<a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a>
-					{% if show_genre %}
-						<a href="{% url 'genre' game.genre.id %}"><span class="badge">{{ game.genre.genre_name }}</span></a>
-					{% endif %}
-				</h3>
-				{% include 'includes/platform_icons.html' %}
-
-			</div>
-
-			{% if show_purchase_date %}
-				<h5 class="pull-right-flex">Purchased on {{ cart.payment.paid_date }}</h5>
-			{% endif %}
-
-		</div>
+		{% include 'includes/game_panel/heading.html' %}
 
 		<div class="panel-body">
 

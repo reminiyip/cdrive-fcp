@@ -21,9 +21,7 @@
 		<div class="row">
 
 			{% for game in game_group %}
-
-				{% include 'includes/game_panel_2_col.html' with show_purchase=True show_release_date=True %}
-
+				{% include 'includes/game_panel/game_panel_2_col.html' with show_purchase=True show_release_date=True show_genre=True %}
 			{% endfor %}
 
 		</div>
