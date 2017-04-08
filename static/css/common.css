@@ -43,6 +43,12 @@ img.game-image {
 	align-items: center;
 }
 
+.col-center {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .row-center.space-between, .row-end.space-between, .row-start.space-between {
 	justify-content: space-between;
 }
@@ -71,6 +77,12 @@ img.game-image {
 	margin-left: auto;
 }
 
+.bottom-right-corner {
+	right: 10px;
+	bottom: 10px;
+	position: absolute;
+}
+
 .page-header {
 	display: flex;
 	flex-direction: row;
@@ -80,6 +92,10 @@ img.game-image {
 
 .tag {
 	margin: 5px;
+}
+
+.badge-small {
+	font-size: 0.8em !important;
 }
 
 /* Header */ 
@@ -175,6 +191,10 @@ img.game-image {
 }
 
 .game-panel span.price {
+}
+
+.game-panel .panel-body {
+	position: relative;
 }
 
 .game-panel .panel-body h3 {

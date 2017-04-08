@@ -20,11 +20,9 @@
 		<div class="row">
 
 			{% for tag in tag_group %}
-
+			
 				{% with game=tag.game %}
-
-					{% include 'includes/game_panel_2_col.html' with show_purchase=True %}
-
+					{% include 'includes/game_panel_2_col.html' with show_purchase=True show_genre=True show_release_date=True %}
 				{% endwith %}
 
 			{% endfor %}

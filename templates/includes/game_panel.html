@@ -7,7 +7,9 @@
 
 				<h3 class="panel-title">
 					<a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a>
-					<a href="{% url 'genre' game.genre.id %}"><span class="badge">{{ game.genre.genre_name }}</span></a>
+					{% if show_genre %}
+						<a href="{% url 'genre' game.genre.id %}"><span class="badge">{{ game.genre.genre_name }}</span></a>
+					{% endif %}
 				</h3>
 				{% include 'includes/platform_icons.html' %}
 

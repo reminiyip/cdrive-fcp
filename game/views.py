@@ -38,8 +38,8 @@ class GenreDetailView(DetailView):
         context = super(GenreDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
 
-        # # get games, group by 2
-        games = Game.objects.filter(genre_id=context['genre'].id)
+        # # get sorted games, group by 2
+        games = Game.objects.filter(genre_id=context['genre'].id).order_by('-release_date')
         context['games'] = HelperUtils.get_column_groups(games)
 
         # form page_header dict
