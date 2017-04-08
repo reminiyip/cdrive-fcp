@@ -79,54 +79,64 @@ img.game-image {
 
 /* Cart game panel */
 
-.cart-game-panel .game-image img {
+.game-panel .game-image img {
 	max-width: 400px;
 	max-height: 200px
 }
 
-.cart-game-panel .panel-heading {
+.game-panel .panel-heading {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.cart-game-panel .panel-heading h5 {
+.game-panel .panel-heading h5 {
 	margin: 0;
 }
 
-.cart-game-panel .panel-body {
+.game-panel .panel-title {
+	display: flex;
+	align-items: center;
+}
+
+.game-panel .panel-title span.badge {
+	margin-left: 5px;
+	font-size: 1em;
+}
+
+.game-panel .panel-body {
 	display: flex;
 	flex-direction: row;
 	padding: 20px 30px;
 }
 
-.cart-game-panel .game-info {
+.game-panel .game-info {
 	width: 100%;
 	text-align: right;
 	align-self: flex-end;
 	padding: 0 20px;
 }
 
-.cart-game-panel .select-reward {
+.game-panel .select-reward {
 	width: auto;
 	margin: 15px 0 10px;
 }
 
-.cart-game-panel .subtotal-row, .cart-game-panel .rewards-wrapper {
+.game-panel .subtotal-row, .game-panel .rewards-wrapper {
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
 	align-items: center;
 }
 
-.cart-game-panel .rewards-wrapper {
+.game-panel .rewards-wrapper {
 	margin-right: 10px;
 }
 
-.cart-game-panel span.price {
+.game-panel span.price {
 }
 
-.cart-game-panel .panel-body h3 {
+.game-panel .panel-body h3 {
 	margin: 24px 0;
 }

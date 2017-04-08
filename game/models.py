@@ -20,6 +20,7 @@ class Game(models.Model):
     genre = models.ForeignKey('Genre', on_delete=models.CASCADE)
     is_featured = models.BooleanField()
     platform = models.ManyToManyField('Platform')
+    release_date = models.DateField()
         
     def __str__(self):
         return self.title

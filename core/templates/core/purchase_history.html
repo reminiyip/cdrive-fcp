@@ -18,9 +18,9 @@
 	</div>
 
 
-	<div id="purchase-history-info" class="cart-game-panel">
+	<div id="purchase-history-info">
 		{% for record in records %}
-			{% include 'includes/cart_game_panel.html' with game=record.game cart=record.cart show_purchase_date=True %}
+			{% include 'includes/game_panel.html' with game=record.game cart=record.cart show_purchase_date=True show_price=True %}
 		{% endfor %}
 	</div>
 
