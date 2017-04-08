@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
-from django.utils import timezone
+from django.utils import timezone, text
 from django.urls import reverse
 from collections import OrderedDict
 
@@ -100,16 +100,17 @@ def add_tag(request, genre_id, game_id):
         req_tag_name = request.POST.get('tag_name', None)
         
         if not req_tag_name == "":
+            tag_name = text.slugify(req_tag_name)
             tag_game = Game.objects.get(id=game_id)
 
             # add new tag to db
-            if not Tag.objects.filter(tag_name=req_tag_name, game=tag_game).exists():
-                tag = Tag(tag_name=req_tag_name, popularity=1, game=tag_game)
+            if not Tag.objects.filter(tag_name=tag_name, game=tag_game).exists():
+                tag = Tag(tag_name=tag_name, popularity=1, game=tag_game)
                 tag.save()
 
             # increment popularity
             else:
-                tag = Tag.objects.get(tag_name=req_tag_name, game=tag_game)
+                tag = Tag.objects.get(tag_name=tag_name, game=tag_game)
                 tag.increment_popularity()
     
     # redirect to game page
