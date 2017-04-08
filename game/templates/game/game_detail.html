@@ -48,7 +48,7 @@
 				<div class="well">
 					<p>{{ game.full_description }}</p>
 				</div>
-				{% include "includes/tag_list.html" with tags=game.get_sorted_tags slice="5" %}
+				{% include "includes/tag_list.html" with tags=game.get_sorted_tags slice="5" show_form=True %}
 			</div>
 		</div>
 

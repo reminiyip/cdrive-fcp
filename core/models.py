@@ -59,7 +59,10 @@ class CardPayment(models.Model):
     paid_date = models.DateField()
 
     def __str__(self):
-        return "{} on {}".format(self.cart.user.username, self.paid_date)
+        if hasattr(self, 'cart') and self.cart is not None:
+            return "{} on {}".format(self.cart.user.username, self.paid_date)
+        else:
+            return "card_payment should not exist!"
 
 class Cart(models.Model):
     NOT_PAID = 'N'
@@ -77,10 +80,10 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
         
     def __str__(self):
-        if self.status == PAID:
-            return "{} purchased on {}".format(self.game.title, self.payment.paid_date)
+        if self.status == Cart.PAID:
+            return "{}/ {} games purchased/ {}".format(self.user.username, self.game.count(), self.payment.paid_date)
         else:
-            return "{} in cart".format(self.game.title)
+            return "{}/ {} games in cart".format(self.user.username, self.game.count())
 
     def get_total(self):
         # TODO: count rewards
@@ -107,9 +110,9 @@ class CartGamePurchase(models.Model):
 
     def __str__(self):
         if self.cart.status == Cart.PAID:
-            return "{} purchased on {}".format(self.game.title, self.cart.payment.paid_date)
+            return "{}/ {} purchased on {}".format(self.cart.user.username, self.game.title, self.cart.payment.paid_date)
         else:
-            return "{} in cart".format(self.game.title)
+            return "{}/ {} in cart".format(self.cart.user.username, self.game.title)
 
 
 

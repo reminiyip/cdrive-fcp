@@ -38,6 +38,14 @@ img.game-image {
 	align-items: center;
 }
 
+.pull-left-flex {
+	margin-right: auto;
+}
+
+.pull-right-flex {
+	margin-left: auto;
+}
+
 /* Header */ 
 .navbar {
 	border: 0px;

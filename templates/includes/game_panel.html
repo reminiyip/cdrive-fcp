@@ -35,6 +35,10 @@
 					<div class="divider"></div>
 					<div class="subtotal-row">
 
+						<div class="pull-left-flex">
+							{% include "includes/tag_list.html" with tags=game.get_sorted_tags slice="5" %}
+						</div>
+
 						{% if show_reward_select %}
 							{% include 'includes/reward_select.html' %}
 						{% endif %}
