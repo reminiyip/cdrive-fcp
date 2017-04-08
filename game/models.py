@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from operator import itemgetter, attrgetter
 from decimal import Decimal
 
 from django.db import models
@@ -28,6 +29,26 @@ class Game(models.Model):
         tags = Tag.objects.filter(game_id=self.id).order_by('-popularity')
         return tags
     
+    def get_similar_games(self):
+        tags = Tag.objects.filter(game_id=self.id).order_by('-popularity')
+        tag_names = []
+        for tag in tags:
+            tag_names.append(tag.tag_name)
+        games = Game.objects.all().order_by('-release_date')
+        similar_games = []
+        similarity = []
+        for game in games:
+            compare_tags = Tag.objects.filter(game_id=game.id)
+            compare_names = []
+            for tag in compare_tags:
+                compare_names.append(tag.tag_name)
+            sim = len(set(tag_names).intersection(compare_names))
+            similarity.append((game,sim))
+        sorted_similarity = sorted(similarity, key=itemgetter(1), reverse=True)
+        for tup in sorted_similarity:
+            similar_games.append(tup[0])
+        return similar_games
+            
     def add_to_genre(self, genre_id):
         return
 

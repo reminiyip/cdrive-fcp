@@ -23,7 +23,32 @@ def index(request):
 def homepage(request):
     genres = Genre.objects.all()
     genre_groups = HelperUtils.get_column_groups(genres)
-
+    
+    # recommendations
+    purchases = request.user.profile.get_purchase_history(ordered=True)
+    purchased_games = []
+    for purchase in purchases:
+        purchased_games.append(purchase.game)
+    target_num = min(3, len(purchases))
+    targets = []
+    sim_list = []
+    for i in range(target_num):
+        targets.append(purchases[i].game)
+    for target in targets:
+        sim_games = target.get_similar_games()
+        if(len(sim_games)>0):
+            while(len(sim_games)>0 and sim_games[0] not in purchased_games):
+                sim_games.pop(0)
+        if(len(sim_games)>0):     
+            sim_list.append(sim_games)
+    recommended_games = []
+    for i in sim_list:
+        if i not in recommended_games:
+            recommended_games.append(i)
+    #recommended_games = list(set(sim_list))
+        
+    
+    # layers
     layers = {'Home': '#'}
 
     return render(request, 'game/homepage.html', {'genres': genre_groups, 'layers': layers})
