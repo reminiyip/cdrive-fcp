@@ -29,7 +29,7 @@
 			<li><a href="#" class="no-cursor-link">Signed in as <b>{{ user.username }}</b></a></li>
 			<li><a href="#" class="no-cursor-link">On screen name is <b>{{ request.user.profile.on_screen_name }}</b></a></li>
 			<li role="separator" class="divider"></li>
-			<li><a href="{% url 'profile' %}">View Profile</a></li>
+			<li><a href="{% url 'profile' user.profile.id %}">View Profile</a></li>
 			<li><a href="{% url 'purchase_history' %}">View Purchase History</a></li>
 			<li><a href="{% url 'logout' %}">Log Out</a></li>
 		</ul>

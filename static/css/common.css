@@ -38,12 +38,27 @@ img.game-image {
 	align-items: center;
 }
 
+.row-center.space-between {
+	justify-content: space-between;
+}
+
+.row-center.margin-between * {
+	margin: 0 5px;
+}
+
 .pull-left-flex {
 	margin-right: auto;
 }
 
 .pull-right-flex {
 	margin-left: auto;
+}
+
+.page-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 
 /* Header */ 
