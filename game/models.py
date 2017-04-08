@@ -49,6 +49,7 @@ class Tag(models.Model):
     tag_name = models.CharField(max_length=30)
     popularity = models.PositiveIntegerField()
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
+    users = models.ManyToManyField('User')
     
     def __str__(self):
         return self.tag_name
