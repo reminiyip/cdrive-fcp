@@ -50,8 +50,15 @@ class GenreDetailView(DetailView):
 
         return context
 
-def view_tagged_games(request, tag_name):
-    return render(request, 'game/index.html', {'data': {'tag_name': tag_name, 'action': 'view_tagged_games'}})
+def tagged_games(request, tag_name):
+    tags = Tag.objects.filter(tag_name=tag_name)
+    tag_groups = HelperUtils.get_column_groups(tags)
+    
+    layers = OrderedDict()
+    layers['Home'] = reverse('homepage')
+    layers['Tag - {}'.format(tag_name)] = '#'
+
+    return render(request, 'game/tag.html', {'tags': tag_groups, 'tag_name': tag_name, 'layers': layers})
 
 def view_game(request, genre_id, game_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'action': 'view_game'}})

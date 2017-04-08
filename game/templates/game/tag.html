@@ -1,0 +1,38 @@
+{% extends 'game/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Tag - {{ tag.tag_name }}{% endblock %}
+{% block children_css %}<link rel="stylesheet" href="{% static 'css/tag.css' %}">{% endblock %}
+
+{% block content %}
+
+<div id="tag-page" class="container-fluid">
+	
+	<div id="tag-info-header">	
+		{% include "includes/breadcrumb.html" with layers=layers %}
+
+		<div class="page-header">
+			<h3>{{ tag_name }}</h3>
+		</div>
+	</div>
+
+	{% for tag_group in tags %}
+		<div class="row">
+
+			{% for tag in tag_group %}
+
+				{% with game=tag.game %}
+
+					{% include 'includes/game_panel_2_col.html' with show_purchase=True %}
+
+				{% endwith %}
+
+			{% endfor %}
+
+		</div>
+	{% endfor %}
+
+
+</div>
+
+{% endblock %}

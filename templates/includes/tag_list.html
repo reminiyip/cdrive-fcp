@@ -1,13 +1,15 @@
 <div class="tags">
+
 	<div class="tag-list">
 
 		{% for tag in tags|slice:slice %}
-			<a class="btn btn-warning" href="{% url 'tagged_games' tag.tag_name %}">
+			<a class="btn btn-warning tag" href="{% url 'tagged_games' tag.tag_name %}">
 				{{ tag.tag_name }} <span class="badge">{{ tag.popularity }}</span>
 			</a>
 		{% endfor %}
 		
 	</div>
+
 	{% if user.is_authenticated and game in user.profile.get_purchased_games and show_form %}
 
 		<div>
@@ -20,4 +22,5 @@
 		</div>
 
 	{% endif %}
+
 </div>

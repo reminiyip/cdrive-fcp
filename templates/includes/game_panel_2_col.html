@@ -1,0 +1,44 @@
+{% load filters %}
+
+<div class="col-md-6 game-panel">
+
+	<div class="panel panel-info">
+
+		<div class="panel-heading">
+
+			<div class="row-center">
+
+				<h3 class="panel-title"><a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a></h3>
+
+				{% include 'includes/platform_icons.html' %}
+
+			</div>
+
+			{% if user.is_authenticated and show_purchase %}
+				{% if game in user.profile.get_purchased_games %}
+					<h5 class="pull-right-flex">Purchased</h5>
+				{% elif game in user.profile.get_active_cart.games.all %}
+					<h5 class="pull-right-flex">In Cart</h5>
+				{% endif %}
+			{% endif %}
+
+		</div>
+
+		<div class="panel-body">
+
+			<div class="row-start space-between margin-between">
+				<div id="game-image">
+					<img src="{{ game.image.url }}" class="img-thumbnail img-responsive center-block game-image-sm" />
+				</div>
+				<div>
+					{% include 'includes/tag_list.html' with tags=game.get_sorted_tags slice="5" %}
+				</div>
+			</div>	
+
+		</div>
+
+		<div class="panel-footer">{{ game.one_line_description }}</div>
+
+	</div>
+
+</div>
