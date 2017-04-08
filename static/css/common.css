@@ -140,3 +140,17 @@ img.game-image {
 .game-panel .panel-body h3 {
 	margin: 24px 0;
 }
+
+/* Tags */
+.tags {
+
+}
+
+.tags div {
+	display: inline-block;
+	margin: 3px 0;
+}
+
+.tags div button {
+	margin: 3px 0;
+}

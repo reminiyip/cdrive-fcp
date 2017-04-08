@@ -29,16 +29,3 @@
 #add-to-cart h3 {
 	margin: 0;
 }
-
-#tags {
-
-}
-
-#tags div {
-	display: inline-block;
-	margin: 3px 0;
-}
-
-#tags div button {
-	margin: 3px 0;
-}
