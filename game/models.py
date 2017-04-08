@@ -43,7 +43,7 @@ class Game(models.Model):
             for tag in compare_tags:
                 compare_names.append(tag.tag_name)
             sim = len(set(tag_names).intersection(compare_names))
-            similarity.append((game:sim))
+            similarity.append((game,sim))
         sorted_similarity = sorted(similarity.items(), key=operator.itemgetter(1), reverse=True)
         for tup in sorted_similarity:
             similar_games.append(tup[0])
