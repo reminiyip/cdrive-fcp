@@ -14,31 +14,16 @@
 
 		<div class="page-header">
 			<h3>{{ genre.genre_name }}</h3>
+			{% include 'includes/filter_form.html' %}
 		</div>
+
 	</div>
 
 	{% for game_group in games %}
 		<div class="row">
 
 			{% for game in game_group %}
-
-				<div class="col-md-6">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="row-center">
-								<h3 class="panel-title"><a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a></h3>
-								{% include 'includes/platform_icons.html' %}
-							</div>
-						</div>
-						<div class="panel-body">
-							<div id="game-image">
-								<img src="{{ game.image.url }}" class="img-thumbnail img-responsive center-block game-image" />
-							</div>
-						</div>
-						<div class="panel-footer">{{ game.one_line_description }}</div>
-					</div>
-				</div>
-
+				{% include 'includes/game_panel/game_panel_2_col.html' with show_purchase=True show_release_date=True show_genre=True %}
 			{% endfor %}
 
 		</div>

@@ -42,7 +42,10 @@
                               /remove
                     /tag/:name/add                <- members purchased the game; redirect
                     /add_to_cart/                 <- redirect
+          ?filter=platform+platform
+          
 /tag/:name
+          ?filter=platform+platform
 
 /cart/:id
           /payment

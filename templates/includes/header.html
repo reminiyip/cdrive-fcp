@@ -9,12 +9,14 @@
 		</div>
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<form class="navbar-form navbar-left">
+
+			<form class="navbar-form navbar-left" id="search-form" action="{% url 'tagged_games' 'TAG_NAME' %}">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search Tag">
+					<input id="search-tag" type="text" class="form-control" placeholder="Search Tag">
 				</div>
-				<button type="submit" class="btn btn-default">Submit</button>
+				<button type="submit" class="btn btn-default">Search</button>
 			</form>
+
 			{% if user.is_authenticated %}
 				{% include "includes/header_profile.html" %}
 			{% else %}
@@ -23,6 +25,7 @@
 					<li><a href="{% url 'register' %}">Register</a></li>
 				</ul>
 			{% endif %}
+
 		</div>
 	</div>
 </nav>

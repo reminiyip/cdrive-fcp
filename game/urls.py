@@ -8,7 +8,7 @@ browse_game_urls = [
     url(r'^genre/(?P<pk>\d+)/$', GenreDetailView.as_view(), name='genre'),
     url(r'^genre/(?P<genre_id>\d+)/game/(?P<pk>\d+)/$', GameDetailView.as_view(), name='game'),
     url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/add_to_cart/$', views.add_to_cart, name='add_to_cart'), 
-    url(r'^tag/(?P<tag_name>.+)', views.view_tagged_games, name='tagged_games'), 
+    url(r'^tag/(?P<tag_name>.+)', views.tagged_games, name='tagged_games'), 
 ]
 
 review_urls = [
