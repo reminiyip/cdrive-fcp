@@ -34,7 +34,7 @@ class Game(models.Model):
         tag_names = []
         for tag in tags:
             tag_names.append(tag.tag_name)
-        games = Game.objects.filter(game_id!=self.id).order_by('-release_date')
+        games = Game.objects.filter(id!=self.id).order_by('-release_date')
         similar_games = []
         similarity = []
         for game in games:
