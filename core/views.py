@@ -54,24 +54,52 @@ def register(request):
 def view_profile(request):
     return render(request, 'core/profile.html', {'data': {'action': 'view_profile'}})
 
-def edit_profile(request):
+class ProfileDetailView(DetailView):
+    model = UserProfile
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileDetailView, self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+
+        # form page_header dict
+        layers = OrderedDict()
+        layers['Home'] = reverse('homepage')
+        layers['My Profile'] = '#'
+        context['layers'] = layers
+
+        context['action'] = 'view'
+
+        return context
+
+def edit_profile(request, profile_id):
     if request.method == 'POST':
         user_email_form = UserEmailForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        
         if user_email_form.is_valid() and profile_form.is_valid():
             user_email_form.save()
             profile_form.save()
             messages.success(request, 'Your profile was successfully updated!')
-            return redirect('profile')
+
+            return redirect('profile', profile_id)
+
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Please correct the errors below.')
 
     else:
-        user_email_form = UserEmailForm(instance=request.user)
-        profile_form = UserProfileForm(instance=request.user.profile)
+        user_email_form = UserEmailForm(instance=request.user, label_suffix='')
+        profile_form = UserProfileForm(instance=request.user.profile, label_suffix='')
+
+        # form page_header dict
+        layers = OrderedDict()
+        layers['Home'] = reverse('homepage')
+        layers['My Profile'] = '#'
+
     return render(request, 'core/edit_profile.html', {
+        'action': 'edit',
         'user_email_form': user_email_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'layers': layers,
     })
 
 ##############################################################################

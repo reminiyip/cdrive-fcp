@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Profile{% endblock %}
+{% block children_css %}<link rel="stylesheet" href="{% static 'css/profile.css' %}">{% endblock %}
+{% block children_js %}<script src="{% static 'js/profile.js' %}"></script>{% endblock %}
+
+{% block content %}
+
+<div id="profile-page" class="container-fluid">
+	
+	<div id="profile-info-header">	
+
+		{% include "includes/breadcrumb.html" with layers=layers %}
+
+		<div class="page-header">
+			<h3>My Profile</h3>
+
+			{% if action == 'edit' %}
+				<div class="row-center margin-between">
+					<a href="{% url 'profile' user.profile.id %}" class="btn btn-default pull-right">Cancel</a>
+					<button type="submit" class="btn btn-default pull-right" form="profile-form">Save</button>
+				</div>
+			{% else %}
+				<div class="row-center margin-between">
+					<a href="{% url 'password_change' %}" class="btn btn-default pull-right">Change Password</a>
+					<a href="{% url 'edit_profile' userprofile.id %}" class="btn btn-default pull-right">Edit</a>
+				</div>
+			{% endif %}
+		</div>
+
+	</div>
+
+	<div id="profile-info">	 
+	
+		{% block children_content %}{% endblock %}
+
+	</div>
+
+</div>
+
+{% endblock %}

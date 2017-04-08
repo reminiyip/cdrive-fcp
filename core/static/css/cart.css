@@ -1,12 +1,3 @@
-/* header */
-
-#cart-info-header .page-header {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
-
 /* total-price */
 
 #total-price {

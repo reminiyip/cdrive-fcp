@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import views as auth_views
 
 from . import views
-from .views import CartDetailView
+from .views import CartDetailView, ProfileDetailView
 
 account_urls = [
     url(r'^register/$', views.register, name='register'),
@@ -22,8 +22,8 @@ account_urls = [
 ]
 
 profile_urls = [
-    url(r'^profile/$', views.view_profile, name='profile'),
-    url(r'^profile/edit/', views.edit_profile, name='edit_profile'),
+    url(r'^profile/(?P<pk>\d+)/$', ProfileDetailView.as_view(template_name='core/profile.html'), name='profile'),
+    url(r'^profile/(?P<profile_id>\d+)/edit/', views.edit_profile, name='edit_profile'),
 ]
 
 cart_urls = [
