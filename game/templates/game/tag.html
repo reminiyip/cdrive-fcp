@@ -13,17 +13,16 @@
 
 		<div class="page-header">
 			<h3>{{ tag_name }}</h3>
+			{% include 'includes/filter_form.html' %}
 		</div>
 	</div>
 
-	{% for tag_group in tags %}
+	{% for game_group in games %}
 		<div class="row">
 
-			{% for tag in tag_group %}
+			{% for game in game_group %}
 			
-				{% with game=tag.game %}
-					{% include 'includes/game_panel/game_panel_2_col.html' with show_purchase=True show_genre=True show_release_date=True %}
-				{% endwith %}
+				{% include 'includes/game_panel/game_panel_2_col.html' with show_purchase=True show_genre=True show_release_date=True %}
 
 			{% endfor %}
 

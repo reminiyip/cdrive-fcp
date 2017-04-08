@@ -214,3 +214,8 @@ img.game-image {
 .tags div button {
 	margin: 3px 0;
 }
+
+/* Filter Form */
+.filter-form {
+	margin: 0;
+}
