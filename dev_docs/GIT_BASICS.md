@@ -21,13 +21,13 @@ git config --global user.email <your-email>
 ###### Step 3: saving changes
 
 ```
-git status                                 # show which files are modified`  
+git status                                 # show which files are modified  
 
 git add <file/dir>                         # tells Git you wanna include updates to a particular file in the next commit  
                                            # (i.e. put them in staging area)
-OR `git add -A                             # you wanna include ALL updates in the next commit
+OR git add -A                             # you wanna include ALL updates in the next commit
 
-git commit -m <message>`                   # actually commits what you added to the staging area
+git commit -m <message>                   # actually commits what you added to the staging area
                                            # please include a concise commit message
 ```
 
@@ -87,7 +87,7 @@ git push origin master                     # push to the master branch
 
 ###### Step 6: make a pull request
 
-If you're remote repo is a forked one, and you would like to request the original repo to merge your changes, goto GitHub and press the button __New Pull Request__. This will send the pull request to the original repo, and the authorized users can decide whether to merge your changes, or abort.
+If your remote repo is a forked one, and you would like to request the original repo to merge your changes, go to GitHub and press the button __New Pull Request__. This will send the pull request to the original repo, and the authorized users can decide whether to merge your changes, or abort.
 
 #### References
 
