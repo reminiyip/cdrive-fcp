@@ -18,6 +18,13 @@ img.game-image-full, img.genre-image-full {
 	max-width: 100%;
 }
 
+img.header-icon {
+	max-width: 30px;
+	max-height: 30px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
 .divider {
 	margin: 5px;
 	height: 1px;
@@ -137,13 +144,10 @@ img.game-image-full, img.genre-image-full {
 }
 
 /* Header */ 
-.navbar {
+#nav-bar {
 	border: 0px;
 	border-radius: 0;
-}
-
-.navbar-default {
-	background-color: rgb(0, 169, 230);
+	background-color: rgba(0, 169, 230, 0.8);
 }
 
 .navbar-brand {
@@ -163,16 +167,13 @@ img.game-image-full, img.genre-image-full {
 	background-color: rgb(73, 151, 208);
 }
 
-#account {
+#info-bar>li>a {
 	padding-top: 10px;
 	padding-bottom: 10px;
-	margin-right: -15px;
 }
 
-#account img {
-	max-width: 30px;
-	max-height: 30px;
-	margin-left: 5px;
+#info-bar {
+	margin-right: -15px;
 }
 
 /* Game panel */

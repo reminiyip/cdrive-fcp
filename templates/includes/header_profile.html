@@ -1,13 +1,21 @@
+{% load staticfiles %}
+
 <ul class="nav navbar-nav navbar-right" id="info-bar">
 
 	{% with cart=user.profile.get_active_cart %}
 		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cart: {{ cart.games.all.count }} <span class="caret"></span></a>
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				<img src="{% static 'img/icons/shopping-cart.png' %}" class="header-icon" />
+				{{ cart.games.all.count }} <span class="caret"></span>
+			</a>
 			<ul class="dropdown-menu">
-				{% for game in cart.games.all %}
-					<li><a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a></li>
-				{% endfor %}
+				<li><a href="#" class="no-cursor-link">Current Rewards: {{ user.profile.get_rewards_total }}</a></li>
+				<li><a href="#" class="no-cursor-link">Til Next Reward: ${{ user.profile.spending_required }}</a></li>
+				<li role="separator" class="divider"></li>
 				{% if cart.games.count %}
+					{% for game in cart.games.all %}
+						<li><a href="{% url 'game' game.genre.id game.id %}">{{ game.title }}</a></li>
+					{% endfor %}
 					<li role="separator" class="divider"></li>
 				{% endif %}
 				<li><a href="{% url 'cart' cart.id %}">Pay $$</a></li>
@@ -16,18 +24,13 @@
 	{% endwith %}
 
 	<li class="dropdown">
-		<a id="account" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-			Til Next Reward: $
-			{% if request.user.profile.accumulated_spending %}
-				{{ request.user.profile.spending_required }} 
-			{% else %}
-				100 
-			{% endif %}
-			<img src="{{ request.user.profile.avatar_image.url }}" /> <span class="caret"></span>
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			{{ user.username }} 
+			<img src="{{ user.profile.avatar_image.url }}" class="header-icon" /> <span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
 			<li><a href="#" class="no-cursor-link">Signed in as <b>{{ user.username }}</b></a></li>
-			<li><a href="#" class="no-cursor-link">On screen name is <b>{{ request.user.profile.on_screen_name }}</b></a></li>
+			<li><a href="#" class="no-cursor-link">On screen name is <b>{{ user.profile.on_screen_name }}</b></a></li>
 			<li role="separator" class="divider"></li>
 			<li><a href="{% url 'profile' user.profile.id %}">View Profile</a></li>
 			<li><a href="{% url 'purchase_history' %}">View Purchase History</a></li>

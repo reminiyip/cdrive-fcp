@@ -5,7 +5,6 @@ from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.db.models import Sum, Count
 from django.contrib import messages
 from collections import OrderedDict
 from datetime import timedelta
@@ -63,17 +62,10 @@ class ProfileDetailView(DetailView):
         layers['Home'] = reverse('homepage')
         layers['My Profile'] = '#'
         context['layers'] = layers
-
-        # get rewards, group by expiration date
-        rewards_batches = RewardsBatch.objects.filter(user_id=self.request.user.id, expiration_date__gte=context['now']) \
-                                                .values('expiration_date', 'issue_date') \
-                                                .annotate(values=Sum('value')) \
-                                                .order_by('expiration_date')
-                                                
-        context['rewards_batches'] = rewards_batches
-
-        total_number_of_rewards = [batch['values'] for batch in rewards_batches.all()]
-        context['total_number_of_rewards'] = sum(total_number_of_rewards)
+                                         
+        # get rewards info
+        context['rewards_batches'] = self.request.user.profile.get_rewards_batches()
+        context['total_number_of_rewards'] = self.request.user.profile.get_rewards_total()
 
         return context
 

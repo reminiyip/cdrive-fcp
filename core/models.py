@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models import Sum, Count
 
 from cdrive_fcp.utils.const import UserConst
 from cdrive_fcp.utils.utils import PathUtils
@@ -49,6 +50,20 @@ class UserProfile(models.Model):
             history = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID)
 
         return history
+
+    def get_rewards_batches(self, filter_expiration_date=timezone.now()):
+        rewards_batches = RewardsBatch.objects.filter(user_id=self.user.id, expiration_date__gte=filter_expiration_date) \
+                                                .values('expiration_date', 'issue_date') \
+                                                .annotate(values=Sum('value')) \
+                                                .order_by('expiration_date')
+                                                
+        return rewards_batches
+
+    def get_rewards_total(self, filter_expiration_date=timezone.now()):
+        rewards_batches = self.get_rewards_batches(filter_expiration_date=filter_expiration_date)
+        total_number_of_rewards = [batch['values'] for batch in rewards_batches.all()]
+
+        return sum(total_number_of_rewards)
 
 @receiver(post_save, sender=User)
 def create_user_profile_and_cart(sender, instance, created, **kwargs):
