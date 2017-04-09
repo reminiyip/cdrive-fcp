@@ -112,4 +112,8 @@ Go to /register for one, or use:
 Username: sampleuser
 Password: thisisapassword
 Email: sample@example.com
+
+Username: avatar
+Password: blueeyes
+Email: avatar@tar.com
 ```
