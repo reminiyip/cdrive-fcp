@@ -43,7 +43,7 @@ class Game(models.Model):
             games = Game.objects.all().order_by('-release_date')
 
         # annotate similarity
-        similar_games = games.filter(tag__tag_name__in=tag_names).annotate(similarity=Count('tag'))
+        similar_games = games.filter(tag__tag_name__in=tag_names).annotate(similarity=Count('tag')).order_by('-similarity')
 
         return similar_games
 
