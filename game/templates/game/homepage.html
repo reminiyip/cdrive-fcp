@@ -19,7 +19,7 @@
 
         <div class="col-md-4">
             <div class="thumbnail">
-                <a href="{% url 'genre' genre.id 'game' game.id %}" target="_blank">
+                <a href="{% url 'game' game.genre_id game.id %}" target="_blank">
                     <h3 class="panel-title">{{ game.title }}</h3>
                     <img src="{{ game.image.url }}" class="center-block game-image" style="width:100%">
                 </a>
