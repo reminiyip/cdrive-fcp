@@ -1,39 +1,58 @@
-{% extends 'game/base.html' %}
-{% load staticfiles %}
-
-{% block title %}Homepage{% endblock %}
-{% block children_css %}<link rel="stylesheet" href="{% static 'css/homepage.css' %}">{% endblock %}
-
-{% block content %}
+{% extends 'game/base.html' %} {% load staticfiles %} {% block title %}Homepage{% endblock %} {% block children_css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">{% endblock %} {% block content %}
 
 <div id="homepage" class="container-fluid">
-	
-	<div id="genre-info-header">	
 
-		{% include "includes/breadcrumb.html" with layers=layers %}
+    <div id="genre-info-header">
 
-		<div class="page-header">
-			<h3>Homepage</h3>
-		</div>
-	</div>
+        {% include "includes/breadcrumb.html" with layers=layers %}
 
-	{% for genre_group in genres %}
-		<div class="row">
+        <div class="page-header">
+            <h3>Homepage</h3>
+        </div>
+    </div>
 
-			{% for genre in genre_group %}
 
-				<div class="col-md-6">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<h3 class="panel-title"><a href="{% url 'genre' genre.id %}">{{ genre.genre_name }}</a></h3>
-						</div>
-					</div>
-				</div>
 
-			{% endfor %}
+    <div class="row">
+        {% for game in recommendations %}
 
-		</div>
-	{% endfor %}
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <a href="{% url 'game' game.genre_id game.id %}" target="_blank">
+                    <h3 class="panel-title">{{ game.title }}</h3>
+                    <img src="{{ game.image.url }}" class="center-block game-image" style="width:100%">
+                </a>
+                <div class="caption">
+                    <p>{{ game.one_line_description }}</p>
+                    {% include 'includes/platform_icons.html' %}
+                    <h3><small><span class="label label-info price">HKD {{ game.price }}</span></small></h3> {% include "includes/tag_list.html" with tags=game.get_sorted_tags slice="2" show_form=False %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+
+    {% for genre_group in genres %}
+    <div class="row">
+
+        {% for genre in genre_group %}
+
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><a href="{% url 'genre' genre.id %}">{{ genre.genre_name }}</a></h3>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+    {% endfor %}
 
 </div>
 

@@ -40,11 +40,13 @@ def homepage(request):
             while(len(sim_games)>0 and sim_games[0] not in purchased_games):
                 sim_games.pop(0)
         if(len(sim_games)>0):     
-            sim_list.append(sim_games)
+            sim_list.append(sim_games[0])
     recommended_games = []
     for i in sim_list:
         if i not in recommended_games:
             recommended_games.append(i)
+            print(i.title)
+        
     #recommended_games = list(set(sim_list))
         
     
