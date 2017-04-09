@@ -16,8 +16,8 @@ class PathUtils():
 class HelperUtils():
 	"""Other commonly used help functions"""
 
-	def get_column_groups(items, num_of_col=2):
-		return [items[i:i+2] for i in range(0, len(items), num_of_col)]
+	def get_column_groups(items, num_of_cols=2):
+		return [items[i:i+num_of_cols] for i in range(0, len(items), num_of_cols)]
 
 
 

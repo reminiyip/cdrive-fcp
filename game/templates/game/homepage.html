@@ -41,10 +41,11 @@
 
         {% for genre in genre_group %}
 
-        <div class="col-md-6">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><a href="{% url 'genre' genre.id %}">{{ genre.genre_name }}</a></h3>
+        <div class="col-sm-4 col-md-3">
+            <div class="thumbnail">
+                <a href="{% url 'genre' genre.id %}"><img src="{{ genre.image.url }}" alt="{{ genre.genre_name }}-img"></a>
+                <div class="caption">
+                    <h3 class="text-center">{{ genre.genre_name }}</h3>
                 </div>
             </div>
         </div>

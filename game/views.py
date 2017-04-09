@@ -22,7 +22,7 @@ def index(request):
 
 def homepage(request):
     genres = Genre.objects.all()
-    genre_groups = HelperUtils.get_column_groups(genres)
+    genre_groups = HelperUtils.get_column_groups(genres, num_of_cols=4)
     
     # recommendations
     purchases = request.user.profile.get_purchase_history(ordered=True)

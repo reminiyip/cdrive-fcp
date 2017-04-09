@@ -2,12 +2,12 @@ a.no-cursor-link {
 	cursor: default;
 }
 
-img.game-image-sm {
+img.game-image-sm, img.genre-image-sm {
 	max-width: 100%;
 	max-height: 200px
 }
 
-img.game-image {
+img.game-image, img.genre-image {
 	max-width: 100%;
 	max-height: 400px
 }
