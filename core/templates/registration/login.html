@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load filters %}
 
 {% block title %}Login{% endblock %}
 {% block css %}
@@ -19,35 +20,16 @@
 
 	<div class="form-content">
 
-	{% if form.errors %}
-		<div class="alert alert-danger" role="alert">
-		{% for error_field, error_msgs in form.errors.items %}
-			<p>
-
-			{% if error_field != '__all__' %}
-				<strong>{{ error_field }}</strong> - 
-			{% endif %}
-
-			{% for msg in error_msgs %}
-				{{ msg }}
-			{% endfor %}
-
-			</p>
-		{% endfor %}
-		</div>
-	{% endif %}
+		{% include 'includes/form_errors.html' %}
 
 		<form id="login-form" method="post" enctype="multipart/form-data">{% csrf_token %}
 
-			<div class="form-group">
-				<label for="{{ form.username.id_for_label }}">Username</label>
-				<input id="{{ form.username.id_for_label }}" name="username" class="form-control" type="text" placeholder="Username">
-			</div>
-
-			<div class="form-group">
-				<label for="{{ form.password.id_for_label }}">Password</label>
-				<input type="password" name="password" class="form-control" id="{{ form.password.id_for_label }}" placeholder="Password">
-			</div>
+			{% for field in form %}
+				<div class="form-group">
+					<label for="{{ field.id_for_label }}">{{ field.label|formfieldname }}</label>
+					{{ field|addclass:"form-control" }}
+				</div>
+			{% endfor %}
 
 		</form>
 

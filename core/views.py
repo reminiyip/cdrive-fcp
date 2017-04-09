@@ -4,8 +4,9 @@ from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Sum, Count
+from django.contrib import messages
 from collections import OrderedDict
 from datetime import timedelta
 import json
@@ -13,8 +14,6 @@ import json
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from .forms import PaymentForm, RegisterForm, UserProfileForm, UserEmailForm
 from cdrive_fcp.utils.const import RewardsConst, UserConst
-
-from django.contrib import messages
 
 ##############################################################################
 #                                       test                                 #
@@ -156,14 +155,17 @@ def payment(request, cart_id):
             # assign new empty cart to user
             Cart.objects.create(user=request.user)
 
-            return HttpResponse('OK')
-
-        else:
-            return HttpResponse(json.dumps(form.errors))
+            return HttpResponseRedirect(reverse('payment_done', args=[cart_id]))
 
     else:
         form = PaymentForm()
-        return render(request, 'core/payment.html', {'form': form, 'cart': cart})
+
+    print(form.errors)
+    
+    return render(request, 'core/payment.html', {'form': form, 'cart': cart})
+
+def payment_done(request, cart_id):
+    return render(request, 'core/payment.html', {'success': True})
 
 ##############################################################################
 #                                     others                                 #

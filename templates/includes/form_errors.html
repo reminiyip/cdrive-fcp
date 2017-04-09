@@ -1,0 +1,17 @@
+{% if form.errors %}
+	<div class="alert alert-danger" role="alert">
+	{% for error_field, error_msgs in form.errors.items %}
+		<p>
+
+		{% if error_field != '__all__' %}
+			<strong>{{ error_field }}</strong> - 
+		{% endif %}
+
+		{% for msg in error_msgs %}
+			{{ msg }}
+		{% endfor %}
+
+		</p>
+	{% endfor %}
+	</div>
+{% endif %}

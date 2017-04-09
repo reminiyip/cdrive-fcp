@@ -1,30 +1,43 @@
 {% extends 'core/base.html' %}
 {% load staticfiles %}
+{% load filters %}
 
 {% block title %}Payment{% endblock %}
 {% block children_css %}<link rel="stylesheet" href="{% static 'css/payment.css' %}">{% endblock %}
-{% block children_js %}<script src="{% static 'js/payment.js' %}"></script>{% endblock %}
 
 {% block content %}
 
 <div id="payment-page" class="container-fluid page">
-	
-	<form method="post" action="{% url 'payment' cart.id %}" success-url="{% url 'homepage' %}" error-url="{% url 'cart' cart.id %}">{% csrf_token %}
 
-		{{ form.as_p }}
+	<div class="form-content">
 
-	    <div>
-	        <input type="submit" value="pay" />
-	    </div>
+		{% if success %}
 
-	</form>
+			<div class="alert alert-success text-center" role="alert">Thank you for your payment!</div>
+			<p class="text-center"><a class="btn btn-primary btn-md" role="button" href="{% url 'homepage' %}">Home</a></p>
 
-	<div id="payment-success">
-		<p>Thank you for your payment!</p>
-	</div>
+		{% else %}
 
-	<div id="payment-error">
-		<p class="message"></p>
+			{% include 'includes/form_errors.html' %}
+			
+			<form id="payment-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+				{% for field in form %}
+					<div class="form-group">
+						<label for="{{ field.id_for_label }}">{{ field.label|formfieldname }}</label>
+						{{ field|addclass:"form-control" }}
+					</div>
+				{% endfor %}
+
+			</form>
+
+			<div class="row-center space-between">
+				<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total }}</span></h3>
+				<button type="submit" class="btn btn-primary" form="payment-form">Pay</button>
+			</div>
+
+		{% endif %}
+
 	</div>
 
 </div>

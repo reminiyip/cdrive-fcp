@@ -35,7 +35,7 @@ def homepage(request):
         recommended_games = []
         for target in targets:
             game = target.get_most_similar_game(user=request.user)
-            if game is not None:
+            if game is not None and game not in recommended_games:
                 recommended_games.append(game)
     else:
         recommended_games = None
