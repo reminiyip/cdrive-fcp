@@ -1,18 +1,78 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block title %}Login{% endblock %}
+{% block css %}
+	<link rel="stylesheet" href="{% static 'lib/css/bootstrap-social.css' %}">
+	<link rel="stylesheet" href="{% static 'lib/css/font-awesome.min.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-<button type="submit">Login</button>
-</form>
+<div class="container-fluid page">
 
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-<p><a href="{% url 'social:begin' 'github' %}">Login with GitHub</a></p>
-<p><a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a></p>
+	<div id="login-info-header">	
+
+		<div class="page-header">
+			<h3>Login</h3>
+		</div>
+
+	</div>
+
+	<div class="form-content">
+
+	{% if form.errors %}
+		<div class="alert alert-danger" role="alert">
+		{% for error_field, error_msgs in form.errors.items %}
+			<p>
+
+			{% if error_field != '__all__' %}
+				<strong>{{ error_field }}</strong> - 
+			{% endif %}
+
+			{% for msg in error_msgs %}
+				{{ msg }}
+			{% endfor %}
+
+			</p>
+		{% endfor %}
+		</div>
+	{% endif %}
+
+		<form id="profile-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+			<div class="form-group">
+				<label for="{{ form.username.id_for_label }}">Username</label>
+				<input id="{{ form.username.id_for_label }}" name="username" class="form-control" type="text" placeholder="Username">
+			</div>
+
+			<div class="form-group">
+				<label for="{{ form.password.id_for_label }}">Password</label>
+				<input type="password" name="password" class="form-control" id="{{ form.password.id_for_label }}" placeholder="Password">
+			</div>
+
+		</form>
+
+		<p class="text-center">
+			<button type="submit" class="btn btn-primary" form="profile-form">Login</button>
+			<a href="{% url 'register' %}" type="button" class="btn btn-default">Register</a>
+		</p>
+
+		<p class="text-center"><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+		<p class="text-center">
+			<a href="{% url 'social:begin' 'github' %}" class="btn btn-social btn-github">
+				<span class="fa fa-github"></span>Login with GitHub
+			</a>
+		</p>
+		<p class="text-center">
+			<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-social btn-facebook">
+				<span class="fa fa-facebook"></span>Login with Facebook
+			</a>
+		</p>
+
+	</div>
+
+</div>
 
 {% endblock %}

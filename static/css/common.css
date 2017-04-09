@@ -103,6 +103,11 @@ img.game-image {
 	font-size: 0.8em !important;
 }
 
+.form-content {
+	width: 50%;
+	margin: auto;
+}
+
 /* Pages */
 .page {
 	padding: 80px 100px 150px;
