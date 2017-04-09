@@ -33,38 +33,47 @@
 
 		<div class="form-group">
 			<label class="control-label">Spending Required To Obtain Next Rewards</label>
-			<p class="form-control-static">{{ profile.spending_required }}</p>
+			<p class="form-control-static">${{ profile.spending_required }}</p>
 		</div>
 
 		<div class="form-group">
-			<label class="control-label">Total Number of Rewards</label>
-			{% if total_number_of_rewards %}
-				<p>{{ total_number_of_rewards }}</p>
-			{% else %}
-				<p>You currently don't have any rewards!</p>
-			{% endif %}
+			<label class="control-label">Total Number of Reward</label>
+			<div class="row-center space-between">
+				{% if total_number_of_rewards %}
+					<p>{{ total_number_of_rewards }}</p>
+					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#rewards-table" aria-expanded="false" aria-controls="rewards-table">
+						View Details
+					</button>
+				{% else %}
+					<p>You currently don't have any rewards!</p>
+				{% endif %}
+			</div>
 		</div>
 
-		{% for batch in rewards_batches %}
-		<div class="form-group">
-			<label class="contro-label">Rewards Batch {{ forloop.counter }}</label>
-				<div class="form-group">
-					<label class="contro-label">Value</label>
-						<p class="form-control-static">{{ batch.value }}</p>
-				</div>
-				<div class="form-group">
-					<label class="contro-label">Issue Date</label>
-						<p class="form-control-static">{{ batch.issue_date }}</p>
-				</div>
-				<div class="form-group">
-					<label class="contro-label">Expiration Date</label>
-						<p class="form-control-static">{{ batch.expiration_date }}</p>
-				</div>
+		<div class="collapse" id="rewards-table">
+			<table class="table table-condensed">
+				<tr>
+					<th># of Rewards</th>
+					<th>Issue Date</th>
+					<th>Expiration Date</th>
+				</tr>
+				{% for batch in rewards_batches %}
+					<tr>
+						<td>{{ batch.values }}</td>
+						<td>{{ batch.issue_date }}</td>
+						<td>{{ batch.expiration_date }}</td>
+					</tr>
+				{% endfor %}
+			</table>
 		</div>
-		{% endfor %}
 
 	</form>
 
 {% endwith %}
 
 {% endblock %}
+
+
+
+
+

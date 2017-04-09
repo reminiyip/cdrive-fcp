@@ -12,3 +12,7 @@
 	padding: 6px 12px;
 	border-bottom: 1px solid #eeeeee;
 }
+
+#profile-form table {
+	font-size: 14px;
+}

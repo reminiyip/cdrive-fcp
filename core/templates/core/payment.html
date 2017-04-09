@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<div id="payment-page" class="container-fluid">
+<div id="payment-page" class="container-fluid page">
 	
 	<form method="post" action="{% url 'payment' cart.id %}" success-url="{% url 'homepage' %}" error-url="{% url 'cart' cart.id %}">{% csrf_token %}
 

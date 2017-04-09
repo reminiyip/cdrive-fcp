@@ -43,6 +43,11 @@ img.game-image {
 	align-items: center;
 }
 
+.row-center>* {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
 .col-center {
 	display: flex;
 	flex-direction: column;
@@ -96,6 +101,11 @@ img.game-image {
 
 .badge-small {
 	font-size: 0.8em !important;
+}
+
+/* Pages */
+.page {
+	padding: 80px 100px 150px;
 }
 
 /* Header */ 

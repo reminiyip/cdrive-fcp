@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.urls import reverse
 from django.http import HttpResponse
+from django.db.models import Sum, Count
 from collections import OrderedDict
 from datetime import timedelta
 import json
@@ -64,14 +65,16 @@ class ProfileDetailView(DetailView):
         layers['My Profile'] = '#'
         context['layers'] = layers
 
-        # get rewards
-        rewards_batches = RewardsBatch.objects.filter(user_id=self.request.user.id).filter(issue_date__gte=(context['now']-timedelta(days=RewardsConst.EXPIRE_THRESHOLD)))
+        # get rewards, group by expiration date
+        rewards_batches = RewardsBatch.objects.filter(user_id=self.request.user.id, expiration_date__gte=context['now']) \
+                                                .values('expiration_date', 'issue_date') \
+                                                .annotate(values=Sum('value')) \
+                                                .order_by('expiration_date')
+                                                
         context['rewards_batches'] = rewards_batches
 
-        total_number_of_rewards = [batch.value for batch in rewards_batches]
+        total_number_of_rewards = [batch['values'] for batch in rewards_batches.all()]
         context['total_number_of_rewards'] = sum(total_number_of_rewards)
-
-        context['action'] = 'view'
 
         return context
 
