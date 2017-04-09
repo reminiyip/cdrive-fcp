@@ -53,7 +53,7 @@ def homepage(request):
     # layers
     layers = {'Home': '#'}
 
-    return render(request, 'game/homepage.html', {'genres': genre_groups, 'layers': layers})
+    return render(request, 'game/homepage.html', {'genres': genre_groups, 'recommendations': recommended_games, 'layers': layers})
 
 def view_genre(request, genre_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'action': 'view_genre'}})
