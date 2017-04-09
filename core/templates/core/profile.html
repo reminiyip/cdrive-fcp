@@ -26,6 +26,43 @@
 			<img id="preview-avatar" src="{{ profile.avatar_image.url }}"/>
 		</div>
 
+		<div class="form-group">
+			<label class="control-label">Accumulated Spending</label>
+			<p class="form-control-static">{{ profile.accumulated_spending }}</p>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label">Spending Required To Obtain Next Rewards</label>
+			<p class="form-control-static">{{ profile.spending_required }}</p>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label">Total Number of Rewards</label>
+			{% if total_number_of_rewards %}
+				<p>{{ total_number_of_rewards }}</p>
+			{% else %}
+				<p>You currently don't have any rewards!</p>
+			{% endif %}
+		</div>
+
+		{% for batch in rewards_batches %}
+		<div class="form-group">
+			<label class="contro-label">Rewards Batch {{ forloop.counter }}</label>
+				<div class="form-group">
+					<label class="contro-label">Value</label>
+						<p class="form-control-static">{{ batch.value }}</p>
+				</div>
+				<div class="form-group">
+					<label class="contro-label">Issue Date</label>
+						<p class="form-control-static">{{ batch.issue_date }}</p>
+				</div>
+				<div class="form-group">
+					<label class="contro-label">Expiration Date</label>
+						<p class="form-control-static">{{ batch.expiration_date }}</p>
+				</div>
+		</div>
+		{% endfor %}
+
 	</form>
 
 {% endwith %}

@@ -51,9 +51,6 @@ def register(request):
 #                                     profile                                #
 ##############################################################################
 
-def view_profile(request):
-    return render(request, 'core/profile.html', {'data': {'action': 'view_profile'}})
-
 class ProfileDetailView(DetailView):
     model = UserProfile
 
@@ -66,6 +63,13 @@ class ProfileDetailView(DetailView):
         layers['Home'] = reverse('homepage')
         layers['My Profile'] = '#'
         context['layers'] = layers
+
+        # get rewards
+        rewards_batches = RewardsBatch.objects.filter(user_id=self.request.user.id).filter(issue_date__gte=(context['now']-timedelta(days=RewardsConst.EXPIRE_THRESHOLD)))
+        context['rewards_batches'] = rewards_batches
+
+        total_number_of_rewards = [batch.value for batch in rewards_batches]
+        context['total_number_of_rewards'] = sum(total_number_of_rewards)
 
         context['action'] = 'view'
 
