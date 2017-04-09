@@ -1,0 +1,30 @@
+{% load filters %}
+
+<div class="col-md-6 game-panel">
+	<div class="panel panel-info">
+
+		{% include 'includes/game_panel/heading.html' %}
+
+		<div class="panel-body">
+
+			<div class="row-start space-between margin-between">
+				<div id="game-image">
+					<img src="{{ game.image.url }}" class="img-thumbnail img-responsive center-block game-image-sm" />
+				</div>
+
+				<div>
+					{% include 'includes/tag_list.html' with tags=game.get_sorted_tags slice="5" %}
+				</div>
+			</div>	
+
+			<div class="bottom-right-corner">
+			{% if show_release_date %}
+				<a href="#" class="no-cursor-link"><span class="badge badge-small">{{ game.release_date }}</span></a>
+			{% endif %}
+			</div>
+
+		</div>
+
+		<div class="panel-footer">{{ game.one_line_description }}</div>
+	</div>
+</div>

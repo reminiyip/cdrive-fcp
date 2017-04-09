@@ -1,11 +1,9 @@
 from __future__ import unicode_literals
+from operator import itemgetter, attrgetter
+from decimal import Decimal
 
 from django.db import models
 from django.contrib.auth.models import User
-
-from operator import itemgetter, attrgetter
-
-from decimal import Decimal
 
 class Genre(models.Model):
     genre_name = models.CharField(max_length=30)
@@ -51,11 +49,7 @@ class Game(models.Model):
             similar_games.append(tup[0])
         return similar_games
             
-    
     def add_to_genre(self, genre_id):
-        return
-
-    def is_purchased(self):
         return
 
 class Review(models.Model):

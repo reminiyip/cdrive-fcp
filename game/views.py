@@ -4,7 +4,7 @@ from django.utils import timezone, text
 from django.urls import reverse
 from collections import OrderedDict
 
-from .models import Game, Genre, Tag
+from .models import Game, Genre, Tag, Platform
 from core.models import Cart, CartGamePurchase
 from django.contrib.auth.models import User
 from cdrive_fcp.utils.utils import HelperUtils
@@ -21,7 +21,6 @@ def index(request):
 ##############################################################################
 
 def homepage(request):
-    # genre
     genres = Genre.objects.all()
     genre_groups = HelperUtils.get_column_groups(genres)
     
@@ -54,7 +53,7 @@ def homepage(request):
     # layers
     layers = {'Home': '#'}
 
-    return render(request, 'game/homepage.html', {'genres': genre_groups, 'recommendations': recommended_games, 'layers': layers})
+    return render(request, 'game/homepage.html', {'genres': genre_groups, 'layers': layers})
 
 def view_genre(request, genre_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'action': 'view_genre'}})
@@ -66,8 +65,19 @@ class GenreDetailView(DetailView):
         context = super(GenreDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
 
-        # # get games, group by 2
-        games = Game.objects.filter(genre_id=context['genre'].id)
+        # platforms
+        platforms = Platform.objects.all()
+        context['platforms'] = platforms
+
+        # get filters
+        if self.request.GET.get('filters') != None:
+            filters = self.request.GET.get('filters').split(',')
+        else:
+            filters = platforms.values_list('platform_name', flat=True)
+        context['filters'] = filters
+
+        # get sorted games, group by 2
+        games = Game.objects.filter(genre_id=context['genre'].id, platforms__platform_name__in=filters).distinct().order_by('-release_date')
         context['games'] = HelperUtils.get_column_groups(games)
 
         # form page_header dict
@@ -78,8 +88,26 @@ class GenreDetailView(DetailView):
 
         return context
 
-def view_tagged_games(request, tag_name):
-    return render(request, 'game/index.html', {'data': {'tag_name': tag_name, 'action': 'view_tagged_games'}})
+def tagged_games(request, tag_name):
+    # platforms
+    platforms = Platform.objects.all()
+
+    # get filters
+    if request.GET.get('filters') != None:
+        filters = request.GET.get('filters').split(',')
+    else:
+        filters = platforms.values_list('platform_name', flat=True)
+
+    # games
+    games = Game.objects.filter(tag__tag_name__contains=tag_name, platforms__platform_name__in=filters).distinct().order_by('-release_date')
+    game_groups = HelperUtils.get_column_groups(games)
+
+    # form page_header dict
+    layers = OrderedDict()
+    layers['Home'] = reverse('homepage')
+    layers['Tag - {}'.format(tag_name)] = '#'
+
+    return render(request, 'game/tag.html', {'games': game_groups, 'tag_name': tag_name, 'layers': layers, 'platforms': platforms, 'filters': filters})
 
 def view_game(request, genre_id, game_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'action': 'view_game'}})

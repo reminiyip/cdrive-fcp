@@ -2,14 +2,13 @@ from __future__ import unicode_literals
 from decimal import Decimal
 from django.utils import timezone
 from datetime import timedelta
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
 from cdrive_fcp.utils.const import UserConst
 from cdrive_fcp.utils.utils import PathUtils
-from game.models import Game
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -28,6 +27,8 @@ class UserProfile(models.Model):
         return cart
 
     def get_purchased_games(self):
+        from game.models import Game
+        
         games_id = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID).values_list('game', flat=True)
         games = Game.objects.filter(pk__in=set(games_id))
         return games
