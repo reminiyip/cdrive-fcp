@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
-from operator import itemgetter, attrgetter
+# from operator import itemgetter, attrgetter
 from decimal import Decimal
+from django.db.models import Count
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -30,25 +31,25 @@ class Game(models.Model):
         tags = Tag.objects.filter(game_id=self.id).order_by('-popularity')
         return tags
     
-    def get_similar_games(self):
-        tags = Tag.objects.filter(game_id=self.id).order_by('-popularity')
-        tag_names = []
-        for tag in tags:
-            tag_names.append(tag.tag_name)
-        games = Game.objects.all().order_by('-release_date')
-        similar_games = []
-        similarity = []
-        for game in games:
-            compare_tags = Tag.objects.filter(game_id=game.id)
-            compare_names = []
-            for tag in compare_tags:
-                compare_names.append(tag.tag_name)
-            sim = len(set(tag_names).intersection(compare_names))
-            similarity.append((game,sim))
-        sorted_similarity = sorted(similarity, key=itemgetter(1), reverse=True)
-        for tup in sorted_similarity:
-            similar_games.append(tup[0])
+    def get_similar_games(self, filter_purchased=True, user=None):
+        # get all tag names related to this game
+        tag_names = self.get_sorted_tags().values_list('tag_name', flat=True)
+
+        # get games to check similarity, based on whether to filter purchased history or not
+        if filter_purchased and user is not None:
+            purchased_games_id = user.profile.get_purchased_games_id()
+            games = Game.objects.exclude(pk__in=set(purchased_games_id)).order_by('-release_date')
+        else:
+            games = Game.objects.all().order_by('-release_date')
+
+        # annotate similarity
+        similar_games = games.filter(tag__tag_name__in=tag_names).annotate(similarity=Count('tag'))
+
         return similar_games
+
+    def get_most_similar_game(self, filter_purchased=True, user=None):
+        games = self.get_similar_games(filter_purchased=filter_purchased, user=user)
+        return games[0] if games.count() else None
             
     def add_to_genre(self, genre_id):
         return

@@ -26,11 +26,20 @@ class UserProfile(models.Model):
         cart = Cart.objects.get(user_id=self.user.id, status=Cart.NOT_PAID)
         return cart
 
-    def get_purchased_games(self):
+    def get_purchased_games_id(self, ordered=True):
+        if ordered:
+            games_id = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID).order_by('-cart__payment__paid_date').values_list('game', flat=True)
+        else: 
+            games_id = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID).values_list('game', flat=True)
+
+        return games_id
+
+    def get_purchased_games(self, ordered=True):
         from game.models import Game
-        
-        games_id = CartGamePurchase.objects.filter(cart__user__id=self.user.id, cart__status=Cart.PAID).values_list('game', flat=True)
+
+        games_id = self.get_purchased_games_id(ordered=ordered)
         games = Game.objects.filter(pk__in=set(games_id))
+
         return games
 
     def get_purchase_history(self, ordered=True):
