@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 
 class Genre(models.Model):
     genre_name = models.CharField(max_length=30)
+    image = models.ImageField(upload_to='genres')
 
     def __str__(self):
         return self.genre_name
