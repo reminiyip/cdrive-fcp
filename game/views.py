@@ -25,11 +25,8 @@ def homepage(request):
     genre_groups = HelperUtils.get_column_groups(genres, num_of_cols=4)
     
     # recommendations
-        
-        # get purchased games
     purchased_games = request.user.profile.get_purchased_games()
 
-        # recommendation algorithm, target on the few most recently purchased games
     num_of_targets = min(3, purchased_games.count())
     targets = purchased_games[:num_of_targets]
 
@@ -39,10 +36,14 @@ def homepage(request):
         if game is not None:
             recommended_games.append(game)
 
+    # featured games
+    featured_games = Game.objects.filter(is_featured=True)
+    featured_game_groups = HelperUtils.get_column_groups(featured_games, num_of_cols=3)
+
     # layers
     layers = {'Home': '#'}
 
-    return render(request, 'game/homepage.html', {'genres': genre_groups, 'recommendations': recommended_games, 'layers': layers})
+    return render(request, 'game/homepage.html', {'genres': genre_groups, 'recommendations': recommended_games, 'featured_games': featured_game_groups, 'layers': layers})
 
 def view_genre(request, genre_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'action': 'view_genre'}})

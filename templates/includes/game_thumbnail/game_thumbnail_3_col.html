@@ -1,0 +1,25 @@
+<div class="col-md-4">
+    <div class="thumbnail">
+        <a href="{% url 'game' game.genre_id game.id %}"><img src="{{ game.image.url }}" class="center-block {{ game_image_size }}"></a>
+        <div class="caption">
+            <div class="row-center space-between">
+                <h3>{{ game.title }}</h3>
+            </div>
+
+            <div class="row-center self-pull-right-flex">
+                <a href="{% url 'genre' game.genre.id %}"><span class="badge">{{ game.genre.genre_name }}</span></a>
+                {% include 'includes/platform_icons.html' %}
+            </div>
+
+            <p>{{ game.one_line_description }}</p>
+
+            <div class="row-center space-between">
+                {% include "includes/tag_list.html" with tags=game.get_sorted_tags slice="2" %}
+                <div class="col-center space-between">
+                    <h3><small><span class="label label-info price">HKD {{ game.price }}</span></small></h3> 
+                    <a href="#" class="no-cursor-link"><span class="badge badge-small">{{ game.release_date }}</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

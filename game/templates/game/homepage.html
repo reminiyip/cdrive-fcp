@@ -12,46 +12,63 @@
         </div>
     </div>
 
-
-    <div class="row">
-        {% for game in recommendations %}
-
-        <div class="col-md-4">
-            <div class="thumbnail">
-                <a href="{% url 'game' game.genre_id game.id %}" target="_blank">
-                    <h3 class="panel-title">{{ game.title }}</h3>
-                    <img src="{{ game.image.url }}" class="center-block" style="width:100%">
-                </a>
-                <div class="caption">
-                    <p>{{ game.one_line_description }}</p>
-                    {% include 'includes/platform_icons.html' %}
-                    <h3><small><span class="label label-info price">HKD {{ game.price }}</span></small></h3> {% include "includes/tag_list.html" with tags=game.get_sorted_tags slice="2" show_form=False %}
-                </div>
-            </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Featured Games</h3>
         </div>
-        {% endfor %}
+        <div class="panel-body">
+            {% for featured_game_group in featured_games %}
+            <div class="row">
 
+                {% for game in featured_game_group %}
+                    {% include "includes/game_thumbnail/game_thumbnail_3_col.html" with game_image_size="game-image-full" %}
+                {% endfor %}
+
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h3 class="panel-title">Recommended for You</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
 
-    {% for genre_group in genres %}
-    <div class="row">
+            {% for game in recommendations %}
+                {% include "includes/game_thumbnail/game_thumbnail_3_col.html" with game_image_size="game-image-sm" %}
+            {% endfor %}
 
-        {% for genre in genre_group %}
-
-        <div class="col-sm-4 col-md-3">
-            <div class="thumbnail">
-                <a href="{% url 'genre' genre.id %}"><img src="{{ genre.image.url }}" alt="{{ genre.genre_name }}-img"></a>
-                <div class="caption">
-                    <h3 class="text-center">{{ genre.genre_name }}</h3>
-                </div>
             </div>
         </div>
-
-        {% endfor %}
-
     </div>
-    {% endfor %}
+
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">Browse Games by Genres</h3>
+        </div>
+        <div class="panel-body">
+            {% for genre_group in genres %}
+            <div class="row">
+
+                {% for genre in genre_group %}
+
+                <div class="col-sm-4 col-md-3">
+                    <div class="thumbnail">
+                        <a href="{% url 'genre' genre.id %}"><img src="{{ genre.image.url }}" alt="{{ genre.genre_name }}-img"></a>
+                        <div class="caption">
+                            <h3 class="text-center">{{ genre.genre_name }}</h3>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 
 </div>
 
