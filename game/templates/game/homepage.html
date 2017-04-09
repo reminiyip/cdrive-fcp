@@ -29,6 +29,8 @@
         </div>
     </div>
 
+    {% if user.is_authenticated and recommendations|length %}
+
     <div class="panel panel-danger">
         <div class="panel-heading">
             <h3 class="panel-title">Recommended for You</h3>
@@ -43,6 +45,8 @@
             </div>
         </div>
     </div>
+
+    {% endif %}
 
     <div class="panel panel-warning">
         <div class="panel-heading">

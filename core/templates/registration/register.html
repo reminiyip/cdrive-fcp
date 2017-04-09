@@ -1,21 +1,66 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Sign up</h2>
-<form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-    <p>
-    	{{ field.label_tag }}<br>
-    	{{ field }}
-    	{% if field.help_text %}
-    		<small style="color: grey">{{ field.help_text }}</small>
-    	{% endif %}
-    	{% for error in field.errors %}
-    		<p style="color: red">{{ error }}</p>
-    	{% endfor %}
-     </p>
-    {% endfor %}
-	<button type="submit">Sign up</button>
-</form>
+
+<div class="container-fluid page">
+
+    <div id="register-info-header">    
+        <div class="page-header">
+            <h3>Registeration</h3>
+        </div>
+    </div>
+
+    <div class="form-content">
+
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+        {% for error_field, error_msgs in form.errors.items %}
+            <p>
+
+            {% if error_field != '__all__' %}
+                <strong>{{ error_field }}</strong> - 
+            {% endif %}
+
+            {% for msg in error_msgs %}
+                {{ msg }}
+            {% endfor %}
+
+            </p>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+        <form id="register-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                <input id="{{ form.username.id_for_label }}" name="username" class="form-control" type="text" placeholder="Username">
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email Address</label>
+                <input type="email" name="email" class="form-control" id="{{ form.email.id_for_label }}" placeholder="Email">
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Password</label>
+                <input type="password" name="password1" class="form-control" id="{{ form.password1.id_for_label }}" placeholder="Password">
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Password Confirmation</label>
+                <input type="password" name="password2" class="form-control" id="{{ form.password2.id_for_label }}" placeholder="Password Confirmation">
+            </div>
+
+        </form>
+
+        <p class="text-center">
+            <button type="submit" class="btn btn-primary" form="register-form">Sign Up!</button>
+            <a href="{% url 'login' %}" type="button" class="btn btn-default">Login</a>
+        </p>
+
+    </div>
+    
+</div>
+
 {% endblock %}

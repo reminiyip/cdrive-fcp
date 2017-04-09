@@ -8,6 +8,7 @@ from .models import Game, Genre, Tag, Platform
 from core.models import Cart, CartGamePurchase
 from django.contrib.auth.models import User
 from cdrive_fcp.utils.utils import HelperUtils
+from cdrive_fcp.utils.const import GameConst
 
 ##############################################################################
 #                                       test                                 #
@@ -25,16 +26,19 @@ def homepage(request):
     genre_groups = HelperUtils.get_column_groups(genres, num_of_cols=4)
     
     # recommendations
-    purchased_games = request.user.profile.get_purchased_games()
+    if request.user.is_authenticated:
+        purchased_games = request.user.profile.get_purchased_games()
 
-    num_of_targets = min(3, purchased_games.count())
-    targets = purchased_games[:num_of_targets]
+        num_of_targets = min(GameConst.NUM_OF_TARGETS_FOR_RECOMMENDATION, purchased_games.count())
+        targets = purchased_games[:num_of_targets]
 
-    recommended_games = []
-    for target in targets:
-        game = target.get_most_similar_game(user=request.user)
-        if game is not None:
-            recommended_games.append(game)
+        recommended_games = []
+        for target in targets:
+            game = target.get_most_similar_game(user=request.user)
+            if game is not None:
+                recommended_games.append(game)
+    else:
+        recommended_games = None
 
     # featured games
     featured_games = Game.objects.filter(is_featured=True)

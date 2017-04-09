@@ -170,8 +170,8 @@ img.game-image-full, img.genre-image-full {
 }
 
 #account img {
-	width: 30px;
-	height: 30px;
+	max-width: 30px;
+	max-height: 30px;
 	margin-left: 5px;
 }
 

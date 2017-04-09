@@ -10,3 +10,6 @@ class UserConst():
 
 class OAuthConst():
 	FB_API_BASE_URL = 'http://graph.facebook.com'
+
+class GameConst():
+	NUM_OF_TARGETS_FOR_RECOMMENDATION = 3
