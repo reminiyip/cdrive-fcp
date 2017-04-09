@@ -37,7 +37,7 @@ def homepage(request):
     for target in targets:
         sim_games = target.get_similar_games()
         if(len(sim_games)>0):
-            while(len(sim_games)>0 and sim_games[0] not in purchased_games):
+            while(len(sim_games)>0 and sim_games[0] in purchased_games):
                 sim_games.pop(0)
         if(len(sim_games)>0):     
             sim_list.append(sim_games[0])
