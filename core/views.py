@@ -157,7 +157,7 @@ def payment(request, cart_id):
     return render(request, 'core/payment.html', {'form': form, 'cart': cart})
 
 def payment_done(request, cart_id):
-    return render(request, 'core/payment.html', {'success': True})
+    return render(request, 'core/payment_done.html')
 
 ##############################################################################
 #                                     others                                 #

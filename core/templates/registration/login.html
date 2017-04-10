@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% load filters %}
 
 {% block title %}Login{% endblock %}
 {% block css %}
@@ -10,49 +9,37 @@
 
 {% block content %}
 
-<div class="container-fluid page">
+{% with form_name="login" %}
 
-	<div id="login-info-header">	
-		<div class="page-header">
-			<h3>Login</h3>
+	<div class="container-fluid page">
+
+		{% include "includes/form/form_header.html" with title="Login" %}
+
+		<div class="form-content">
+
+			{% include "includes/form/form_content.html" %}
+
+			<p class="text-center">
+				<button type="submit" class="btn btn-primary" form="{{ form_name }}-form">Login</button>
+				<a href="{% url 'register' %}" type="button" class="btn btn-default">Register</a>
+			</p>
+
+			<p class="text-center"><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+			<p class="text-center">
+				<a href="{% url 'social:begin' 'github' %}" class="btn btn-social btn-github">
+					<span class="fa fa-github"></span>Login with GitHub
+				</a>
+			</p>
+			<p class="text-center">
+				<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-social btn-facebook">
+					<span class="fa fa-facebook"></span>Login with Facebook
+				</a>
+			</p>
+
 		</div>
-	</div>
-
-	<div class="form-content">
-
-		{% include 'includes/form_errors.html' %}
-
-		<form id="login-form" method="post" enctype="multipart/form-data">{% csrf_token %}
-
-			{% for field in form %}
-				<div class="form-group">
-					<label for="{{ field.id_for_label }}">{{ field.label|formfieldname }}</label>
-					{{ field|addclass:"form-control" }}
-				</div>
-			{% endfor %}
-
-		</form>
-
-		<p class="text-center">
-			<button type="submit" class="btn btn-primary" form="login-form">Login</button>
-			<a href="{% url 'register' %}" type="button" class="btn btn-default">Register</a>
-		</p>
-
-		<p class="text-center"><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
-		<p class="text-center">
-			<a href="{% url 'social:begin' 'github' %}" class="btn btn-social btn-github">
-				<span class="fa fa-github"></span>Login with GitHub
-			</a>
-		</p>
-		<p class="text-center">
-			<a href="{% url 'social:begin' 'facebook' %}" class="btn btn-social btn-facebook">
-				<span class="fa fa-facebook"></span>Login with Facebook
-			</a>
-		</p>
 
 	</div>
-
-</div>
+{% endwith %}
 
 {% endblock %}

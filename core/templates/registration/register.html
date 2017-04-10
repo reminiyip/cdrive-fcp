@@ -1,38 +1,26 @@
 {% extends 'base.html' %}
-{% load filters %}
 
 {% block content %}
 
-<div class="container-fluid page">
+{% with form_name="register" %}
 
-    <div id="register-info-header">    
-        <div class="page-header">
-            <h3>Registeration</h3>
+    <div class="container-fluid page">
+
+        {% include "includes/form/form_header.html" with title="Registration" %}
+
+        <div class="form-content">
+
+            {% include 'includes/form/form_content.html' %}
+
+            <p class="text-center">
+                <button type="submit" class="btn btn-primary" form="register-form">Sign Up!</button>
+                <a href="{% url 'login' %}" type="button" class="btn btn-default">Login</a>
+            </p>
+
         </div>
+        
     </div>
 
-    <div class="form-content">
-
-        {% include 'includes/form_errors.html' %}
-
-        <form id="register-form" method="post" enctype="multipart/form-data">{% csrf_token %}
-
-            {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label|formfieldname }}</label>
-                    {{ field|addclass:"form-control" }}
-                </div>
-            {% endfor %}
-
-        </form>
-
-        <p class="text-center">
-            <button type="submit" class="btn btn-primary" form="register-form">Sign Up!</button>
-            <a href="{% url 'login' %}" type="button" class="btn btn-default">Login</a>
-        </p>
-
-    </div>
-    
-</div>
+{% endwith %}
 
 {% endblock %}

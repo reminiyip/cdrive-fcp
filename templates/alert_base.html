@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="alert alert-{% block alert_type %}{% endblock %} text-center" role="alert">
+	{% block alert_msg %}{% endblock %}
+</div>
+
+{% endblock %}

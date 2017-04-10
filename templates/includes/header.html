@@ -20,7 +20,7 @@
 			{% if user.is_authenticated %}
 				{% include "includes/header_profile.html" %}
 			{% else %}
-				<ul class="nav navbar-nav navbar-right" id="info-bar">
+				<ul class="nav navbar-nav navbar-right info-bar" id="login-info-bar">
 					<li><a href="{% url 'login' %}">Login</a></li>
 					<li><a href="{% url 'register' %}">Register</a></li>
 				</ul>

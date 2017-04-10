@@ -1,45 +1,29 @@
 {% extends 'core/base.html' %}
 {% load staticfiles %}
-{% load filters %}
 
 {% block title %}Payment{% endblock %}
 {% block children_css %}<link rel="stylesheet" href="{% static 'css/payment.css' %}">{% endblock %}
 
 {% block content %}
 
-<div id="payment-page" class="container-fluid page">
+{% with form_name="payment" %}
+
+<div id="{{ form_name }}-page" class="container-fluid page">
+
+	{% include 'includes/form/form_header.html' with title="Payment" %}
 
 	<div class="form-content">
 
-		{% if success %}
+		{% include 'includes/form/form_content.html' %}
 
-			<div class="alert alert-success text-center" role="alert">Thank you for your payment!</div>
-			<p class="text-center"><a class="btn btn-primary btn-md" role="button" href="{% url 'homepage' %}">Home</a></p>
-
-		{% else %}
-
-			{% include 'includes/form_errors.html' %}
-			
-			<form id="payment-form" method="post" enctype="multipart/form-data">{% csrf_token %}
-
-				{% for field in form %}
-					<div class="form-group">
-						<label for="{{ field.id_for_label }}">{{ field.label|formfieldname }}</label>
-						{{ field|addclass:"form-control" }}
-					</div>
-				{% endfor %}
-
-			</form>
-
-			<div class="row-center space-between">
-				<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total }}</span></h3>
-				<button type="submit" class="btn btn-primary" form="payment-form">Pay</button>
-			</div>
-
-		{% endif %}
-
+		<div class="row-center space-between">
+			<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total }}</span></h3>
+			<button type="submit" class="btn btn-primary" form="{{ form_name }}-form">Pay</button>
+		</div>
 	</div>
 
 </div>
+
+{% endwith %}
 
 {% endblock %}

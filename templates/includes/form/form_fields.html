@@ -1,0 +1,8 @@
+{% load filters %}
+
+{% for field in form %}
+	<div class="form-group">
+		<label for="{{ field.id_for_label }}">{{ field.label|formfieldname }}</label>
+		{{ field|addclass:"form-control" }}
+	</div>
+{% endfor %}

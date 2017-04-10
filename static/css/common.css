@@ -158,22 +158,23 @@ img.header-icon {
 	height: 100%;
 }
 
-#info-bar>li>a {
+.nav.info-bar>li>a {
 	color: white;
 	font-family: 'Audiowide', cursive;
 }
 
-#info-bar>.open>a {
-	background-color: rgb(73, 151, 208);
+.nav.info-bar>.open>a, .nav.info-bar>li>a:hover {
+	background-color: rgb(73, 151, 208) !important;
+	color: white !important;
 }
 
-#info-bar>li>a {
+#profile-info-bar>li>a {
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
 
-#info-bar {
-	margin-right: -15px;
+.nav.info-bar {
+	margin-right: -30px !important;
 }
 
 /* Game panel */

@@ -1,0 +1,7 @@
+{% include 'includes/form/form_errors.html' %}
+		
+<form id="{{ form_name }}-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+	{% include 'includes/form/form_fields.html' %}
+</form>
+
+{% block extra %}{% endblock %}

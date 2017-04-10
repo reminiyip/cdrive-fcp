@@ -1,4 +1,5 @@
 {% if form.errors %}
+
 	<div class="alert alert-danger" role="alert">
 	{% for error_field, error_msgs in form.errors.items %}
 		<p>
@@ -14,4 +15,5 @@
 		</p>
 	{% endfor %}
 	</div>
+
 {% endif %}

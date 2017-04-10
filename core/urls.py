@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 from . import views
 from .views import CartDetailView, ProfileDetailView
@@ -29,7 +30,7 @@ profile_urls = [
 cart_urls = [
     url(r'^cart/(?P<pk>\d+)/$', CartDetailView.as_view(), name='cart'),
     url(r'^cart/(?P<cart_id>\d+)/payment/$', views.payment, name='payment'),
-    url(r'^cart/(?P<cart_id>\d+)/payment/done/$', views.payment_done, name='payment_done'),
+    url(r'^cart/(?P<cart_id>\d+)/payment/done/$', TemplateView.as_view(template_name='core/payment_done.html'), name='payment_done'),
 ]
 
 other_urls = [
