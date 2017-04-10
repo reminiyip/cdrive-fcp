@@ -12,11 +12,10 @@ browse_game_urls = [
 ]
 
 review_urls = [
-	url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/reviews/', views.view_reviews, name='reviews'), 
-    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/review/(?P<review_id>\d+)/$', views.view_review, name='review'),   
-    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/review/new/', views.new_review, name='new_review'),   
-    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/review/(?P<review_id>\d+)/edit/', views.edit_review, name='edit_review'),   
-    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/review/(?P<review_id>\d+)/remove/', views.remove_review, name='remove_review'), 
+    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/reviews/', views.view_reviews, name='reviews'),
+    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/add_review/', views.add_review, name='add_review'),
+    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/edit_review/(?P<review_id>\d+)/', views.edit_review, name='edit_review'),   
+    url(r'^genre/(?P<genre_id>\d+)/game/(?P<game_id>\d+)/delete_review/(?P<review_id>\d+)/', views.delete_review, name='delete_review'), 
 ]
 
 tag_urls = [

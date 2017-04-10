@@ -4,11 +4,15 @@ from django.utils import timezone, text
 from django.urls import reverse
 from collections import OrderedDict
 
-from .models import Game, Genre, Tag, Platform
+from .models import Game, Genre, Tag, Platform, Review
 from core.models import Cart, CartGamePurchase
 from django.contrib.auth.models import User
 from cdrive_fcp.utils.utils import HelperUtils
 from cdrive_fcp.utils.const import GameConst
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .forms import ReviewForm, ReviewDeleteForm
+from django.contrib import messages
 
 ##############################################################################
 #                                       test                                 #
@@ -127,19 +131,113 @@ class GameDetailView(DetailView):
 ##############################################################################
 
 def view_reviews(request, genre_id, game_id):
-    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'action': 'view_reviews'}})
+    game = Game.objects.get(pk=game_id)
 
-def view_review(request, genre_id, game_id, review_id):
-    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'review_id': review_id, 'action': 'view_review'}})
+    reviews_list = Review.objects.filter(game=game_id).order_by('-review_issue_date')
+    paginator = Paginator(reviews_list, 5) # show 5 reviews per page
 
-def new_review(request, genre_id, game_id):
-    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'action': 'new_review'}})
+    # form page_header dict
+    layers = OrderedDict()
+    layers['Home'] = reverse('homepage')
+    layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
+    layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
+    layers['Review'] = '#'
+    page  = request.GET.get('page')
+
+    try:
+        reviews = paginator.page(page)
+    except PageNotAnInteger:
+        reviews = paginator.page(1)
+    except EmptyPage:
+        reviews = paginator.page(paginator.num_pages)
+
+    return render(request, 'game/review.html', {'reviews': reviews, 'game': game, 'layers': layers})
+
+def add_review(request, genre_id, game_id):
+    game = Game.objects.get(pk=game_id)
+
+    if request.user.is_authenticated() and game in request.user.profile.get_purchased_games():
+        if request.method == 'POST':
+            form = ReviewForm(request.POST)
+
+            if form.is_valid():
+
+                review = form.save(commit=False)
+                review.review_issue_date = timezone.now()
+                review.user = request.user
+                review.game = game
+                review.save()
+                return redirect('reviews', genre_id=game.genre.id, game_id=game.id)
+        else:
+            form = ReviewForm()
+
+            # form page_header dict
+            layers = OrderedDict()
+            layers['Home'] = reverse('homepage')
+            layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
+            layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
+            layers['Review'] = '#'
+            page  = request.GET.get('page')
+
+        return render(request, 'game/add_review.html', {'game': game,'form': form, 'layers': layers})
+    else:
+        return redirect('login')
 
 def edit_review(request, genre_id, game_id, review_id):
-    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'review_id': review_id, 'action': 'edit_review'}})
+    review = Review.objects.get(pk=review_id)
+    game = Game.objects.get(pk=game_id)
 
-def remove_review(request, genre_id, game_id, review_id):
-    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'review_id': review_id, 'action': 'remove_review'}})
+    if request.user.is_authenticated() and review in request.user.profile.get_posted_reviews():
+        if request.method == 'POST':
+            form = ReviewForm(request.POST, instance=review)
+
+            if form.is_valid():
+                form.save()
+                return redirect('reviews', genre_id=game.genre.id, game_id=game.id)
+            else:
+                messages.error(request, 'Please correct the errors below.')
+        else:
+            form = ReviewForm(instance=review, label_suffix='')
+
+             # form page_header dict
+            layers = OrderedDict()
+            layers['Home'] = reverse('homepage')
+            layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
+            layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
+            layers['Review'] = '#'
+            page  = request.GET.get('page')
+
+        return render(request, 'game/edit_review.html', {'game': game, 'form': form, 'layers': layers})
+    else:
+        return redirect('login')
+
+def delete_review(request, genre_id, game_id, review_id):
+    review = Review.objects.get(pk=review_id)
+    game = Game.objects.get(pk=game_id)
+
+    if request.user.is_authenticated() and review in request.user.profile.get_posted_reviews():
+
+        if request.method == "POST":
+            form = ReviewDeleteForm(request.POST, instance=review)
+
+            if form.is_valid():
+                review.delete()
+                return redirect('reviews', genre_id=game.genre.id, game_id=game.id)
+        else:
+            form = ReviewDeleteForm(instance=review)
+
+            # form page_header dict
+            layers = OrderedDict()
+            layers['Home'] = reverse('homepage')
+            layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
+            layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
+            layers['Review'] = '#'
+            page  = request.GET.get('page')
+
+        return render(request, 'game/delete_review.html', {'game': game, 'form': form, 'layers': layers})
+    else:
+        return redirect('login')
+
 
 ##############################################################################
 #                                      actions                               #
@@ -176,12 +274,3 @@ def add_to_cart(request, genre_id, game_id):
     cg.save()
 
     return redirect('game', genre_id=genre_id, pk=game_id)
-
-
-
-
-
-
-
-
-

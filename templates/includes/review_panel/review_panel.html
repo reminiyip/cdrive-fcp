@@ -1,0 +1,32 @@
+<div class="review-panel">
+
+	<div class="panel panel-info">
+
+		<div class="panel-heading">
+			<div class="row-center">
+				<h3 class="panel-title">{{ review.review_header }}</h3>
+			</div>
+		</div>
+
+		<div class="panel-body">
+
+			<div class="row-start space-between margin-between">
+				<div>
+					{{ review.review_content }}
+				</div>
+			</div>	
+		</div>
+
+		<div class="panel-footer">
+			<small>Posted by {{ review.user.username }} at {{ review.review_issue_date }}</small>
+			{% if user.is_authenticated %}
+				{% if game in user.profile.get_purchased_games %}
+					{% if review in user.profile.get_posted_reviews %}
+						<small><a href="{% url 'edit_review' genre_id=game.genre.id game_id=game.id review_id=review.id %}">Edit</a></small>
+						<small><a href="{% url 'delete_review' genre_id=game.genre.id game_id=game.id review_id=review.id %}">Delete</a></small>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
