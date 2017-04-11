@@ -1,5 +1,4 @@
-<div class="review-panel">
-
+<div class="col-md-6 review-panel">
 	<div class="panel panel-info">
 
 		<div class="panel-heading">
@@ -22,11 +21,12 @@
 			{% if user.is_authenticated %}
 				{% if game in user.profile.get_purchased_games %}
 					{% if review in user.profile.get_posted_reviews %}
-						<small><a href="{% url 'edit_review' genre_id=game.genre.id game_id=game.id review_id=review.id %}">Edit</a></small>
-						<small><a href="{% url 'delete_review' genre_id=game.genre.id game_id=game.id review_id=review.id %}">Delete</a></small>
+						<small><a href="{% url 'edit_review' game.genre.id game.id review.id %}">Edit</a></small>
+						<small><a href="{% url 'delete_review' game.genre.id game.id review.id %}">Delete</a></small>
 					{% endif %}
 				{% endif %}
 			{% endif %}
 		</div>
+
 	</div>
 </div>

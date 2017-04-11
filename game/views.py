@@ -133,8 +133,9 @@ class GameDetailView(DetailView):
 def view_reviews(request, genre_id, game_id):
     game = Game.objects.get(pk=game_id)
 
-    reviews_list = Review.objects.filter(game=game_id).order_by('-review_issue_date')
-    paginator = Paginator(reviews_list, 5) # show 5 reviews per page
+    review_list = Review.objects.filter(game=game_id).order_by('-review_issue_date')
+    review_groups = HelperUtils.get_column_groups(review_list)
+    paginator = Paginator(review_groups, 5) # show 10 reviews per page, i.e. 5 rows
 
     # form page_header dict
     layers = OrderedDict()
@@ -142,6 +143,7 @@ def view_reviews(request, genre_id, game_id):
     layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
     layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
     layers['Review'] = '#'
+
     page  = request.GET.get('page')
 
     try:
