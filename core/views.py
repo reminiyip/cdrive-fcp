@@ -21,9 +21,6 @@ from cdrive_fcp.utils.const import RewardsConst, UserConst
 def index(request):
     return render(request, 'core/index.html', {'data': {'test': 'I am a test string.'}})
 
-def goto_homepage(request):
-	return redirect('homepage')
-
 ##############################################################################
 #                                      account                               #
 ##############################################################################
@@ -103,9 +100,6 @@ def edit_profile(request, profile_id):
 ##############################################################################
 #                                       cart                                 #
 ##############################################################################
-
-def view_cart(request, cart_id):
-    return render(request, 'core/index.html', {'data': {'cart_id': cart_id, 'action': 'view_cart'}})
 
 class CartDetailView(DetailView):
     model = Cart

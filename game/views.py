@@ -50,9 +50,6 @@ def homepage(request):
 
     return render(request, 'game/homepage.html', {'genres': genres, 'recommendations': recommended_games, 'featured_games': featured_games, 'layers': layers})
 
-def view_genre(request, genre_id):
-    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'action': 'view_genre'}})
-
 class GenreDetailView(DetailView):
     model = Genre
 
@@ -102,9 +99,6 @@ def tagged_games(request, tag_name):
     layers['Tag - {}'.format(tag_name)] = '#'
 
     return render(request, 'game/tag.html', {'games': games, 'tag_name': tag_name, 'layers': layers, 'platforms': platforms, 'filters': filters})
-
-def view_game(request, genre_id, game_id):
-    return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'action': 'view_game'}})
 
 class GameDetailView(DetailView):
     model = Game
