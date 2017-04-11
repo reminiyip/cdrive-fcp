@@ -4,6 +4,7 @@ class RewardsConst():
 	EXPIRE_THRESHOLD = 120 
 	MAX_REWARDS = 10 
 	REWARD_DISCOUNT = Decimal(0.1)
+	ISSUE_REWARD_THRESHOLD = 100
 
 class UserConst():
 	INITIAL_ACC_SPENDING = 11

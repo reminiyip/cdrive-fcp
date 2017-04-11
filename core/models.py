@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Sum
+import math
 
 from cdrive_fcp.utils.const import UserConst, RewardsConst
 from cdrive_fcp.utils.utils import PathUtils, HelperUtils
@@ -19,6 +20,21 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return self.user.username
+
+    def increment_accumulated_spending(self, value):
+        self.accumulated_spending += value
+        self.save()
+        return self.accumulated_spending
+
+    def issue_rewards(self):
+        rewards = math.floor(self.accumulated_spending / RewardsConst.ISSUE_REWARD_THRESHOLD)
+        self.accumulated_spending %= RewardsConst.ISSUE_REWARD_THRESHOLD
+        self.save()
+
+        rewards_batch = RewardsBatch(user=self.user)
+        rewards_batch.issue(rewards)
+
+        return rewards_batch
 
     def spending_required(self):
         return 100 - self.accumulated_spending
@@ -64,6 +80,12 @@ class UserProfile(models.Model):
         total_number_of_rewards = [batch['values'] for batch in rewards_batches.all()]
 
         return sum(total_number_of_rewards)
+
+    def accumulated_spending_str(self, prec=2):
+        return format(self.accumulated_spending, '.{}f'.format(prec))
+
+    def spending_required_str(self, prec=2):
+        return format(self.spending_required(), '.{}f'.format(prec))
 
 @receiver(post_save, sender=User)
 def create_user_profile_and_cart(sender, instance, created, **kwargs):
@@ -140,7 +162,8 @@ class RewardsBatch(models.Model):
     def __str__(self):
         return "{}: {} issued on {}".format(self.user.username, self.value, self.issue_date)
 
-    def issue(self):
+    def issue(self, value):
+        self.value = value
         self.issue_date = timezone.now()
         self.expiration_date = self.issue_date + timedelta(days=RewardsConst.EXPIRE_THRESHOLD)
         self.save()
@@ -159,6 +182,12 @@ class CartGamePurchase(models.Model):
     def get_subtotal(self):
         return HelperUtils.get_subtotal(self.game.price, self.rewards)
 
+    def get_subtotal_str(self):
+        return HelperUtils.get_subtotal_str(self.game.price, self.rewards)
+
+    def make_purchase(self):
+        # TODO: deduct rewards from reward batches
+        return
 
 
 

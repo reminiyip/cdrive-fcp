@@ -1,0 +1,25 @@
+{% autoescape off %}
+
+Your purchase on {{ cart.payment.paid_date }} for card {{ cart.payment.card_number|slice:"4" }}-xxxx-xxxx-xxxx is well received. Below are the details:
+
+Games purchased:
+	{% for purchase in cart.purchases.all %}
+	- {{ purchase.game.title }} in HK$ {{ purchase.get_subtotal_str }} (original price HK$ {{ purchase.game.price }})
+	{% endfor %}
+
+Total amount paid:
+	HK$ {{ cart.get_total_str }}
+
+{% if new_rewards %}
+We are issuing you {{ new_rewards.value }} new rewards, expiring on {{ new_rewards.expiration_date }}.
+{% endif %}
+
+Your account detail:
+	Accumulated spending: {{ user.profile.accumulated_spending_str }}
+	Spending required until next reward: {{ user.profile.spending_required_str }}
+	Rewards balance: {{ user.profile.get_rewards_total }}
+
+Sincerely,
+The FCP Team
+
+{% endautoescape %}

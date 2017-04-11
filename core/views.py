@@ -14,8 +14,8 @@ import json
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
 from game.models import Game
 from .forms import PaymentForm, RegisterForm, UserProfileForm, UserEmailForm
-from cdrive_fcp.utils.const import RewardsConst, UserConst
-from cdrive_fcp.utils.utils import HelperUtils
+from cdrive_fcp.utils.const import UserConst, RewardsConst
+from cdrive_fcp.utils.utils import HelperUtils, EmailUtils
 
 ##############################################################################
 #                                       test                                 #
@@ -136,9 +136,6 @@ def payment(request, cart_id):
             cart.status = Cart.PAID
             cart.save()
 
-            # assign new empty cart to user
-            Cart.objects.create(user=request.user)
-
             return HttpResponseRedirect(reverse('payment_done', args=[cart_id]))
 
     else:
@@ -149,6 +146,21 @@ def payment(request, cart_id):
     return render(request, 'core/payment.html', {'form': form, 'cart': cart})
 
 def payment_done(request, cart_id):
+    cart = Cart.objects.get(pk=cart_id)
+
+    # assign new empty cart to user
+    Cart.objects.create(user=request.user)
+
+    # add accumulated spending to user
+    accumulated_spending = request.user.profile.increment_accumulated_spending(cart.get_total())
+
+    # check accumulated spending to send new rewards
+    rewards = None
+    if accumulated_spending >= RewardsConst.ISSUE_REWARD_THRESHOLD:
+        rewards = request.user.profile.issue_rewards()
+
+    EmailUtils.confirm_purchase(request.user, cart_id, rewards=rewards)
+
     return render(request, 'core/payment_done.html')
 
 ##############################################################################
