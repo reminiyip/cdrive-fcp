@@ -11,7 +11,7 @@ from cdrive_fcp.utils.utils import HelperUtils
 from cdrive_fcp.utils.const import GameConst
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import ReviewForm, ReviewDeleteForm
+from .forms import ReviewForm
 from django.contrib import messages
 
 ##############################################################################
@@ -189,58 +189,32 @@ def edit_review(request, genre_id, game_id, review_id):
     review = Review.objects.get(pk=review_id)
     game = Game.objects.get(pk=game_id)
 
-    if request.user.is_authenticated() and review in request.user.profile.get_posted_reviews():
-        if request.method == 'POST':
-            form = ReviewForm(request.POST, instance=review)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
 
-            if form.is_valid():
-                form.save()
-                return redirect('reviews', genre_id=game.genre.id, game_id=game.id)
-            else:
-                messages.error(request, 'Please correct the errors below.')
+        if form.is_valid():
+            form.save()
+            return redirect('reviews', genre_id=game.genre.id, game_id=game.id)
+
         else:
-            form = ReviewForm(instance=review, label_suffix='')
-
-             # form page_header dict
-            layers = OrderedDict()
-            layers['Home'] = reverse('homepage')
-            layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
-            layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
-            layers['Review'] = '#'
-            page  = request.GET.get('page')
-
-        return render(request, 'game/edit_review.html', {'game': game, 'form': form, 'layers': layers})
+            messages.error(request, 'Please correct the errors below.')
     else:
-        return redirect('login')
+        form = ReviewForm(instance=review, label_suffix='')
+
+         # form page_header dict
+        layers = OrderedDict()
+        layers['Home'] = reverse('homepage')
+        layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
+        layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
+        layers['Review'] = '#'
+        page  = request.GET.get('page')
+
+    return render(request, 'game/edit_review.html', {'game': game, 'form': form, 'review': review, 'layers': layers})
 
 def delete_review(request, genre_id, game_id, review_id):
     review = Review.objects.get(pk=review_id)
-    game = Game.objects.get(pk=game_id)
-
-    if request.user.is_authenticated() and review.user == request.user:
-
-        if request.method == "POST":
-            form = ReviewDeleteForm(request.POST, instance=review)
-
-            if form.is_valid():
-                review.delete()
-                return redirect('reviews', genre_id=game.genre.id, game_id=game.id)
-        else:
-            form = ReviewDeleteForm(instance=review)
-
-            # form page_header dict
-            layers = OrderedDict()
-            layers['Home'] = reverse('homepage')
-            layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
-            layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
-            layers['Review'] = '#'
-            page  = request.GET.get('page')
-
-        return render(request, 'game/delete_review.html', {'game': game, 'form': form, 'layers': layers})
-        
-    else:
-        return redirect('login')
-
+    review.delete()
+    return redirect('reviews', genre_id=genre_id, game_id=game_id)
 
 ##############################################################################
 #                                      actions                               #
