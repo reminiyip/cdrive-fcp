@@ -240,3 +240,5 @@ def add_to_cart(request, genre_id, game_id):
     cg.save()
 
     return redirect('game', genre_id=genre_id, pk=game_id)
+
+    

@@ -23,7 +23,6 @@ def toint(value):
 def groupin(value, num):
     return HelperUtils.get_column_groups(value, num_of_cols=num)
 
-
 @register.filter(name='gamerewards')
 def gamerewards(cart, game_id):
     return CartGamePurchase.objects.get(cart=cart, game_id=game_id).rewards
@@ -36,3 +35,6 @@ def discount(price, rewards):
 def subtotal(price, rewards):
 	return HelperUtils.get_subtotal_str(price, rewards)
 
+@register.filter(name='rewardsrange')
+def rewardsrange(assigned_rewards, allowed_rewards):
+	return range(int(assigned_rewards) + int(allowed_rewards) + 1)

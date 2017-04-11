@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.db.models import Sum
 from collections import OrderedDict
 from datetime import timedelta
 import json
@@ -116,11 +117,6 @@ class CartDetailView(DetailView):
         layers['My Shopping Cart'] = '#'
         context['layers'] = layers
 
-        # get rewards
-        reward_batches = RewardsBatch.objects.filter(user_id=self.request.user.id).filter(issue_date__gte=(context['now']-timedelta(days=RewardsConst.EXPIRE_THRESHOLD)))
-        rewards = [reward_batch.value for reward_batch in reward_batches]
-        context['rewards'] = min(sum(rewards), RewardsConst.MAX_REWARDS)
-
         return context
 
 def payment(request, cart_id):
@@ -173,18 +169,24 @@ def purchase_history(request):
 #                                     actions                                #
 ##############################################################################
 
-def assign_rewards_to_game(request, cart_id, game_id, reward_value):
+def assign_rewards_to_game(request, cart_id):
+    game_id = request.GET.get('game')
+    reward_value = request.GET.get('value')
+
     game = Game.objects.get(pk=game_id)
+    cart = Cart.objects.get(pk=cart_id)
+    total_rewards = cart.get_rewards()
+
     cg = CartGamePurchase.objects.get(game_id=game_id, cart_id=cart_id)
     cg.rewards = reward_value
     cg.save()
 
     discount = HelperUtils.get_discount_str(game.price, reward_value)
     subtotal = HelperUtils.get_subtotal_str(game.price, reward_value)
-
     total = Cart.objects.get(pk=cart_id).get_total_str()
+    allowed_rewards = cart.get_allowed_rewards()
 
-    return HttpResponse(json.dumps({'reward_value': reward_value, 'discount': discount, 'subtotal': subtotal, 'total': total}))
+    return HttpResponse(json.dumps({'reward_value': reward_value, 'discount': discount, 'subtotal': subtotal, 'total': total, 'allowed_rewards': allowed_rewards}))
 
 
 

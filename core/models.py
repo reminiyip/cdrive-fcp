@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Sum
 
-from cdrive_fcp.utils.const import UserConst
+from cdrive_fcp.utils.const import UserConst, RewardsConst
 from cdrive_fcp.utils.utils import PathUtils, HelperUtils
 
 class UserProfile(models.Model):
@@ -120,6 +120,17 @@ class Cart(models.Model):
     def get_total_str(self, prec=2):
         return format(self.get_total(), '.{}f'.format(prec))
 
+    def get_rewards(self, now=timezone.now()):
+        reward_batches = RewardsBatch.objects.filter(user_id=self.user.id).filter(issue_date__gte=(now-timedelta(days=RewardsConst.EXPIRE_THRESHOLD)))
+        rewards = [reward_batch.value for reward_batch in reward_batches]
+        return min(sum(rewards), RewardsConst.MAX_REWARDS)
+
+    def get_allowed_rewards(self):
+        return self.get_rewards() - int(self.purchases.aggregate(allowed_rewards=Sum('rewards'))['allowed_rewards'])
+
+    def get_allowed_rewards_str(self):
+        return str(self.get_allowed_rewards())
+
 class RewardsBatch(models.Model):
     value = models.PositiveIntegerField()
     issue_date = models.DateField()
@@ -136,7 +147,7 @@ class RewardsBatch(models.Model):
 
 class CartGamePurchase(models.Model):
     cart = models.ForeignKey('Cart', related_name='purchases')
-    game = models.ForeignKey('game.Game')
+    game = models.ForeignKey('game.Game', related_name='purchases')
     rewards = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):

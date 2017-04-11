@@ -1,15 +1,14 @@
+{% load filters %}
+
 <div class="rewards-wrapper">
 	<h3>Rewards: </h3>
-	<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});" value="{{ assigned_reward }}">
-		<option>0</option>
-		{% with ""|center:rewards as range %}
-			{% for _ in range %}
-				{% if forloop.counter == assigned_reward %}
-					<option selected>{{ forloop.counter }}</option>
-				{% else %}
-					<option>{{ forloop.counter }}</option>
-				{% endif %}
-			{% endfor %}
-		{% endwith %}
+	<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.id }}, {{ cart.id }});" value="{{ assigned_reward }}">
+		{% for i in assigned_reward|rewardsrange:cart.get_allowed_rewards_str %}
+			{% if i == assigned_reward %}
+				<option selected>{{ i }}</option>
+			{% else %}
+				<option>{{ i }}</option>
+			{% endif %}
+		{% endfor %}
 	</select>
 </div>
