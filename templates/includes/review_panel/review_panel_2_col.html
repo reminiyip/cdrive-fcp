@@ -16,16 +16,16 @@
 			</div>	
 		</div>
 
-		<div class="panel-footer">
-			<small>Posted by {{ review.user.username }} at {{ review.review_issue_date }}</small>
-			{% if user.is_authenticated %}
-				{% if game in user.profile.get_purchased_games %}
-					{% if review in user.profile.get_posted_reviews %}
-						<small><a href="{% url 'edit_review' game.genre.id game.id review.id %}">Edit</a></small>
-						<small><a href="{% url 'delete_review' game.genre.id game.id review.id %}">Delete</a></small>
-					{% endif %}
-				{% endif %}
+		<div class="panel-footer row-center">
+			<small>Posted by <span class="review-username">{{ review.user.username }}</span> at <span class="review-issue-date">{{ review.review_issue_date }}</span></small>
+
+			{% if user.is_authenticated and user == review.user %}
+				<div class="pull-right-flex row-center margin-between">
+					<small><a href="{% url 'edit_review' game.genre.id game.id review.id %}">Edit</a></small>
+					<small><a href="{% url 'delete_review' game.genre.id game.id review.id %}">Delete</a></small>
+				</div>
 			{% endif %}
+
 		</div>
 
 	</div>

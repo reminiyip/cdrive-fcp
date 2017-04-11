@@ -17,12 +17,12 @@
 				{% include 'includes/platform_icons.html' %}
 			</div>
 
-			<div id="add-review" class="row-center">
-				{% if user.is_authenticated and game in user.profile.get_purchased_games %}
-					<a class="btn btn-default btn-md" role="button" href="{% url 'add_review' genre_id=game.genre.id game_id=game.id %}">Add Review
-				{% endif %}
-				</a>
-			</div>
+			{% if user.is_authenticated and game in user.profile.get_purchased_games %}
+				<div id="add-review" class="row-center">
+					<a class="btn btn-default btn-md" role="button" href="{% url 'add_review' genre_id=game.genre.id game_id=game.id %}">Add Review</a>
+				</div>
+			{% endif %}
+
 		</div>
 	</div>
 

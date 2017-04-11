@@ -217,7 +217,7 @@ def delete_review(request, genre_id, game_id, review_id):
     review = Review.objects.get(pk=review_id)
     game = Game.objects.get(pk=game_id)
 
-    if request.user.is_authenticated() and review in request.user.profile.get_posted_reviews():
+    if request.user.is_authenticated() and review.user == request.user:
 
         if request.method == "POST":
             form = ReviewDeleteForm(request.POST, instance=review)
@@ -237,6 +237,7 @@ def delete_review(request, genre_id, game_id, review_id):
             page  = request.GET.get('page')
 
         return render(request, 'game/delete_review.html', {'game': game, 'form': form, 'layers': layers})
+        
     else:
         return redirect('login')
 

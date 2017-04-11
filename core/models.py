@@ -65,12 +65,6 @@ class UserProfile(models.Model):
 
         return sum(total_number_of_rewards)
 
-    def get_posted_reviews(self):
-        from game.models import Review
-        posted_reviews = Review.objects.filter(user=self.user.id)
-        return posted_reviews
-
-
 @receiver(post_save, sender=User)
 def create_user_profile_and_cart(sender, instance, created, **kwargs):
     if created:
