@@ -1,0 +1,56 @@
+{% extends 'game/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{{ game.title }}'s Review{% endblock %}
+
+{% block content %}
+	
+<div id="review-page" class="container-fluid page">
+	
+	<div id="review-info-header">	
+
+		{% include "includes/breadcrumb.html" with layers=layers %}
+
+		<div class="page-header">
+			<div class="row-center">
+				<h3>{{ game.title }}</h3>
+				{% include 'includes/platform_icons.html' %}
+			</div>
+
+			<div id="add-review" class="row-center">
+				{% if user.is_authenticated and game in user.profile.get_purchased_games %}
+					<a class="btn btn-default btn-md" role="button" href="{% url 'add_review' genre_id=game.genre.id game_id=game.id %}">Add Review
+				{% endif %}
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<div id="review-info-content">
+				{% for review in reviews %}
+					{% include 'includes/review_panel/review_panel.html' %}
+				{% endfor %}
+
+				<div class="pagination">
+		   			<span class="step-links">
+			        	{% if reviews.has_previous %}
+			            	<a href="?page={{ reviews.previous_page_number }}">Previous Page</a>
+			        	{% endif %}
+
+			       		<span class="current">
+			            	Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
+			        	</span>
+
+			        	{% if reviews.has_next %}
+			           		<a href="?page={{ reviews.next_page_number }}">Next Page</a>
+			        	{% endif %}
+		   			</span>
+				</div>
+			</div>
+		</div>			
+	</div>
+</div>
+
+{% endblock %}

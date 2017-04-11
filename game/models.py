@@ -6,6 +6,8 @@ from django.db.models import Count
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.utils import timezone
+
 class Genre(models.Model):
     genre_name = models.CharField(max_length=30)
     image = models.ImageField(upload_to='genres')
@@ -57,7 +59,7 @@ class Game(models.Model):
 class Review(models.Model):
     review_header = models.CharField(max_length=50)
     review_content = models.TextField()
-    review_issue_date = models.DateField()
+    review_issue_date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
 
