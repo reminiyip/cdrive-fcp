@@ -11,8 +11,10 @@ from datetime import timedelta
 import json
 
 from .models import UserProfile, Cart, RewardsBatch, CartGamePurchase
+from game.models import Game
 from .forms import PaymentForm, RegisterForm, UserProfileForm, UserEmailForm
 from cdrive_fcp.utils.const import RewardsConst, UserConst
+from cdrive_fcp.utils.utils import HelperUtils
 
 ##############################################################################
 #                                       test                                 #
@@ -172,8 +174,17 @@ def purchase_history(request):
 ##############################################################################
 
 def assign_rewards_to_game(request, cart_id, game_id, reward_value):
+    game = Game.objects.get(pk=game_id)
     cg = CartGamePurchase.objects.get(game_id=game_id, cart_id=cart_id)
     cg.rewards = reward_value
     cg.save()
 
-    return HttpResponse(reward_value)
+    discount = HelperUtils.get_discount_str(game.price, reward_value)
+    subtotal = HelperUtils.get_subtotal_str(game.price, reward_value)
+
+    total = Cart.objects.get(pk=cart_id).get_total_str()
+
+    return HttpResponse(json.dumps({'reward_value': reward_value, 'discount': discount, 'subtotal': subtotal, 'total': total}))
+
+
+

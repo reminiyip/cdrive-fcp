@@ -1,3 +1,7 @@
+{% load filters %}
+
+{% with assigned_reward=cart|gamerewards:game.id %}
+
 <div class="game-panel">
 	<div class="panel panel-info">
 
@@ -15,7 +19,7 @@
 				{% if show_price %}
 
 					<h3>Price: <span class="label label-default price">HK$ {{ game.price }}</span></h3>
-					<h3>Discount: <span class="label label-default price" id="discount-value-{{ game.id }}">HK$ 0</span></h3>
+					<h3>Discount: <span class="label label-default price" id="discount-value-{{ game.id }}">HK$ {{ game.price|discount:assigned_reward }}</span></h3>
 					<div class="divider"></div>
 					<div class="subtotal-row">
 
@@ -27,7 +31,7 @@
 							{% include 'includes/reward_select.html' %}
 						{% endif %}
 
-						<h3>Subtotal: <span class="label label-info price" id="subtotal-value-{{ game.id }}">HK$ {{ game.price }}</span></h3>
+						<h3>Subtotal: <span class="label label-info price" id="subtotal-value-{{ game.id }}">HK$ {{ game.price|subtotal:assigned_reward }}</span></h3>
 
 					</div>
 
@@ -38,3 +42,5 @@
 		</div>
 	</div>
 </div>
+
+{% endwith %}

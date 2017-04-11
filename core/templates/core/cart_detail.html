@@ -25,7 +25,7 @@
 	</div>
 
 	<div id="total-price">
-		<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total }}</span></h3>
+		<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total_str }}</span></h3>
 		{% if cart.games.count %}
 			<a class="btn btn-default btn-md" role="button" href="{% url 'payment' cart.id %}">Proceed to Pay</a>
 		{% else %}

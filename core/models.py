@@ -6,10 +6,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.db.models import Sum, Count
+from django.db.models import Sum
 
 from cdrive_fcp.utils.const import UserConst
-from cdrive_fcp.utils.utils import PathUtils
+from cdrive_fcp.utils.utils import PathUtils, HelperUtils
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -110,9 +110,15 @@ class Cart(models.Model):
         else:
             return "{}/ {} games in cart".format(self.user.username, self.games.count())
 
-    def get_total(self):
-        # TODO: count rewards
+    def get_raw_total(self):
         return sum([game.price for game in self.games.all()])
+
+    def get_total(self):
+        subtotals = [purchase.get_subtotal() for purchase in self.purchases.all()]
+        return sum(subtotals)
+
+    def get_total_str(self, prec=2):
+        return format(self.get_total(), '.{}f'.format(prec))
 
 class RewardsBatch(models.Model):
     value = models.PositiveIntegerField()
@@ -129,7 +135,7 @@ class RewardsBatch(models.Model):
         self.save()
 
 class CartGamePurchase(models.Model):
-    cart = models.ForeignKey('Cart')
+    cart = models.ForeignKey('Cart', related_name='purchases')
     game = models.ForeignKey('game.Game')
     rewards = models.PositiveSmallIntegerField(default=0)
 
@@ -138,6 +144,12 @@ class CartGamePurchase(models.Model):
             return "{}/ {} purchased on {}".format(self.cart.user.username, self.game.title, self.cart.payment.paid_date)
         else:
             return "{}/ {} in cart".format(self.cart.user.username, self.game.title)
+
+    def get_subtotal(self):
+        return HelperUtils.get_subtotal(self.game.price, self.rewards)
+
+
+
 
 
 

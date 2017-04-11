@@ -17,7 +17,7 @@
 		{% include 'includes/form/form_content.html' %}
 
 		<div class="row-center space-between">
-			<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total }}</span></h3>
+			<h3>Total: <span class="label label-success price" id="total-value">HK$ {{ cart.get_total_str }}</span></h3>
 			<button type="submit" class="btn btn-primary" form="{{ form_name }}-form">Pay</button>
 		</div>
 	</div>

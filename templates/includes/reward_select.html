@@ -1,10 +1,14 @@
 <div class="rewards-wrapper">
 	<h3>Rewards: </h3>
-	<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});" value="{{ rewards }}">
+	<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});" value="{{ assigned_reward }}">
 		<option>0</option>
 		{% with ""|center:rewards as range %}
 			{% for _ in range %}
-				<option>{{ forloop.counter }}</option>
+				{% if forloop.counter == assigned_reward %}
+					<option selected>{{ forloop.counter }}</option>
+				{% else %}
+					<option>{{ forloop.counter }}</option>
+				{% endif %}
 			{% endfor %}
 		{% endwith %}
 	</select>

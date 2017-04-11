@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-# from operator import itemgetter, attrgetter
 from decimal import Decimal
 from django.db.models import Count
 
