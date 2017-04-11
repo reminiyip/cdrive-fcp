@@ -22,3 +22,7 @@
 #add-to-cart h3 {
 	margin: 0;
 }
+
+#game-page .well {
+	min-height: 300px;
+}

@@ -84,6 +84,10 @@ img.header-icon {
 	margin: 0 5px;
 }
 
+.col-center.margin-between>*, .col-end.margin-between>*, .col-start.margin-between>* {
+	margin: 5px 0;
+}
+
 .row-end {
 	display: flex;
 	flex-direction: row;
@@ -126,7 +130,7 @@ img.header-icon {
 }
 
 .tag {
-	margin: 5px;
+	margin: 5px 5px 5px 0;
 }
 
 .badge-small {
@@ -248,17 +252,16 @@ img.header-icon {
 }
 
 /* Tags */
-.tags {
-
+.tags .input-group {
+	width: 100%;
 }
 
-.tags div {
-	display: inline-block;
-	margin: 3px 0;
+.tags .input-group .input-group-btn {
+	width: 1%;
 }
 
-.tags div button {
-	margin: 3px 0;
+.tag-list {
+	padding: 20px 0;
 }
 
 /* Filter Form */

@@ -9,3 +9,7 @@ def addclass(value, arg):
 @register.filter(name='formfieldname')
 def formfieldname(value):
     return value.replace('_', ' ').capitalize()
+
+@register.filter(name='toint')
+def toint(value):
+	return int(value)
