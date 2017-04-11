@@ -1,5 +1,5 @@
 <div class="rewards-wrapper">
-	<h3>Rewards:</h3>
+	<h3>Rewards: </h3>
 	<select class="select-reward form-control" id="num-of-rewards-{{ game.id }}" onchange="selectRewards(this.value, {{ game.price }}, {{ game.id }}, {{ cart.id }});" value="{{ rewards }}">
 		<option>0</option>
 		{% with ""|center:rewards as range %}

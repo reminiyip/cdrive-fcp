@@ -1,5 +1,6 @@
 {% extends 'game/base.html' %}
 {% load staticfiles %}
+{% load filters %}
 
 {% block title %}Genre - {{ genre.genre_name }}{% endblock %}
 {% block children_css %}<link rel="stylesheet" href="{% static 'css/genre.css' %}">{% endblock %}
@@ -19,13 +20,9 @@
 
 	</div>
 
-	{% for game_group in games %}
+	{% for game in games %}
 		<div class="row">
-
-			{% for game in game_group %}
-				{% include 'includes/game_panel/game_panel_2_col.html' with show_purchase=True show_release_date=True show_genre=True %}
-			{% endfor %}
-
+			{% include 'includes/game_panel/game_panel_span.html' with span="10" show_purchase=True show_release_date=True show_genre=True %}
 		</div>
 	{% endfor %}
 

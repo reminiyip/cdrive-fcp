@@ -1,4 +1,5 @@
 from django import template
+from cdrive_fcp.utils.utils import HelperUtils
 
 register = template.Library()
 
@@ -12,4 +13,9 @@ def formfieldname(value):
 
 @register.filter(name='toint')
 def toint(value):
-	return int(value)
+    return int(value)
+
+@register.filter(name='groupin')
+def groupin(value, num):
+    return HelperUtils.get_column_groups(value, num_of_cols=num)
+

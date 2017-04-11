@@ -10,8 +10,26 @@
 			</a>
 		{% endfor %}
 
-		{% if tags.count > slice|toint %}
-			<a class="btn btn-warning tag" href="#" id="more-tags">...</a>
+		{% if show_more_tags %}
+			{% if tags.count > slice|toint %}
+				<button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#tags-table-{{ game.id }}" aria-expanded="false" aria-controls="rewards-table">...</button>
+
+				<div class="collapse" id="tags-table-{{ game.id }}">
+					<table class="table table-condensed">
+						{% for tag_group in tags|groupin:4 %}
+							<tr>
+								{% for tag in tag_group %}
+									<td class="text-center">
+										<small><a class="tag" href="{% url 'tagged_games' tag.tag_name %}">
+											{{ tag.tag_name }} <span class="badge">{{ tag.popularity }}</span>
+										</a></small>
+									</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			{% endif %}
 		{% endif %}
 		
 	</div>

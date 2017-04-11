@@ -27,13 +27,9 @@
 	</div>
 
 
-	{% for review_group in reviews %}
+	{% for review in reviews %}
 		<div class="row">
-
-			{% for review in review_group %}
-				{% include 'includes/review_panel/review_panel_2_col.html' %}
-			{% endfor %}
-
+			{% include 'includes/review_panel/review_panel_span.html' with span="7" %}
 		</div>
 	{% endfor %}
 

@@ -55,7 +55,7 @@
 					<p>{{ game.full_description }}</p>
 				</div>
 
-				{% include "includes/tag_list.html" with tags=game.get_sorted_tags slice="10" show_form=True %}
+				{% include "includes/tag_list.html" with tags=game.get_sorted_tags slice="10" show_form=True show_more_tags=True %}
 
 				<div>
 					<a class="btn btn-success btn-md btn-block" role="button" href="{% url 'reviews' game.genre_id game.id %}">Reviews</a>

@@ -7,7 +7,6 @@ from collections import OrderedDict
 from .models import Game, Genre, Tag, Platform, Review
 from core.models import Cart, CartGamePurchase
 from django.contrib.auth.models import User
-from cdrive_fcp.utils.utils import HelperUtils
 from cdrive_fcp.utils.const import GameConst
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -27,7 +26,6 @@ def index(request):
 
 def homepage(request):
     genres = Genre.objects.all()
-    genre_groups = HelperUtils.get_column_groups(genres, num_of_cols=4)
     
     # recommendations
     if request.user.is_authenticated:
@@ -46,12 +44,11 @@ def homepage(request):
 
     # featured games
     featured_games = Game.objects.filter(is_featured=True)
-    featured_game_groups = HelperUtils.get_column_groups(featured_games, num_of_cols=3)
 
     # layers
     layers = {'Home': '#'}
 
-    return render(request, 'game/homepage.html', {'genres': genre_groups, 'recommendations': recommended_games, 'featured_games': featured_game_groups, 'layers': layers})
+    return render(request, 'game/homepage.html', {'genres': genres, 'recommendations': recommended_games, 'featured_games': featured_games, 'layers': layers})
 
 def view_genre(request, genre_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'action': 'view_genre'}})
@@ -76,7 +73,7 @@ class GenreDetailView(DetailView):
 
         # get sorted games, group by 2
         games = Game.objects.filter(genre_id=context['genre'].id, platforms__platform_name__in=filters).distinct().order_by('-release_date')
-        context['games'] = HelperUtils.get_column_groups(games)
+        context['games'] = games
 
         # form page_header dict
         layers = OrderedDict()
@@ -98,14 +95,13 @@ def tagged_games(request, tag_name):
 
     # games
     games = Game.objects.filter(tag__tag_name__contains=tag_name, platforms__platform_name__in=filters).distinct().order_by('-release_date')
-    game_groups = HelperUtils.get_column_groups(games)
 
     # form page_header dict
     layers = OrderedDict()
     layers['Home'] = reverse('homepage')
     layers['Tag - {}'.format(tag_name)] = '#'
 
-    return render(request, 'game/tag.html', {'games': game_groups, 'tag_name': tag_name, 'layers': layers, 'platforms': platforms, 'filters': filters})
+    return render(request, 'game/tag.html', {'games': games, 'tag_name': tag_name, 'layers': layers, 'platforms': platforms, 'filters': filters})
 
 def view_game(request, genre_id, game_id):
     return render(request, 'game/index.html', {'data': {'genre_id': genre_id, 'game_id': game_id, 'action': 'view_game'}})
@@ -134,8 +130,7 @@ def view_reviews(request, genre_id, game_id):
     game = Game.objects.get(pk=game_id)
 
     review_list = Review.objects.filter(game=game_id).order_by('-review_issue_date')
-    review_groups = HelperUtils.get_column_groups(review_list)
-    paginator = Paginator(review_groups, 5) # show 10 reviews per page, i.e. 5 rows
+    paginator = Paginator(review_list, 5) # show 5 reviews per page
 
     # form page_header dict
     layers = OrderedDict()
