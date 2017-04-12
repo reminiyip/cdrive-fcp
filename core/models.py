@@ -103,7 +103,7 @@ class CardPayment(models.Model):
     expiration_date = models.DateField()
     security_code = models.PositiveSmallIntegerField()
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0.00))
-    paid_date = models.DateField()
+    paid_date = models.DateTimeField()
 
     def __str__(self):
         if hasattr(self, 'cart') and self.cart is not None:
