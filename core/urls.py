@@ -31,6 +31,7 @@ cart_urls = [
     url(r'^cart/(?P<pk>\d+)/$', CartDetailView.as_view(), name='cart'),
     url(r'^cart/(?P<cart_id>\d+)/payment/$', views.payment, name='payment'),
     url(r'^cart/(?P<cart_id>\d+)/payment/done/$', views.payment_done, name='payment_done'),
+    url(r'^cart/(?P<cart_id>\d+)/remove/(?P<game_id>\d+)/$', views.cart_remove_game, name='cart_remove_game'),
 ]
 
 other_urls = [

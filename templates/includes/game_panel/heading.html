@@ -23,4 +23,8 @@
 		<h5 class="pull-right-flex">Purchased on {{ cart.payment.paid_date }}</h5>
 	{% endif %}
 
+	{% if allow_remove %}
+		<h5 class="pull-right-flex"><a href="{% url 'cart_remove_game' cart.id game.id %}">Remove from Cart</a></h5>
+	{% endif %}
+
 </div>

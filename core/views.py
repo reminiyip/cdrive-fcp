@@ -208,5 +208,13 @@ def assign_rewards_to_game(request, cart_id):
 
     return HttpResponse(json.dumps({'reward_value': reward_value, 'discount': discount, 'subtotal': subtotal, 'total': total, 'allowed_rewards': allowed_rewards}))
 
+def cart_remove_game(request, cart_id, game_id):
+    CartGamePurchase.objects.get(cart_id=cart_id, game_id=game_id).delete()
+
+    return redirect('cart', cart_id)
+
+
+
+
 
 
