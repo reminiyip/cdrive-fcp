@@ -140,13 +140,21 @@ def payment(request, cart_id):
 
     else:
         form = PaymentForm()
-
-    print(form.errors)
     
     return render(request, 'core/payment.html', {'form': form, 'cart': cart})
 
 def payment_done(request, cart_id):
     cart = Cart.objects.get(pk=cart_id)
+
+    # rewards used
+    purchases = cart.purchases
+    for purchase in purchases.all():
+        if not purchase.make_purchase(filter_expiration_date=cart.payment.paid_date):
+            print("Cannot make purchase")
+
+    # clean rewards batches; delete expired and value = 0 batches
+    RewardsBatch.objects.filter(user_id=request.user.id, expiration_date__lt=cart.payment.paid_date).delete()
+    RewardsBatch.objects.filter(user_id=request.user.id, value=0).delete()
 
     # assign new empty cart to user
     Cart.objects.create(user=request.user)

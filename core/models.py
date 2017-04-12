@@ -168,6 +168,17 @@ class RewardsBatch(models.Model):
         self.expiration_date = self.issue_date + timedelta(days=RewardsConst.EXPIRE_THRESHOLD)
         self.save()
 
+    def deduct_value(self, value):
+        deducted_value = value
+        if self.value >= value:
+            self.value -= value
+        else:
+            deducted_value = self.value
+            self.value = 0
+
+        self.save()
+        return deducted_value
+
 class CartGamePurchase(models.Model):
     cart = models.ForeignKey('Cart', related_name='purchases')
     game = models.ForeignKey('game.Game', related_name='purchases')
@@ -185,9 +196,18 @@ class CartGamePurchase(models.Model):
     def get_subtotal_str(self):
         return HelperUtils.get_subtotal_str(self.game.price, self.rewards)
 
-    def make_purchase(self):
-        # TODO: deduct rewards from reward batches
-        return
+    def make_purchase(self, filter_expiration_date=timezone.now()):
+        user = self.cart.user
+        rewards = self.rewards
+        rewards_batches = RewardsBatch.objects.filter(user_id=user.id, expiration_date__gte=filter_expiration_date).order_by('expiration_date')
+        i = 0
+
+        while rewards > 0 and i < rewards_batches.count():
+            deducted_value = rewards_batches[i].deduct_value(rewards)
+            rewards -= deducted_value
+            i += 1
+
+        return True if rewards == 0 else False
 
 
 

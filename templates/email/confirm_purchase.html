@@ -4,14 +4,14 @@ Your purchase on {{ cart.payment.paid_date }} for card {{ cart.payment.card_numb
 
 Games purchased:
 	{% for purchase in cart.purchases.all %}
-	- {{ purchase.game.title }} in HK$ {{ purchase.get_subtotal_str }} (original price HK$ {{ purchase.game.price }})
+	- {{ purchase.game.title }} in HK$ {{ purchase.get_subtotal_str }} (original price HK$ {{ purchase.game.price }}, {{ purchase.rewards }} rewards used)
 	{% endfor %}
 
 Total amount paid:
 	HK$ {{ cart.get_total_str }}
 
 {% if new_rewards %}
-We are issuing you {{ new_rewards.value }} new rewards, expiring on {{ new_rewards.expiration_date }}.
+We are issuing you {{ new_rewards.value }} new rewards, expiring on {{ new_rewards.expiration_date }}
 {% endif %}
 
 Your account detail:
