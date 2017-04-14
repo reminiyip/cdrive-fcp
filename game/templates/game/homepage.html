@@ -30,7 +30,10 @@
 
                 <div class="col-md-4">
                     <h3>Hi, <a href="{% url 'profile' user.profile.pk %}">{{ user.username }}</a></h3>
-                    <h5>Spending Required To Obtain Next Rewards: {{ user.profile.spending_required }}</h5>
+                    <div role="separator" class="divider"></div>
+
+                    <h5>Accumulated Spending: ${{user.profile.accumulated_spending }}</h5>
+                    <h5>Spending Required To Obtain Next Rewards: ${{ user.profile.spending_required }}</h5>
                     
                     {% if user.profile.get_rewards_total %}
                         <h5>Total Number of Rewards: {{ user.profile.get_rewards_total }}</h5>
