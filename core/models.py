@@ -67,6 +67,11 @@ class UserProfile(models.Model):
 
         return history
 
+    def get_posted_reviews(self):
+        from game.models import Review
+        posted_reviews = Review.objects.filter(user=self.user.id)
+        return posted_reviews
+
     def get_rewards_batches(self, filter_expiration_date=timezone.now()):
         rewards_batches = RewardsBatch.objects.filter(user_id=self.user.id, expiration_date__gte=filter_expiration_date) \
                                                 .values('expiration_date', 'issue_date') \
@@ -208,10 +213,3 @@ class CartGamePurchase(models.Model):
             i += 1
 
         return True if rewards == 0 else False
-
-
-
-
-
-
-
