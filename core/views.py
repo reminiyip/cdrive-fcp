@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.urls import reverse
@@ -16,22 +17,15 @@ from game.models import Game
 from .forms import PaymentForm, RegisterForm, UserProfileForm, UserEmailForm
 from cdrive_fcp.utils.const import UserConst, RewardsConst
 from cdrive_fcp.utils.utils import HelperUtils, EmailUtils
+from cdrive_fcp.decorators import *
 
-##############################################################################
-#                                       test                                 #
-##############################################################################
-
-def index(request):
-    return render(request, 'core/index.html', {'data': {'test': 'I am a test string.'}})
 
 ##############################################################################
 #                                      account                               #
 ##############################################################################
 
+@logout_required
 def register(request):
-    if request.user.is_authenticated():
-        return redirect('homepage')
-
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -50,8 +44,13 @@ def register(request):
 #                                     profile                                #
 ##############################################################################
 
+@method_decorator(login_required, name="dispatch")
+@method_decorator(user_is_profile_owner, name="dispatch")
 class ProfileDetailView(DetailView):
     model = UserProfile
+
+    def dispatch(self, *args, **kwargs):
+        return super(ProfileDetailView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ProfileDetailView, self).get_context_data(**kwargs)
@@ -69,6 +68,8 @@ class ProfileDetailView(DetailView):
 
         return context
 
+@login_required
+@user_is_profile_owner
 def edit_profile(request, profile_id):
     if request.method == 'POST':
         user_email_form = UserEmailForm(request.POST, instance=request.user)
@@ -104,9 +105,14 @@ def edit_profile(request, profile_id):
 #                                       cart                                 #
 ##############################################################################
 
+@method_decorator(login_required, name="dispatch")
+@method_decorator(cart_is_user_active_cart, name="dispatch")
 class CartDetailView(DetailView):
     model = Cart
 
+    def dispatch(self, *args, **kwargs):
+        return super(CartDetailView, self).dispatch(*args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super(CartDetailView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
@@ -119,6 +125,8 @@ class CartDetailView(DetailView):
 
         return context
 
+@login_required
+@cart_is_user_active_cart
 def payment(request, cart_id):
     cart = Cart.objects.get(pk=cart_id)
 
@@ -133,7 +141,6 @@ def payment(request, cart_id):
 
             # cart paid
             cart.payment = payment
-            cart.status = Cart.PAID
             cart.save()
 
             return HttpResponseRedirect(reverse('payment_done', args=[cart_id]))
@@ -143,8 +150,13 @@ def payment(request, cart_id):
     
     return render(request, 'core/payment.html', {'form': form, 'cart': cart})
 
+@login_required
+@cart_is_user_active_cart
+@payment_just_saved_by_the_system
 def payment_done(request, cart_id):
     cart = Cart.objects.get(pk=cart_id)
+    cart.status = Cart.PAID
+    cart.save()
 
     # rewards used
     purchases = cart.purchases
@@ -175,6 +187,7 @@ def payment_done(request, cart_id):
 #                                     others                                 #
 ##############################################################################
 
+@login_required
 def purchase_history(request):
     records = request.user.profile.get_purchase_history()
     
@@ -190,14 +203,15 @@ def purchase_history(request):
 ##############################################################################
 
 def assign_rewards_to_game(request, cart_id):
+
     game_id = request.GET.get('game')
     reward_value = request.GET.get('value')
 
-    game = Game.objects.get(pk=game_id)
-    cart = Cart.objects.get(pk=cart_id)
+    game = get_object_or_404(Game, pk=game_id)
+    cart = get_object_or_404(Cart, pk=cart_id)
     total_rewards = cart.get_rewards()
 
-    cg = CartGamePurchase.objects.get(game_id=game_id, cart_id=cart_id)
+    cg = get_object_or_404(CartGamePurchase, game_id=game_id, cart_id=cart_id)
     cg.rewards = reward_value
     cg.save()
 
@@ -208,13 +222,11 @@ def assign_rewards_to_game(request, cart_id):
 
     return HttpResponse(json.dumps({'reward_value': reward_value, 'discount': discount, 'subtotal': subtotal, 'total': total, 'allowed_rewards': allowed_rewards}))
 
+@login_required
+@cart_is_user_active_cart
+@game_is_valid
+@game_is_in_active_cart
 def cart_remove_game(request, cart_id, game_id):
     CartGamePurchase.objects.get(cart_id=cart_id, game_id=game_id).delete()
 
     return redirect('cart', cart_id)
-
-
-
-
-
-

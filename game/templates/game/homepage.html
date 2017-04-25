@@ -14,6 +14,57 @@
         </div>
     </div>
 
+    {% if user.is_authenticated %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Account Details</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div id="avatar_image"">
+                        <img src="{{ user.profile.avatar_image.url }}" style="height:150px" class="img-rounded img-responsive"><br/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <h3>Hi, <a href="{% url 'profile' user.profile.pk %}">{{ user.username }}</a></h3>
+                    <div role="separator" class="divider"></div>
+
+                    <h5>Accumulated Spending: ${{user.profile.accumulated_spending }}</h5>
+                    <h5>Spending Required To Obtain Next Rewards: ${{ user.profile.spending_required }}</h5>
+                    
+                    {% if user.profile.get_rewards_total %}
+                        <h5>Total Number of Rewards: {{ user.profile.get_rewards_total }}</h5>
+                    {% else %}
+                        <h5>You currently don't have any rewards!</h5>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-condensed" style="font-size: 12px">
+                        <tr>
+                            <th># of Rewards</th>
+                            <th>Issue Date</th>
+                            <th>Expiration Date</th>
+                        </tr>
+                        {% for batch in user.profile.get_rewards_batches %}
+                            <tr>
+                                <td>{{ batch.values }}</td>
+                                <td>{{ batch.issue_date }}</td>
+                                <td>{{ batch.expiration_date }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">Featured Games</h3>
