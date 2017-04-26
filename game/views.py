@@ -26,14 +26,14 @@ def homepage(request):
     
     # recommendations
     if request.user.is_authenticated:
-        purchased_games = request.user.profile.get_purchased_games()
+        purchased_games_id = request.user.profile.get_purchased_games_id()
 
-        num_of_targets = min(GameConst.NUM_OF_TARGETS_FOR_RECOMMENDATION, purchased_games.count())
-        targets = purchased_games[:num_of_targets]
+        num_of_targets = min(GameConst.NUM_OF_TARGETS_FOR_RECOMMENDATION, purchased_games_id.count())
+        targets = purchased_games_id[:num_of_targets]
 
         recommended_games = []
         for target in targets:
-            game = target.get_most_similar_game(user=request.user)
+            game = Game.objects.get(pk=target).get_most_similar_game(user=request.user)
             if game is not None and game not in recommended_games:
                 recommended_games.append(game)
     else:
@@ -124,7 +124,6 @@ class GameDetailView(DetailView):
 @genre_is_valid
 @game_is_valid
 def view_reviews(request, genre_id, game_id):
-    
     genre = Genre.objects.get(pk=genre_id)
     game = Game.objects.get(pk=game_id)
 

@@ -26,7 +26,7 @@ class Game(models.Model):
     release_date = models.DateField()
         
     def __str__(self):
-        return self.title
+        return '{} {}'.format(self.title, self.id)
 
     def get_sorted_tags(self):
         tags = Tag.objects.filter(game_id=self.id).order_by('-popularity')
@@ -42,10 +42,11 @@ class Game(models.Model):
             games = Game.objects.exclude(pk__in=set(purchased_games_id)).order_by('-release_date')
         else:
             games = Game.objects.all().order_by('-release_date')
-
+        print("tag names {}".format(tag_names))
         # annotate similarity
         similar_games = games.filter(tag__name__in=tag_names).annotate(similarity=Count('tag')).order_by('-similarity')
-
+        for game in similar_games:
+            print("similar_game {}, similarity {}".format(game, game.similarity))
         return similar_games
 
     def get_most_similar_game(self, filter_purchased=True, user=None):

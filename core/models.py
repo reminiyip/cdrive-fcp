@@ -51,10 +51,10 @@ class UserProfile(models.Model):
 
         return games_id
 
-    def get_purchased_games(self, ordered=True):
+    def get_purchased_games(self):
         from game.models import Game
 
-        games_id = self.get_purchased_games_id(ordered=ordered)
+        games_id = self.get_purchased_games_id(ordered=False)
         games = Game.objects.filter(pk__in=set(games_id))
 
         return games
