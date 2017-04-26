@@ -1,13 +1,14 @@
 #### Usage
 
-###### Python 3.x
+- Instal dependencies
+  - `pip3 install django Pillow social-auth-app-django python-social-auth`   
 
-`pip3 install django`  
-`pip3 install Pillow`  
-`pip3 install social-auth-app-django`
-`pip3 install python-social-auth`
-`cd <project-root>`  
-`python3 manage.py runserver`  
+- Run server
+  - `cd <project-root>`  
+  - `python3 manage.py runserver`  
+
+- Errors
+  - If errors showing missing libraries, run `pip3 install <missing-library>`
 
 Open the browser, go to `localhost:8000`.
 
@@ -97,7 +98,7 @@ cdrive-fcp/
 ###### Admin
 
 ```
-Use 'createsuperuser' for one, or use:
+Run `python3 manage.py createsuperuser` for one, or use the default:
 
 Username: cdriveadmin
 Password: cdriveadmin
@@ -106,7 +107,7 @@ Email: admin@example.com
 
 ###### User
 
-Go to `/register/` for one.
+Go to `/register` and sign up for one.
 
 #### Notes
 
