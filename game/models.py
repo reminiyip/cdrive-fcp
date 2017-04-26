@@ -23,7 +23,7 @@ class Game(models.Model):
     genre = models.ForeignKey('Genre', on_delete=models.CASCADE)
     is_featured = models.BooleanField()
     platforms = models.ManyToManyField('Platform')
-    release_date = models.DateField()
+    release_date = models.DateTimeField()
         
     def __str__(self):
         return '{} {}'.format(self.title, self.id)
@@ -39,14 +39,13 @@ class Game(models.Model):
         # get games to check similarity, based on whether to filter purchased history or not
         if filter_purchased and user is not None:
             purchased_games_id = user.profile.get_purchased_games_id()
-            games = Game.objects.exclude(pk__in=set(purchased_games_id)).order_by('-release_date')
+            games = Game.objects.exclude(pk__in=set(purchased_games_id))
         else:
-            games = Game.objects.all().order_by('-release_date')
-        print("tag names {}".format(tag_names))
+            games = Game.objects.all()
+
         # annotate similarity
-        similar_games = games.filter(tag__name__in=tag_names).annotate(similarity=Count('tag')).order_by('-similarity')
-        for game in similar_games:
-            print("similar_game {}, similarity {}".format(game, game.similarity))
+        similar_games = games.filter(tag__name__in=tag_names).annotate(similarity=Count('tag')).order_by('-similarity', '-release_date')
+
         return similar_games
 
     def get_most_similar_game(self, filter_purchased=True, user=None):

@@ -19,7 +19,7 @@
 
 			<div class="bottom-right-corner">
 			{% if show_release_date %}
-				<a href="#" class="no-cursor-link"><span class="badge badge-small">{{ game.release_date }}</span></a>
+				<a href="#" class="no-cursor-link"><span class="badge badge-small">{{ game.release_date|date }}</span></a>
 			{% endif %}
 			</div>
 
