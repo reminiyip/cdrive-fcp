@@ -8,11 +8,11 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 class Genre(models.Model):
-    genre_name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
     image = models.ImageField(upload_to='genres')
 
     def __str__(self):
-        return self.genre_name
+        return self.name
 
 class Game(models.Model):
     image = models.ImageField(upload_to='games')
@@ -34,7 +34,7 @@ class Game(models.Model):
     
     def get_similar_games(self, filter_purchased=True, user=None):
         # get all tag names related to this game
-        tag_names = self.get_sorted_tags().values_list('tag_name', flat=True)
+        tag_names = self.get_sorted_tags().values_list('name', flat=True)
 
         # get games to check similarity, based on whether to filter purchased history or not
         if filter_purchased and user is not None:
@@ -44,7 +44,7 @@ class Game(models.Model):
             games = Game.objects.all().order_by('-release_date')
 
         # annotate similarity
-        similar_games = games.filter(tag__tag_name__in=tag_names).annotate(similarity=Count('tag')).order_by('-similarity')
+        similar_games = games.filter(tag__name__in=tag_names).annotate(similarity=Count('tag')).order_by('-similarity')
 
         return similar_games
 
@@ -56,9 +56,9 @@ class Game(models.Model):
         return
 
 class Review(models.Model):
-    review_header = models.CharField(max_length=50)
-    review_content = models.TextField()
-    review_issue_date = models.DateTimeField()
+    header = models.CharField(max_length=50)
+    content = models.TextField()
+    issue_date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
 
@@ -66,13 +66,13 @@ class Review(models.Model):
         return "{}: {}".format(self.user.username, self.game.title)
 
 class Tag(models.Model):
-    tag_name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
     popularity = models.PositiveIntegerField()
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
     users = models.ManyToManyField(User)
     
     def __str__(self):
-        return self.tag_name
+        return self.name
 
     def increment_popularity(self):
         self.popularity += 1
@@ -92,10 +92,10 @@ class Platform(models.Model):
         MAC: '/static/img/logos/apple-logo.png',
         LINUX: '/static/img/logos/linux-logo.png',
     }
-    platform_name = models.CharField(max_length=2, choices=PLATFORM_CHOICES, primary_key=True, default=WINDOWS) 
+    name = models.CharField(max_length=2, choices=PLATFORM_CHOICES, primary_key=True, default=WINDOWS) 
 
     def __str__(self):
-        return self.get_platform_name_display()
+        return self.get_name_display()
 
     def get_logo_path(self):
-        return Platform.LOGO_CHOICES[self.platform_name]
+        return Platform.LOGO_CHOICES[self.name]

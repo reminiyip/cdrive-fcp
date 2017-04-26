@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.detail import DetailView
 from django.utils import timezone, text
 from django.urls import reverse
@@ -8,17 +10,12 @@ from .models import Game, Genre, Tag, Platform, Review
 from core.models import Cart, CartGamePurchase
 from django.contrib.auth.models import User
 from cdrive_fcp.utils.const import GameConst
+from cdrive_fcp.decorators import *
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import ReviewForm
+from .forms import ReviewForm, ReviewDeleteForm
 from django.contrib import messages
 
-##############################################################################
-#                                       test                                 #
-##############################################################################
-
-def index(request):
-    return render(request, 'game/index.html', {'data': {'test': 'I am a test string.'}})
 
 ##############################################################################
 #                                    browse games                            #
@@ -65,17 +62,17 @@ class GenreDetailView(DetailView):
         if self.request.GET.get('filters') != None:
             filters = self.request.GET.get('filters').split(',')
         else:
-            filters = platforms.values_list('platform_name', flat=True)
+            filters = platforms.values_list('name', flat=True)
         context['filters'] = filters
 
         # get sorted games, group by 2
-        games = Game.objects.filter(genre_id=context['genre'].id, platforms__platform_name__in=filters).distinct().order_by('-release_date')
+        games = Game.objects.filter(genre_id=context['genre'].id, platforms__name__in=filters).distinct().order_by('-release_date')
         context['games'] = games
 
         # form page_header dict
         layers = OrderedDict()
         layers['Home'] = reverse('homepage')
-        layers[context['genre'].genre_name] = '#'
+        layers[context['genre'].name] = '#'
         context['layers'] = layers
 
         return context
@@ -88,10 +85,10 @@ def tagged_games(request, tag_name):
     if request.GET.get('filters') != None:
         filters = request.GET.get('filters').split(',')
     else:
-        filters = platforms.values_list('platform_name', flat=True)
+        filters = platforms.values_list('name', flat=True)
 
     # games
-    games = Game.objects.filter(tag__tag_name__contains=tag_name, platforms__platform_name__in=filters).distinct().order_by('-release_date')
+    games = Game.objects.filter(tag__name__contains=tag_name, platforms__name__in=filters).distinct().order_by('-release_date')
 
     # form page_header dict
     layers = OrderedDict()
@@ -100,8 +97,12 @@ def tagged_games(request, tag_name):
 
     return render(request, 'game/tag.html', {'games': games, 'tag_name': tag_name, 'layers': layers, 'platforms': platforms, 'filters': filters})
 
+@method_decorator(genre_is_valid, name="dispatch")
 class GameDetailView(DetailView):
     model = Game
+
+    def dispatch(self, *args, **kwargs):
+        return super(GameDetailView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
@@ -110,7 +111,7 @@ class GameDetailView(DetailView):
         # form page_header dict
         layers = OrderedDict()
         layers['Home'] = reverse('homepage')
-        layers[context['game'].genre.genre_name] = reverse('genre', args=[context['game'].genre.id])
+        layers[context['game'].genre.name] = reverse('genre', args=[context['game'].genre.id])
         layers[context['game'].title] = '#'
         context['layers'] = layers
 
@@ -120,16 +121,20 @@ class GameDetailView(DetailView):
 #                                 game review actions                        #
 ##############################################################################
 
+@genre_is_valid
+@game_is_valid
 def view_reviews(request, genre_id, game_id):
+    
+    genre = Genre.objects.get(pk=genre_id)
     game = Game.objects.get(pk=game_id)
 
-    review_list = Review.objects.filter(game=game_id).order_by('-review_issue_date')
+    review_list = Review.objects.filter(game=game_id).order_by('-issue_date')
     paginator = Paginator(review_list, 5) # show 5 reviews per page
 
     # form page_header dict
     layers = OrderedDict()
     layers['Home'] = reverse('homepage')
-    layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
+    layers[game.genre.name] = reverse('genre', args=[game.genre.id])
     layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
     layers['Review'] = '#'
 
@@ -144,36 +149,40 @@ def view_reviews(request, genre_id, game_id):
 
     return render(request, 'game/review.html', {'reviews': reviews, 'game': game, 'layers': layers})
 
+@login_required
+@genre_is_valid
+@game_is_valid
+@user_purchased_the_game
 def add_review(request, genre_id, game_id):
     game = Game.objects.get(pk=game_id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
 
-    if request.user.is_authenticated() and game in request.user.profile.get_purchased_games():
-        if request.method == 'POST':
-            form = ReviewForm(request.POST)
+        if form.is_valid():
 
-            if form.is_valid():
-
-                review = form.save(commit=False)
-                review.review_issue_date = timezone.now()
-                review.user = request.user
-                review.game = game
-                review.save()
-                return redirect('reviews', genre_id=game.genre.id, game_id=game.id)
-        else:
-            form = ReviewForm()
-
-            # form page_header dict
-            layers = OrderedDict()
-            layers['Home'] = reverse('homepage')
-            layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
-            layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
-            layers['Review'] = '#'
-            page  = request.GET.get('page')
-
-        return render(request, 'game/add_review.html', {'game': game,'form': form, 'layers': layers})
+            review = form.save(commit=False)
+            review.issue_date = timezone.now()
+            review.user = request.user
+            review.game = game
+            review.save()
+            return redirect('reviews', genre_id=game.genre.id, game_id=game.id)
     else:
-        return redirect('login')
+        form = ReviewForm()
 
+        # form page_header dict
+        layers = OrderedDict()
+        layers['Home'] = reverse('homepage')
+        layers[game.genre.name] = reverse('genre', args=[game.genre.id])
+        layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
+        layers['Review'] = '#'
+        page  = request.GET.get('page')
+
+    return render(request, 'game/add_review.html', {'game': game,'form': form, 'layers': layers})
+
+@login_required
+@genre_is_valid
+@game_is_valid
+@user_posted_the_review
 def edit_review(request, genre_id, game_id, review_id):
     review = Review.objects.get(pk=review_id)
     game = Game.objects.get(pk=game_id)
@@ -190,25 +199,51 @@ def edit_review(request, genre_id, game_id, review_id):
     else:
         form = ReviewForm(instance=review, label_suffix='')
 
-         # form page_header dict
+        # form page_header dict
         layers = OrderedDict()
         layers['Home'] = reverse('homepage')
-        layers[game.genre.genre_name] = reverse('genre', args=[game.genre.id])
+        layers[game.genre.name] = reverse('genre', args=[game.genre.id])
         layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
         layers['Review'] = '#'
         page  = request.GET.get('page')
-
     return render(request, 'game/edit_review.html', {'game': game, 'form': form, 'review': review, 'layers': layers})
 
+# keep the confirmation page, one-click deletion may cause unfriendly experience
+@login_required
+@genre_is_valid
+@game_is_valid
+@user_posted_the_review
 def delete_review(request, genre_id, game_id, review_id):
     review = Review.objects.get(pk=review_id)
-    review.delete()
-    return redirect('reviews', genre_id=genre_id, game_id=game_id)
+    game = Game.objects.get(pk=game_id)
+
+    if request.method == 'POST':
+        form = ReviewDeleteForm(request.POST, instance=review)
+
+        if form.is_valid():
+            review.delete()
+            return redirect('reviews', genre_id=genre_id, game_id=game_id)
+    else:
+        form = ReviewDeleteForm(instance=review)
+
+        # form page_header dict
+        layers = OrderedDict()
+        layers['Home'] = reverse('homepage')
+        layers[game.genre.name] = reverse('genre', args=[game.genre.id])
+        layers[game.title] = reverse('game', kwargs={'genre_id': game.genre.id, 'pk': game.id})
+        layers['Review'] = '#'
+        page  = request.GET.get('page')
+    return render(request, 'game/delete_review.html', {'game': game, 'form': form, 'review': review, 'layers': layers})
+
 
 ##############################################################################
 #                                      actions                               #
 ##############################################################################
 
+@login_required
+@genre_is_valid
+@game_is_valid
+@user_purchased_the_game
 def add_tag(request, genre_id, game_id):
     if request.method == 'POST':
         req_tag_name = request.POST.get('tag_name', None)
@@ -219,14 +254,14 @@ def add_tag(request, genre_id, game_id):
             tag_game = Game.objects.get(id=game_id)
 
             # add new tag to db
-            if not Tag.objects.filter(tag_name=tag_name, game=tag_game).exists():
-                tag = Tag(tag_name=tag_name, popularity=1, game=tag_game)
+            if not Tag.objects.filter(name=tag_name, game=tag_game).exists():
+                tag = Tag(name=tag_name, popularity=1, game=tag_game)
                 tag.save()
                 tag.users.add(req_user)
 
             # increment popularity
             else:
-                tag = Tag.objects.get(tag_name=tag_name, game=tag_game)
+                tag = Tag.objects.get(name=tag_name, game=tag_game)
                 if req_user not in tag.users.all():
                     tag.users.add(req_user)
                     tag.increment_popularity()
@@ -234,11 +269,13 @@ def add_tag(request, genre_id, game_id):
     # redirect to game page
     return redirect('game', genre_id=genre_id, pk=game_id)
 
+@login_required
+@genre_is_valid
+@game_is_valid
+@user_not_purchased_the_game_and_game_not_in_active_cart
 def add_to_cart(request, genre_id, game_id):
     cart = request.user.profile.get_active_cart()
     cg = CartGamePurchase(game_id=game_id, cart_id=cart.id)
     cg.save()
 
     return redirect('game', genre_id=genre_id, pk=game_id)
-
-    

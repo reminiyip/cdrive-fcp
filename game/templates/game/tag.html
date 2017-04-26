@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load filters %}
 
-{% block title %}Tag - {{ tag.tag_name }}{% endblock %}
+{% block title %}Tag - {{ tag.name }}{% endblock %}
 {% block children_css %}<link rel="stylesheet" href="{% static 'css/tag.css' %}">{% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
 		{% include "includes/breadcrumb.html" with layers=layers %}
 
 		<div class="page-header">
-			<h3>{{ tag_name }}</h3>
+			<h3>{{ name }}</h3>
 			{% include 'includes/filter_form.html' %}
 		</div>
 	</div>

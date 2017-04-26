@@ -3,7 +3,7 @@
 
 		<div class="panel-heading">
 			<div class="row-center">
-				<h3 class="panel-title">{{ review.review_header }}</h3>
+				<h3 class="panel-title">{{ review.header }}</h3>
 			</div>
 		</div>
 
@@ -11,13 +11,13 @@
 
 			<div class="row-start space-between margin-between">
 				<div>
-					{{ review.review_content }}
+					{{ review.content }}
 				</div>
 			</div>	
 		</div>
 
 		<div class="panel-footer row-center">
-			<small>Posted by <span class="review-username">{{ review.user.username }}</span> at <span class="review-issue-date">{{ review.review_issue_date }}</span></small>
+			<small>Posted by <span class="review-username">{{ review.user.username }}</span> at <span class="review-issue-date">{{ review.issue_date }}</span></small>
 
 			{% if user.is_authenticated and user == review.user %}
 				<div class="pull-right-flex row-center margin-between">

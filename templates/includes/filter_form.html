@@ -2,10 +2,10 @@
 {% for platform in platforms %}
 	<div class="checkbox">
 		<label>
-		{% if platform.platform_name in filters %}
-			<input type="checkbox" value="{{ platform.platform_name }}" checked> {{ platform }}
+		{% if platform.name in filters %}
+			<input type="checkbox" value="{{ platform.name }}" checked> {{ platform }}
 		{% else %}
-			<input type="checkbox" value="{{ platform.platform_name }}"> {{ platform }}
+			<input type="checkbox" value="{{ platform.name }}"> {{ platform }}
 		{% endif %}
 		</label>
 	</div>

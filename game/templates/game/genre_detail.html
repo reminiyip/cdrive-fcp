@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load filters %}
 
-{% block title %}Genre - {{ genre.genre_name }}{% endblock %}
+{% block title %}Genre - {{ genre.name }}{% endblock %}
 {% block children_css %}<link rel="stylesheet" href="{% static 'css/genre.css' %}">{% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 		{% include "includes/breadcrumb.html" with layers=layers %}
 
 		<div class="page-header">
-			<h3>{{ genre.genre_name }}</h3>
+			<h3>{{ genre.name }}</h3>
 			{% include 'includes/filter_form.html' %}
 		</div>
 

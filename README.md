@@ -117,3 +117,7 @@ Username: avatar
 Password: blueeyes
 Email: avatar@tar.com
 ```
+
+#### Notes
+
+- `index.html` pages under `templates` are for testing purpose only.

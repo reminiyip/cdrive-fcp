@@ -7,7 +7,7 @@
             </div>
 
             <div class="row-center self-pull-right-flex">
-                <a href="{% url 'genre' game.genre.id %}"><span class="badge">{{ game.genre.genre_name }}</span></a>
+                <a href="{% url 'genre' game.genre.id %}"><span class="badge">{{ game.genre.name }}</span></a>
                 {% include 'includes/platform_icons.html' %}
             </div>
 
