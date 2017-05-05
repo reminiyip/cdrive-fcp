@@ -24,7 +24,7 @@ account_urls = [
 
 profile_urls = [
     url(r'^profile/(?P<pk>\d+)/$', ProfileDetailView.as_view(template_name='core/profile.html'), name='profile'),
-    url(r'^profile/(?P<profile_id>\d+)/edit/', views.edit_profile, name='edit_profile'),
+    url(r'^profile/(?P<profile_id>\d+)/edit/$', views.edit_profile, name='edit_profile'),
 ]
 
 cart_urls = [
