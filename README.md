@@ -1,6 +1,6 @@
 #### Usage
 - Setup settings.py
-  - `Download the settings.py file and open it. Link: http://i.cs.hku.hk/~h3519342/settings.py`
+  - `Download the settings.py file and open it. Link:   https://drive.google.com/open?id=0BzdascQ9kP5rOUVEYmtCcDJhdTg`
   - `Substitude the xxx values using your own keys and secrets`
   - `Put the updated settings.py file in cdrive-fcp/cdrive_fcp`
 
