@@ -1,8 +1,8 @@
 #### Usage
 - Setup settings.py
-  - `Download the setting.py file and open it. Link: http://i.cs.hku.hk/~h3519342/settings.py`
+  - `Download the settings.py file and open it. Link: http://i.cs.hku.hk/~h3519342/settings.py`
   - `Substitude the xxx values using your own keys and secrets`
-  - `Put the updated setting.py file in cdrive-fcp/cdrive_fcp`
+  - `Put the updated settings.py file in cdrive-fcp/cdrive_fcp`
 
 - Install dependencies
   - `pip3 install django Pillow social-auth-app-django python-social-auth`   
