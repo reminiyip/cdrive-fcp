@@ -24,7 +24,7 @@ Open the browser, go to `localhost:8000`.
 
 # general
 
-/homepage                                                <- includes profile, featured games, recommendations, genres
+/homepage/                                               <- includes profile, featured games, recommendations, genres
 /genre/:id/                                              <- VIEW games in specific genres
            game/:id/                                     <- VIEW game
                     reviews/                             <- VIEW reviews
