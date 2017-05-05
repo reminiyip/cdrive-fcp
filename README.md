@@ -19,7 +19,7 @@ Open the browser, go to `localhost:8000`.
 ```
 # admin
 
-/admin                                                   <- admin page
+/admin/                                                  <- admin page
 
 
 # general
