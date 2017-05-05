@@ -25,42 +25,42 @@ Open the browser, go to `localhost:8000`.
 # general
 
 /homepage                                                <- includes profile, featured games, recommendations, genres
-/genre/:id                                               <- VIEW games in specific genres
-          /game/:id                                      <- VIEW game
-                   /reviews                              <- VIEW reviews
-                   /review/new                           <- review CRUD actions (for members already purchased the game)
-                           :id
-                           edit
-                           remove
-                   /tag/:name/add                        <- tag CREATE action; <redirect>
-                   /add_to_cart                          <- ADD game to cart; <redirect>
+/genre/:id/                                              <- VIEW games in specific genres
+           game/:id/                                     <- VIEW game
+                    reviews/                             <- VIEW reviews
+                    review/new/                          <- review CRUD actions (for members already purchased the game)
+                           :id/
+                               edit/
+                               remove/
+                    tag/:name/add/                       <- tag CREATE action; <redirect>
+                    add_to_cart/                         <- ADD game to cart; <redirect>
           ?filter=platform+platform+...                  <- filter genre games by platforms; <redirect>
           
-/tag/:name                                               <- VIEW games with specific tags
+/tag/:name/                                              <- VIEW games with specific tags
           ?filter=platform+platform+...                  <- filter tagged games by platforms; <redirect>
 
-/cart/:id                                                <- VIEW cart
-         /payment                                        <- payment page
-                 /done                                   <- finish payment; <redirect>
-         /remove/:game_id                                <- REMOVE game from cart; <redirect>
-         /assign_rewards?game=game_id&value=rewards      <- assign rewards to specific games; <ajax>
+/cart/:id/                                               <- VIEW cart
+          payment/                                       <- payment page
+                  done/                                  <- finish payment; <redirect>
+          remove/:game_id/                               <- REMOVE game from cart; <redirect>
+          assign_rewards?game=game_id&value=rewards      <- assign rewards to specific games; <ajax>
 
-/purchase_history                                        <- VIEW purchase history
+/purchase_history/                                       <- VIEW purchase history
 
 
 # account (refer to django.contrib.auth & social_django)
 
-/register
-/login
-/logout
-/password_change
-                /done
-/password_reset
-               /done
-/reset/done
-/oauth
-/profile/:id                                            <- VIEW profile
-            /edit                                       <- EDIT cart
+/register/
+/login/
+/logout/
+/password_change/
+                 done/
+/password_reset/
+                done/
+/reset/done/
+/oauth/
+/profile/:id/                                           <- VIEW profile
+             edit/                                      <- EDIT cart
 ```
 
 ###### Project Directory
@@ -107,7 +107,7 @@ Email: admin@example.com
 
 ###### User
 
-Go to `/register` and sign up for one.
+Go to `/register/` and sign up for one.
 
 #### Notes
 
